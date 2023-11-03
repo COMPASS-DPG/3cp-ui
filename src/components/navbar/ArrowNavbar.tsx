@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { BackArrow } from '../../../public/svg';
-const ArrowNavbar = ({ menu }: { menu: string }) => {
+const ArrowNavbar = ({ menu }: { menu?: string }) => {
   const router = useRouter();
   const handleBack = () => {
     router.back();
@@ -12,7 +12,7 @@ const ArrowNavbar = ({ menu }: { menu: string }) => {
 
   return (
     <div>
-      <div className='flex items-center p-[30px]'>
+      <div className='flex items-center'>
         <button
           className='mr-[15px] flex h-11 w-11 cursor-pointer 
         items-center justify-center rounded-md border-2 
