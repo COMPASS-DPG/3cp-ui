@@ -64,6 +64,15 @@ export const isValidFormData = (
   return flag;
 };
 
+export const isValidPassword = (password: string) => {
+  return (
+    password.length >= 8 &&
+    /[A-Z]/.test(password) &&
+    /[a-z]/.test(password) &&
+    /[!@#$%^&*]/.test(password)
+  );
+};
+
 // will check for general details data and set error
 export const isValidGeneralDetails = (
   data: GeneralDetailsType,
@@ -94,15 +103,18 @@ export const isValidGeneralDetails = (
     );
     flag = false;
   }
-  if (!data?.password) {
-    handleGeneralDetailsError('password', 'password is required!');
+  if (!data?.password || !isValidPassword(data?.password)) {
+    const errorMessage = !data?.password
+      ? 'password is required!'
+      : 'Password must be 8 characters or longer with at least one uppercase, one lowercase, and one special character';
+    handleGeneralDetailsError('password', errorMessage);
     flag = false;
   }
-  if (!data?.confirmPassword) {
-    handleGeneralDetailsError(
-      'confirmPassword',
-      'confirm password is required!'
-    );
+  if (!data?.confirmPassword || data.password !== data.confirmPassword) {
+    const errorMessage = !data?.confirmPassword
+      ? 'confirm password is required!'
+      : 'password and confirm password must be same';
+    handleGeneralDetailsError('confirmPassword', errorMessage);
     flag = false;
   }
 

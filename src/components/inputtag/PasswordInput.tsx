@@ -42,7 +42,7 @@ const PasswordInput = ({
         />
         <div
           className='items-right cursor-pointer pr-3'
-          onClick={() => setIsPassword((pre) => !pre)}
+          onClick={() => !isConfirmPassword && setIsPassword((pre) => !pre)}
         >
           {isConfirmPassword ? (
             <TiLockClosed
