@@ -2,11 +2,17 @@ import React, { MutableRefObject, useRef } from 'react';
 
 type PropType = {
   value: string | File;
+  accept: string;
   onChange: (arg: File) => void;
   errorMessage?: string;
 };
 
-const FileInput = ({ value, onChange, errorMessage = '' }: PropType) => {
+const FileInput = ({
+  value,
+  onChange,
+  errorMessage = '',
+  accept,
+}: PropType) => {
   const fileInputRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
 
   const handleLabelClick = () => {
@@ -26,6 +32,7 @@ const FileInput = ({ value, onChange, errorMessage = '' }: PropType) => {
     <div>
       <input
         type='file'
+        accept={accept}
         ref={fileInputRef}
         onChange={handleFileChange}
         className='hidden'

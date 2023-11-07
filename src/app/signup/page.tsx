@@ -1,7 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 
-import { isValidBankDetails, isValidGeneralDetails } from '@/lib/helper';
+import {
+  fileToBase64Image,
+  isValidBankDetails,
+  isValidGeneralDetails,
+} from '@/lib/helper';
 
 import ButtonFill from '@/components/button/ButtonFill';
 import CommonModal from '@/components/CommonModal';
@@ -36,6 +40,8 @@ export type BankDetailsType = {
   branch: string;
   accountNumber: string;
   IFSCCode: string;
+  PANNumber: string;
+  GSTNumber: string;
 };
 
 const initialGeneralDetailsData = () => {
@@ -55,11 +61,14 @@ const initialBankDetailsData = (): BankDetailsType => {
     branch: '',
     accountNumber: '',
     IFSCCode: '',
+    PANNumber: '',
+    GSTNumber: '',
   };
 };
 
 const Signup = () => {
   const email = localStorage?.getItem('userEmailId');
+  const [logoUrl, setLogoUrl] = useState('');
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [generalDetailsError, setGeneralDetailsError] =
@@ -114,6 +123,9 @@ const Signup = () => {
 
   // will set general details and set error
   const handleGeneralDetailsData = (key: string, value: string | File) => {
+    if (key === 'organizationLogo' && typeof value !== 'string') {
+      fileToBase64Image(value, (value) => setLogoUrl(value));
+    }
     if (generalDetailsError?.[key]) {
       setGeneralDetailsError((pre) => {
         return {
@@ -152,7 +164,7 @@ const Signup = () => {
     <div className={`flex ${outfit.className}`}>
       <CommonModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <UserDetailsModal
-          data={{ ...generalDetailsData, ...bankDetailsData, email }}
+          data={{ ...generalDetailsData, ...bankDetailsData, email, logoUrl }}
           onClose={() => setIsOpen(false)}
           handleStep={() => setStep(1)}
         />

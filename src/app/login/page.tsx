@@ -6,10 +6,13 @@ import { toast } from 'react-toastify';
 import ButtonFill from '@/components/button/ButtonFill';
 import { outfit, oxanium } from '@/components/FontFamily';
 import InputTag from '@/components/inputtag/InputTag';
+import PasswordInput from '@/components/inputtag/PasswordInput';
 import Label from '@/components/Label';
 
 const Login = () => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isPasswordShow, setIsPasswordShow] = useState(false);
   const router = useRouter();
 
   // will check for valid email
@@ -22,6 +25,7 @@ const Login = () => {
     e.preventDefault();
     if (validateEmail(email)) {
       localStorage.setItem('userEmailId', email);
+      setIsPasswordShow(true);
       router.push(`/signup`);
     } else {
       toast.error('email is not valid');
@@ -44,16 +48,33 @@ const Login = () => {
           <div className='mb-[50px] text-[24px] font-normal text-[#5C5C5C] '>
             Lorem Ipsum dolor kindapsium
           </div>
-          <div className='mb-[30px] w-[450px]'>
-            <Label text='Email' />
-            <InputTag
-              placeholder='Enter Email ID'
-              value={email}
-              onChange={(value) => setEmail(value)}
-            />
-          </div>
+          {isPasswordShow ? (
+            <div className='mb-[30px] w-[450px]'>
+              <Label text='Password' />
+              <PasswordInput
+                value={password}
+                placeholder='Enter Password'
+                onChange={(value) => setPassword(value)}
+                width='450px'
+                required={true}
+              />
+              <div className='pt-2 text-right text-base text-[#385B8B]'>
+                <a href=''>Forget password?</a>
+              </div>
+            </div>
+          ) : (
+            <div className='mb-[30px] w-[450px]'>
+              <Label text='Email' />
+              <InputTag
+                placeholder='Enter Email ID'
+                value={email}
+                onChange={(value) => setEmail(value)}
+              />
+            </div>
+          )}
+
           <ButtonFill type='submit' classes='bg-[#385B8B] w-[450px]'>
-            Continue
+            {isPasswordShow ? 'Login' : 'Continue'}
           </ButtonFill>
         </div>
       </form>

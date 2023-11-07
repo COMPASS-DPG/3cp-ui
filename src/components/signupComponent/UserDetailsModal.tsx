@@ -1,6 +1,6 @@
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { SiUdemy } from 'react-icons/si';
 
 import ButtonFill from '@/components/button/ButtonFill';
 import ButtonOutline from '@/components/button/ButtonOutline';
@@ -19,6 +19,9 @@ type DataType = {
   accountNumber: string;
   IFSCCode: string;
   email: string | null;
+  GSTNumber: string;
+  PANNumber: string;
+  logoUrl: string;
 };
 
 type PropType = {
@@ -42,8 +45,16 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
 
   return (
     <div className={`${outfit.className} p-5`}>
-      <div className='flex gap-5'>
-        <SiUdemy size={50} />
+      <div className='flex items-center gap-5'>
+        <div className='rounded-full border border-solid border-gray-300'>
+          <Image
+            src={`data:image/jpeg;base64,${data.logoUrl}`}
+            width={80}
+            height={80}
+            alt='logo'
+            className='rounded-full'
+          />
+        </div>
         <div className='text-[30px] font-semibold text-[#272728]'>
           {data?.organization}
         </div>
@@ -66,7 +77,7 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
             <div className='text-base text-[#272728]'>{data?.phoneNumber}</div>
           </div>
         </div>
-        <div className='pr-[120px]'>
+        <div>
           <div className='mb-[20px] text-base font-semibold text-[#272728] underline'>
             Bank Details
           </div>
@@ -87,6 +98,19 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
           <div className='mb-[10px]'>
             <Label text='IFSC Code' />
             <div className='text-base text-[#272728]'>{data?.IFSCCode}</div>
+          </div>
+        </div>
+        <div>
+          <div className='mb-[20px] text-base font-semibold text-[#272728] underline'>
+            Others Details
+          </div>
+          <div className='mb-[10px]'>
+            <Label text='PAN Number' />
+            <div className='text-base text-[#272728]'>{data?.PANNumber}</div>
+          </div>
+          <div className='mb-[10px]'>
+            <Label text='GST Number' />
+            <div className='text-base text-[#272728]'>{data?.GSTNumber}</div>
           </div>
         </div>
       </div>

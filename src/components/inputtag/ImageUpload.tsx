@@ -4,6 +4,8 @@ import React, { MutableRefObject, useRef } from 'react';
 import { FiUpload } from 'react-icons/fi';
 import { RiDeleteBin5Fill } from 'react-icons/ri';
 
+import { fileToBase64Image } from '@/lib/helper';
+
 type PropType = {
   onChange: (arg: File) => void;
   errorMessage: string;
@@ -27,21 +29,7 @@ const ImageUpload = ({
 
   async function readImage(file: File) {
     onChange(file);
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      const binaryData: string | null | ArrayBuffer | undefined =
-        e?.target?.result;
-
-      if (binaryData !== null && typeof binaryData === 'string') {
-        const base64String = window.btoa(binaryData);
-        handleImage(base64String);
-      }
-    };
-
-    const img = reader.readAsBinaryString(file);
-
-    return img;
+    fileToBase64Image(file, handleImage);
   }
 
   return (

@@ -85,8 +85,13 @@ export const isValidGeneralDetails = (
     );
     flag = false;
   }
-  if (!data?.phoneNumber) {
-    handleGeneralDetailsError('phoneNumber', 'phone number is required!');
+  if (!data?.phoneNumber || data.phoneNumber.length !== 10) {
+    handleGeneralDetailsError(
+      'phoneNumber',
+      !data?.phoneNumber
+        ? 'phone number is required!'
+        : 'phone number is not valid!'
+    );
     flag = false;
   }
   if (!data?.password) {
@@ -127,5 +132,34 @@ export const isValidBankDetails = (
     handleBankDetailsError('IFSCCode', 'IFSC code is required!');
     flag = false;
   }
+  if (!data?.PANNumber) {
+    handleBankDetailsError('PANNumber', 'PAN Number is required!');
+    flag = false;
+  }
+  if (!data?.GSTNumber) {
+    handleBankDetailsError('GSTNumber', 'GST is required!');
+    flag = false;
+  }
   return flag;
+};
+
+export const fileToBase64Image = (
+  file: File,
+  handleImage: (arg: string) => void
+) => {
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const binaryData: string | null | ArrayBuffer | undefined =
+      e?.target?.result;
+
+    if (binaryData !== null && typeof binaryData === 'string') {
+      const base64String = window.btoa(binaryData);
+      handleImage(base64String);
+    }
+  };
+
+  const img = reader.readAsBinaryString(file);
+
+  return img;
 };

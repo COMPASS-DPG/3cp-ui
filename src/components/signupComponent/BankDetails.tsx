@@ -5,6 +5,8 @@ import Label from '@/components/Label';
 
 import { BankDetailsType } from '@/app/signup/page';
 
+import { capitalizeName } from '../capitalizeName';
+
 type KeyType = {
   [key: string]: string;
 };
@@ -23,7 +25,7 @@ const BankDetails = ({ data, onChange, error }: PropType) => {
         <InputTag
           value={data?.bankName}
           placeholder='Enter Bank Name'
-          onChange={(value) => onChange('bankName', value)}
+          onChange={(value) => onChange('bankName', capitalizeName(value))}
           errorMessage={error?.bankName}
         />
       </div>
@@ -53,6 +55,24 @@ const BankDetails = ({ data, onChange, error }: PropType) => {
           placeholder='Enter IFSC Name'
           onChange={(value) => onChange('IFSCCode', value)}
           errorMessage={error?.IFSCCode}
+        />
+      </div>
+      <div>
+        <Label text='PAN Number' />
+        <InputTag
+          value={data?.PANNumber}
+          placeholder='Enter PAN Number'
+          onChange={(value) => onChange('PANNumber', value)}
+          errorMessage={error?.PANNumber}
+        />
+      </div>
+      <div>
+        <Label text='GST' />
+        <InputTag
+          value={data?.GSTNumber}
+          placeholder='Enter GST Number'
+          onChange={(value) => onChange('GSTNumber', value)}
+          errorMessage={error?.GSTNumber}
         />
       </div>
     </>

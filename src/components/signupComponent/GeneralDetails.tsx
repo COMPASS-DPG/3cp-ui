@@ -7,6 +7,8 @@ import Label from '@/components/Label';
 
 import { GeneralDetailsErrorType, GeneralDetailsType } from '@/app/signup/page';
 
+import { capitalizeName } from '../capitalizeName';
+
 type PropType = {
   onChange: (arg: string, arg2: string | File) => void;
   error: GeneralDetailsErrorType;
@@ -20,7 +22,7 @@ const GeneralDetails = ({ data, onChange, error }: PropType) => {
         <Label text='Name' />
         <InputTag
           value={data?.name}
-          onChange={(value) => onChange('name', value)}
+          onChange={(value) => onChange('name', capitalizeName(value))}
           placeholder='Enter Name (of the account moderator)'
           errorMessage={error?.name}
         />
@@ -38,6 +40,7 @@ const GeneralDetails = ({ data, onChange, error }: PropType) => {
         <Label text='Upload Logo of Organization' />
         <FileInput
           value={data?.organizationLogo}
+          accept='image/*'
           onChange={(value) => onChange('organizationLogo', value)}
           errorMessage={error?.organizationLogo}
         />
