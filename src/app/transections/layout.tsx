@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className={`w-screen bg-[#F7F9FC] ${outfit.className}`}>
-      <TopNavbar />
+      <TopNavbar heading='Transections' />
       {children}
     </div>
   );

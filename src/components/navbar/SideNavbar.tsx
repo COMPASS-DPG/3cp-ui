@@ -1,14 +1,30 @@
 'use client';
+import axios from 'axios';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { outfit, oxanium } from '../../components/FontFamily';
-import { MyAccount, MyCourses, Transections } from '../../../public/svg';
-// import NavLink from './NavLink'
+
+import {
+  HalfRectangle,
+  MyAccount,
+  MyCourses,
+  SandClock,
+  Transections,
+} from '~/svg';
 
 const SideNavbar = () => {
-  const pathname = usePathname();
+  const [accountStatus, setAccountStatus] = useState('reject');
 
+  useEffect(() => {
+    axios.get('http://127.0.0.1:3001/user1').then((response) => {
+      const userData = response.data;
+      const status = userData[0].state;
+      setAccountStatus(status);
+    });
+  }, []);
+  const pathname = usePathname();
   return (
     <nav className='sticky top-0 flex h-screen w-[200px] flex-shrink-0 flex-col  items-start gap-[15px]  bg-[#2D496F]'>
       <div className='inline-flex  h-[100px] w-[200px] items-center justify-end pb-4 pt-[30px]'>
@@ -72,6 +88,24 @@ const SideNavbar = () => {
           </div>
         </Link>
       </div>
+
+      {accountStatus === 'pending' && (
+        <div className='mt-4 flex w-full justify-center overflow-hidden'>
+          <div className='relative flex h-[110px] w-[164px] flex-col items-center justify-center rounded-md  bg-white'>
+            <div className='absolute bottom-0 left-0 overflow-hidden rounded-md'>
+              <HalfRectangle width='164px' />
+            </div>
+            <div className='z-10 text-[##FF5824]'>
+              <SandClock width='20px' />
+            </div>
+
+            <p className='z-10 px-2 py-2 text-center text-[16px] font-medium text-[#272728]'>
+              You account is under verification
+            </p>
+          </div>
+        </div>
+      )}
+      {}
     </nav>
   );
 };

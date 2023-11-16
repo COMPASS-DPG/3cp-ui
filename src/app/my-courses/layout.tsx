@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className='h-full w-screen bg-[#F7F9FC]'>
       {/* <TopNavbar menu={'Create Question Bank'} /> */}
-      <TopNavbar />
+      <TopNavbar heading='My Courses' />
       {children}
     </div>
   );
