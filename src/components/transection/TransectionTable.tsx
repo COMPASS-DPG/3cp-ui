@@ -78,13 +78,13 @@ const TransectionTable = () => {
                   <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
                     {user.courseEndDate}
                   </td>
-                  <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
+                  <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
                     {user.credits}
                   </td>
-                  <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
+                  <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
                     {user.enrolledUsers}
                   </td>
-                  <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
+                  <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
                     {user.totalIncome}
                   </td>
                 </tr>
