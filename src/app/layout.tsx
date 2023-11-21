@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import '@/styles/globals.css';
 
+import LayoutWrapper from '@/components/LayoutWrapper';
 // // !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
 // // import '@/styles/colors.css';
-import SideNavbar from '@/components/navbar/SideNavbar';
 
 // import { siteConfig } from '@/constant/config';
 
@@ -57,11 +57,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body>
-        <div className='flex'>
-          <SideNavbar />
-
-          {children}
-        </div>
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
