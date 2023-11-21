@@ -3,7 +3,7 @@ import React from 'react';
 
 import { USER_OPTIONS } from '@/components/SelectOptions';
 
-import { SearchInputType } from '../components/Course/ApprovedCourses';
+import { SearchInputType } from './Course/CourseSection';
 
 type PropType = {
   value: SearchInputType;
@@ -16,7 +16,7 @@ import SearchInput from './inputtag/SearchInput';
 import SelectTag from './inputtag/SelectTag';
 import { SearchIcon } from '../../public/svg';
 
-const SearchUser = ({ value, onChange, handleSearch }: PropType) => {
+const SearchCourse = ({ value, onChange, handleSearch }: PropType) => {
   return (
     <div className='my-7 flex flex-wrap gap-3'>
       <SearchInput
@@ -55,4 +55,4 @@ const SearchUser = ({ value, onChange, handleSearch }: PropType) => {
   );
 };
 
-export default SearchUser;
+export default SearchCourse;

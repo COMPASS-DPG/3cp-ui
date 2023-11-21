@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import CourseItems from '@/components/Course/CourseItems';
 import { outfit } from '@/components/FontFamily';
 
 import { CourseType } from '@/app/my-courses/page';
 
-import { CourseItems } from '../Course';
 import SearchCourses from '../SearchCourses';
 
 import { EmptyBox } from '~/svg';
@@ -18,7 +18,7 @@ const getEmptyValue = () => {
   return { user: '', department: '', language: '' };
 };
 
-const ApprovedCourses = ({
+const CourseSection = ({
   activeComponenet,
   courseList,
 }: {
@@ -68,4 +68,4 @@ const ApprovedCourses = ({
     </div>
   );
 };
-export default ApprovedCourses;
+export default CourseSection;

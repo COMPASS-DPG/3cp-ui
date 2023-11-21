@@ -2,10 +2,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+import CourseSection from '@/components/Course/CourseSection';
 import CoursesNavbar from '@/components/navbar/CoursesNavbar';
 import DontWorryPopUp from '@/components/popUps/DontWorryPopUp';
-
-import { ApprovedCourses } from '../../components/Course';
 
 // const getinitialValule = () => {
 //   return [
@@ -86,30 +85,10 @@ const MyCourses = () => {
       />
 
       <div className='h-full'>
-        {activeComponent === 'approvedSection' && (
-          <ApprovedCourses
-            activeComponenet={activeComponent}
-            courseList={currentCourseList}
-          />
-        )}
-        {activeComponent === 'pendingSection' && (
-          <ApprovedCourses
-            activeComponenet={activeComponent}
-            courseList={currentCourseList}
-          />
-        )}
-        {activeComponent === 'rejectedSection' && (
-          <ApprovedCourses
-            activeComponenet={activeComponent}
-            courseList={currentCourseList}
-          />
-        )}
-        {activeComponent === 'archivedSection' && (
-          <ApprovedCourses
-            activeComponenet={activeComponent}
-            courseList={currentCourseList}
-          />
-        )}
+        <CourseSection
+          activeComponenet={activeComponent}
+          courseList={currentCourseList}
+        />
       </div>
     </div>
   );

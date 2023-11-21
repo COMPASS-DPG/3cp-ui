@@ -30,11 +30,14 @@ const SingleCourse = ({
   const popupRef = useRef(null);
 
   useEffect(() => {
-    const closeDropDown = (e) => {
+    const closeDropDown = (e: MouseEvent) => {
+      const targetNode = e.target as Node | null;
+
       if (
         showPopUp &&
         popupRef.current &&
-        !(popupRef.current as HTMLElement).contains(e.target)
+        targetNode &&
+        !(popupRef.current as HTMLElement).contains(targetNode)
       ) {
         setShowPopUp(false);
       }
