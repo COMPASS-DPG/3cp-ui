@@ -22,7 +22,7 @@ type DataType = {
   branchName: string;
   accNo: string;
   IFSC: string;
-  email: string | null;
+  email: string;
   GSTnumber: string;
   PANnumber: string;
   logoUrl: string;
@@ -34,7 +34,7 @@ type PropType = {
   handleStep: () => void;
 };
 
-type RequestType = {
+export type SignupPropType = {
   name: string;
   email: string;
   orgLogo: string;
@@ -55,9 +55,9 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
   const router = useRouter();
   // const { handleSetProviderId } = useAuthContext()
 
-  const request: RequestType = {
-    name: data.name,
-    email: data.email,
+  const request: SignupPropType = {
+    name: data?.name,
+    email: data?.email,
     orgLogo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png',
     orgName: data.orgName,

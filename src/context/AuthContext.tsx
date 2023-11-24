@@ -12,21 +12,6 @@ import { toast } from 'react-toastify';
 import { userType } from '@/app/my-account/page';
 import { getProviderProfileDetails } from '@/services/userServices';
 
-// import { levelsWithQuestionType, OptionType } from '@/app/propTypes';
-// import { getCompetency } from '@/services/getCompetency';
-
-// interface WpcasContextValue {
-//   competencyArray: OptionType[];
-//   levelsWithQuestion: levelsWithQuestionType[];
-//   setLevelsWithQuestion: (levels: levelsWithQuestionType[]) => void;
-//   currentCompetency: number | null;
-//   setCurrentCompetency: (are: number | null) => void;
-//   viewQuestions: boolean;
-//   setViewQuestions: (val: boolean) => void;
-//   currentLevelsAnsQuestions: levelsWithQuestionType[];
-//   setCurrentLevelsAndQuestions: (levels: levelsWithQuestionType[]) => void;
-// }
-
 const userProfileInitData = {
   name: '',
   orgLogo: '',

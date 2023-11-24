@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { SignupPropType } from '@/components/signupComponent/UserDetailsModal';
+
 type LoginPayloadType = {
   email: string;
   password: string;
@@ -13,30 +15,13 @@ export const userLogin = async (payload: LoginPayloadType) => {
   return data.data;
 };
 
-type SignupPayloadType = {
-  name: string;
-  orgLogo: string;
-  orgName: string;
-  phone: string;
-  email: string;
-  password: string;
-  paymentInfo: {
-    bankName: string;
-    branchName: string;
-    accNo: number;
-    IFSC: string;
-    PANnumber: string;
-    GSTnumber: string;
-  };
-};
-
 type ResetPasswordType = {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
 };
 
-export const userSignup = async (payload: SignupPayloadType) => {
+export const userSignup = async (payload: SignupPropType) => {
   const data = await axios.post(
     'http://localhost:3000/api/provider/signup',
     payload
