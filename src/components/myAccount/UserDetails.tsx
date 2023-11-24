@@ -13,15 +13,15 @@ const UserDetails = ({ user }: { user: userType }) => {
           <p className='text-[14px] font-medium text-[#6F747E]'>
             Name of moderator
           </p>
-          <p className='text-[16px] '>{user.name}</p>
+          <p className='text-[16px] '>{user?.name}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>Email Id</p>
-          <p className='text-[16px] '>{user.email}</p>
+          <p className='text-[16px] '>{user?.email}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>Phone</p>
-          <p className='text-[16px] '>{user.Phone}</p>
+          <p className='text-[16px] '>{user?.phone}</p>
         </div>
       </div>
       {/* center */}
@@ -32,21 +32,21 @@ const UserDetails = ({ user }: { user: userType }) => {
         <div className='h-[1px] bg-[#B3B3B3]'></div>{' '}
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>Bank</p>
-          <p className='text-[16px] '>{user.bank}</p>
+          <p className='text-[16px] '>{user?.paymentInfo?.bankName}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>Branch</p>
-          <p className='text-[16px] '>{user.branch}</p>
+          <p className='text-[16px] '>{user?.paymentInfo?.branchName}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>
             Account Number
           </p>
-          <p className='text-[16px] '>{user.accountNumber}</p>
+          <p className='text-[16px] '>{user?.paymentInfo?.accNo}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>IFSC Code</p>
-          <p className='text-[16px] '>{user.branch}</p>
+          <p className='text-[16px] '>{user?.paymentInfo?.IFSC}</p>
         </div>
       </div>
       {/* end */}
@@ -54,12 +54,14 @@ const UserDetails = ({ user }: { user: userType }) => {
         <p className='pb-2 text-[18px]  font-semibold leading-6'>Others</p>
         <div className='h-[1px] bg-[#B3B3B3]'></div>{' '}
         <div className=' my-4 flex flex-col gap-1'>
-          <p className='text-[14px] font-medium text-[#6F747E]'>PAN Number</p>
+          <p className='text-[14px] font-medium text-[#6F747E]'>
+            {user.paymentInfo.PANnumber}
+          </p>
           <p className='text-[16px] '>AVDG5161121P</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>GST Number</p>
-          <p className='text-[16px] '>5615495226559</p>
+          <p className='text-[16px] '>{user.paymentInfo.GSTnumber}</p>
         </div>
       </div>
     </div>

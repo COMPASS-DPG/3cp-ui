@@ -32,7 +32,7 @@ const AddCompetencyAndLevel = ({
 
   return (
     <div className='my-[15px] flex items-end gap-4'>
-      <div className='grid w-[920px] grid-cols-1 gap-4  lg:grid-cols-2'>
+      <div className='grid w-[1000px] grid-cols-1 gap-4  lg:grid-cols-2'>
         <div>
           <Label text='Competency' />
           <SelectTag
@@ -43,6 +43,7 @@ const AddCompetencyAndLevel = ({
             value={data?.competency}
             paddingY='2px'
           />
+          {/* <Image src='https://udemy.com/courses/pxUhfMd/images/cover1.jpg' alt='img' width={200} height={200}/> */}
         </div>
         <div>
           <Label text='Levels' />
@@ -59,7 +60,7 @@ const AddCompetencyAndLevel = ({
                 placeholder=''
                 value={data?.levels}
                 paddingY='2px'
-                isDisabled={!data.competency}
+                isDisabled={!data?.competency}
               />
             </div>
             {length >= 2 && (

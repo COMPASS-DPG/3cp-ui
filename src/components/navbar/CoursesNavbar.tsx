@@ -1,6 +1,8 @@
 'use client';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+
+import { useAuthContext } from '@/context/AuthContext';
 
 import ButtonFill from '../button/ButtonFill';
 import { outfit } from '../FontFamily';
@@ -17,19 +19,12 @@ const CoursesNavbar = ({
   handlePopUp: (value: boolean) => void;
   filterCourse: (value: string) => void;
 }) => {
-  const [accountStatus, setAccountStatus] = useState('reject');
-
-  useEffect(() => {
-    axios.get('http://127.0.0.1:3001/user1').then((response) => {
-      const userData = response.data;
-      const status = userData[0].state;
-      setAccountStatus(status);
-    });
-  }, []);
+  const { userProfileData } = useAuthContext();
+  const router = useRouter();
 
   const handleAddNewCourseButton = () => {
-    if (accountStatus === 'verified') {
-      //do nothing
+    if (userProfileData?.status === 'VERIFIED') {
+      router.push('/my-courses/add-new-course');
     } else {
       handlePopUp(true);
     }
@@ -37,15 +32,7 @@ const CoursesNavbar = ({
 
   const handleClick = (type: string) => {
     handleActiveComponent(type);
-    if (type === 'approvedSection') {
-      filterCourse('verified');
-    } else if (type === 'pendingSection') {
-      filterCourse('pending');
-    } else if (type === 'rejectedSection') {
-      filterCourse('rejected');
-    } else {
-      filterCourse('archived');
-    }
+    filterCourse(type);
   };
   return (
     <div
@@ -54,71 +41,65 @@ const CoursesNavbar = ({
       <div className='flex  gap-5'>
         <div
           className={`flex justify-center px-2.5 pb-4 pt-2.5 align-middle ${
-            activeComponent === 'approvedSection'
-              ? 'border-b-[3px] border-black'
-              : ''
+            activeComponent === 'ACCEPTED' ? 'border-b-[3px] border-black' : ''
           } `}
         >
           <nav
             className={`cursor-pointer text-[20px] font-semibold  ${
-              activeComponent == 'approvedSection'
+              activeComponent == 'ACCEPTED'
                 ? 'text-[#272728]'
                 : 'text-[#65758C]'
             }`}
-            onClick={() => handleClick('approvedSection')}
+            onClick={() => handleClick('ACCEPTED')}
           >
             Approved Courses
           </nav>
         </div>
         <div
           className={`flex justify-center px-2.5 pb-4 pt-2.5 align-middle ${
-            activeComponent == 'pendingSection' && 'border-b-[3px] border-black'
+            activeComponent == 'PENDING' && 'border-b-[3px] border-black'
           } `}
         >
           {' '}
           <nav
             className={`cursor-pointer text-[20px] font-semibold  ${
-              activeComponent == 'pendingSection'
-                ? 'text-[#272728]'
-                : 'text-[#65758C]'
+              activeComponent == 'PENDING' ? 'text-[#272728]' : 'text-[#65758C]'
             }`}
-            onClick={() => handleClick('pendingSection')}
+            onClick={() => handleClick('PENDING')}
           >
             Pending For Approval
           </nav>
         </div>
         <div
           className={`flex justify-center px-2.5 pb-4 pt-2.5 align-middle ${
-            activeComponent == 'rejectedSection' &&
-            'border-b-[3px] border-black'
+            activeComponent == 'REJECTED' && 'border-b-[3px] border-black'
           } `}
         >
           {' '}
           <nav
             className={`cursor-pointer text-[20px] font-semibold  ${
-              activeComponent == 'rejectedSection'
+              activeComponent == 'REJECTED'
                 ? 'text-[#272728]'
                 : 'text-[#65758C]'
             }`}
-            onClick={() => handleClick('rejectedSection')}
+            onClick={() => handleClick('REJECTED')}
           >
             Rejected Course
           </nav>
         </div>
         <div
           className={`flex justify-center px-2.5 pb-4 pt-2.5 align-middle ${
-            activeComponent == 'archivedSection' &&
-            'border-b-[3px] border-black'
+            activeComponent == 'ARCHIVED' && 'border-b-[3px] border-black'
           } `}
         >
           {' '}
           <nav
             className={`cursor-pointer text-[20px] font-semibold  ${
-              activeComponent == 'archivedSection'
+              activeComponent == 'ARCHIVED'
                 ? 'text-[#272728]'
                 : 'text-[#65758C]'
             }`}
-            onClick={() => handleClick('archivedSection')}
+            onClick={() => handleClick('ARCHIVED')}
           >
             Archived
           </nav>

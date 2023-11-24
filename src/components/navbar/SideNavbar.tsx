@@ -1,8 +1,8 @@
 'use client';
-import axios from 'axios';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+
+import { useAuthContext } from '@/context/AuthContext';
 
 import { outfit, oxanium } from '../../components/FontFamily';
 
@@ -15,15 +15,8 @@ import {
 } from '~/svg';
 
 const SideNavbar = () => {
-  const [accountStatus, setAccountStatus] = useState('reject');
+  const { userProfileData } = useAuthContext();
 
-  useEffect(() => {
-    axios.get('http://127.0.0.1:3001/user1').then((response) => {
-      const userData = response.data;
-      const status = userData[0].state;
-      setAccountStatus(status);
-    });
-  }, []);
   const pathname = usePathname();
   return (
     <nav className='sticky top-0 flex h-screen w-[200px] flex-shrink-0 flex-col  items-start gap-[15px]  bg-[#2D496F]'>
@@ -89,7 +82,7 @@ const SideNavbar = () => {
         </Link>
       </div>
 
-      {accountStatus === 'pending' && (
+      {userProfileData?.status === 'PENDING' && (
         <div className='mt-4 flex w-full justify-center overflow-hidden'>
           <div className='relative flex h-[110px] w-[164px] flex-col items-center justify-center rounded-md  bg-white'>
             <div className='absolute bottom-0 left-0 overflow-hidden rounded-md'>
@@ -105,7 +98,6 @@ const SideNavbar = () => {
           </div>
         </div>
       )}
-      {}
     </nav>
   );
 };

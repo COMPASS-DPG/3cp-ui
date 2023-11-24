@@ -17,9 +17,9 @@ import UserDetailsModal from '@/components/signupComponent/UserDetailsModal';
 
 export type GeneralDetailsType = {
   name: string;
-  organization: string;
-  organizationLogo: string | File;
-  phoneNumber: string;
+  orgName: string;
+  orgLogo: string | File;
+  phone: string;
   password: string;
   confirmPassword: string;
 };
@@ -27,9 +27,9 @@ export type GeneralDetailsType = {
 export type GeneralDetailsErrorType = {
   [key: string]: string;
   name: string;
-  organization: string;
-  organizationLogo: string;
-  phoneNumber: string;
+  orgName: string;
+  orgLogo: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 };
@@ -37,19 +37,19 @@ export type GeneralDetailsErrorType = {
 export type BankDetailsType = {
   [key: string]: string;
   bankName: string;
-  branch: string;
-  accountNumber: string;
-  IFSCCode: string;
-  PANNumber: string;
-  GSTNumber: string;
+  branchName: string;
+  accNo: string;
+  IFSC: string;
+  PANnumber: string;
+  GSTnumber: string;
 };
 
 const initialGeneralDetailsData = () => {
   return {
     name: '',
-    organization: '',
-    organizationLogo: '',
-    phoneNumber: '',
+    orgName: '',
+    orgLogo: '',
+    phone: '',
     password: '',
     confirmPassword: '',
   };
@@ -58,11 +58,11 @@ const initialGeneralDetailsData = () => {
 const initialBankDetailsData = (): BankDetailsType => {
   return {
     bankName: '',
-    branch: '',
-    accountNumber: '',
-    IFSCCode: '',
-    PANNumber: '',
-    GSTNumber: '',
+    branchName: '',
+    accNo: '',
+    IFSC: '',
+    PANnumber: '',
+    GSTnumber: '',
   };
 };
 
@@ -123,7 +123,7 @@ const Signup = () => {
 
   // will set general details and set error
   const handleGeneralDetailsData = (key: string, value: string | File) => {
-    if (key === 'organizationLogo' && typeof value !== 'string') {
+    if (key === 'orgLogo' && typeof value !== 'string') {
       fileToBase64Image(value, (value) => setLogoUrl(value));
     }
     if (generalDetailsError?.[key]) {

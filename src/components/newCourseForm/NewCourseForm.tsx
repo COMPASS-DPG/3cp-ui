@@ -31,56 +31,56 @@ const NewCourseForm = ({
 }: PropType) => {
   return (
     <>
-      <div className='flex w-[80%] flex-wrap justify-between gap-4'>
+      <div className='flex flex-wrap justify-between gap-4'>
         <div className='w-[100%] lg:w-[49%]'>
           <div className=' my-[15px]'>
             <Label text='Course Name' />
             <InputTag
-              onChange={(value) => onChange('courseName', value)}
-              value={data.courseName}
+              onChange={(value) => onChange('title', value)}
+              value={data.title}
               placeholder='Enter Course Name'
-              errorMessage={error?.courseName}
+              errorMessage={error?.title}
             />
           </div>
           <div className='mb-[15px]'>
             <Label text='Overview' />
             <TextAreaTag
-              value={data.overview}
-              onChange={(value) => onChange('overview', value)}
+              value={data.description}
+              onChange={(value) => onChange('description', value)}
               placeholder='Enter overview'
-              errorMessage={error?.overview}
+              errorMessage={error?.description}
             />
           </div>
         </div>
         <div className=' my-[15px] w-[100%] lg:w-[49%]'>
           <Label text='Course Image' />
           <ImageUpload
-            errorMessage={error?.courseImage}
-            onChange={(value) => onChange('courseImage', value)}
-            value={data?.courseImage}
+            errorMessage={error?.imgLink}
+            onChange={(value) => onChange('imgLink', value)}
+            value={data?.imgLink}
             image={image}
             handleImage={handleImage}
           />
         </div>
       </div>
-      <div className='grid w-[80%] grid-cols-1 gap-4 lg:grid-cols-2'>
+      <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
         <div>
           <Label text='Course Language' />
           <MultiSelectTag
-            errorMessage={error?.courseLanguages}
-            onChange={(value) => onChange('courseLanguages', value)}
+            errorMessage={error?.language}
+            onChange={(value) => onChange('language', value)}
             options={languageOptions}
             placeholder=''
-            value={data?.courseLanguages}
+            value={data?.language}
             paddingY='2px'
           />
         </div>
         <div>
           <Label text='Set Course Credit' />
           <CourseCreditInput
-            value={data?.courseCredit}
-            errorMessage={error?.courseCredit}
-            onChange={(value) => onChange('courseCredit', value)}
+            value={data?.credits}
+            errorMessage={error?.credits}
+            onChange={(value) => onChange('credits', value)}
           />
         </div>
         <div>

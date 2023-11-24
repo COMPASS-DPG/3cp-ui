@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import CourseItems from '@/components/Course/CourseItems';
+import NoCoursesAdded from '@/components/Course/NoCoursesAdded';
 import { outfit } from '@/components/FontFamily';
 
 import { CourseType } from '@/app/my-courses/page';
 
 import SearchCourses from '../SearchCourses';
-
-import { EmptyBox } from '~/svg';
 
 export type SearchInputType = {
   user: string;
@@ -21,12 +20,13 @@ const getEmptyValue = () => {
 const CourseSection = ({
   activeComponenet,
   courseList,
+  handleFetchData,
 }: {
   activeComponenet: string;
   courseList: CourseType[];
+  handleFetchData: () => void;
 }) => {
   const [input, setInput] = useState<SearchInputType>(getEmptyValue());
-  const [filterCourse, setFilterCourse] = useState<CourseType[]>([]);
   const handleSearch = () => {
     //   // filter based on the  input
     //   //filter from above courseList and set in present course list
@@ -34,12 +34,9 @@ const CourseSection = ({
     //   // setFilterCourse([]);
   };
 
-  useEffect(() => {
-    setFilterCourse(courseList);
-  }, [courseList]);
   return (
     <div className={`mx-7 ${outfit.className}`}>
-      {filterCourse.length !== 0 ? (
+      {courseList.length !== 0 ? (
         <div>
           <SearchCourses
             value={input}
@@ -48,20 +45,16 @@ const CourseSection = ({
           />
 
           <p className='my-2 text-[18px] font-medium leading-5 text-[#65758C]'>
-            {courseList.length} Courses
+            {courseList?.length} Courses
           </p>
           <CourseItems
+            handleFetchData={handleFetchData}
             activeComponenet={activeComponenet}
-            courseList={filterCourse}
+            courseList={courseList}
           />
         </div>
       ) : (
-        <div className='mx-7  flex h-[400px] flex-col items-center justify-center gap-2'>
-          <EmptyBox width='160px' />
-          <p className='font-outfit text-center text-base font-normal text-[#272728]'>
-            No courses added yet!
-          </p>
-        </div>
+        <NoCoursesAdded />
       )}
 
       {/* in case of no item show below item */}

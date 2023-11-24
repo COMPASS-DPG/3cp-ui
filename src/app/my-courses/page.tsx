@@ -1,10 +1,13 @@
 'use client';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import CourseSection from '@/components/Course/CourseSection';
 import CoursesNavbar from '@/components/navbar/CoursesNavbar';
 import DontWorryPopUp from '@/components/popUps/DontWorryPopUp';
+
+import { useAuthContext } from '@/context/AuthContext';
+import { getCourseByProviderId } from '@/services/userServices';
 
 // const getinitialValule = () => {
 //   return [
@@ -27,45 +30,72 @@ import DontWorryPopUp from '@/components/popUps/DontWorryPopUp';
 //   ];
 // };
 
+type CompetencyType = {
+  [key: number | string]: string[];
+};
+
 export type CourseType = {
-  courseid: string;
-  courseName: string;
+  id: string;
+  providerId: string;
+  title: string;
+  description: string;
+  courseLink: string;
+  imgLink: string;
+  credits: number;
+  startDate: Date | null;
+  endDate: Date | null;
   levels: string[];
   author: string;
-  languages: string[];
-  credit: number;
+  status: 'UNARCHIVED' | 'ARCHIVED';
+  language: string[];
   rating: number;
-  status: string;
-  archived: boolean;
+  verificationStatus: 'REJECTED' | 'ACCEPTED' | 'PENDING';
+  rejectionReason: string;
+  competency: CompetencyType;
+  avgRating: number | string | null;
 };
 
 const MyCourses = () => {
-  const [activeComponent, setActiveComponent] =
-    useState<string>('approvedSection');
+  const { providerId, activeComponent, setActiveComponent } = useAuthContext();
+
+  const [fetchData, setFetchData] = useState(true);
+
   const [activePopUp, setActivePopUp] = useState(false);
   const [courseList, setCourseList] = useState<CourseType[]>([]);
   const [currentCourseList, setCurrentCourseList] = useState<CourseType[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get('http://127.0.0.1:3001/user1');
-      const CompleteList = response.data[0].courses;
-      const filteredResult = CompleteList.filter(
-        (course: CourseType) => course.status === 'verified'
-      );
-      setCurrentCourseList(filteredResult); // Store the filtered data in the state
-      setCourseList(CompleteList);
-    };
-
-    fetchData();
-  }, []);
+    if (fetchData) {
+      (async () => {
+        try {
+          const data = await getCourseByProviderId(providerId);
+          const filteredResult = data.filter(
+            (course: CourseType) =>
+              course?.verificationStatus === activeComponent &&
+              course.status === 'UNARCHIVED'
+          );
+          setCurrentCourseList(filteredResult); // Store the filtered data in the state
+          setCourseList(data);
+          setFetchData(false);
+        } catch (error) {
+          // Handle any errors that occur during the API call
+          // eslint-disable-next-line no-console
+          console.error('API call error:', error);
+          toast.error('something went wrong');
+        }
+      })();
+    }
+  }, [providerId, setFetchData, fetchData, activeComponent]);
 
   const filterCourse = (courseType: string) => {
     const filteredResult = courseList.filter((course: CourseType) => {
-      if (courseType === 'archived') {
-        return course.archived === true;
+      if (courseType === 'ARCHIVED') {
+        return course.status === 'ARCHIVED';
       } else {
-        return course.status === courseType;
+        return (
+          course.verificationStatus === courseType &&
+          course.status === 'UNARCHIVED'
+        );
       }
     });
     setCurrentCourseList(filteredResult);
@@ -86,6 +116,7 @@ const MyCourses = () => {
 
       <div className='h-full'>
         <CourseSection
+          handleFetchData={() => setFetchData(true)}
           activeComponenet={activeComponent}
           courseList={currentCourseList}
         />

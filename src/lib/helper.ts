@@ -1,5 +1,8 @@
+import { ResetPasswordDataType } from '@/components/popUps/ResetPassword';
+
 import { NewCourseFormType } from '@/app/add-new-course/page';
-import { BankDetailsType, GeneralDetailsType } from '@/app/signup/page';
+import { userType } from '@/app/my-account/page';
+import { BankDetailsType, GeneralDetailsType } from '@/app/sign-up/page';
 
 export function getFromLocalStorage(key: string): string | null {
   if (typeof window !== 'undefined') {
@@ -21,27 +24,27 @@ export const isValidFormData = (
   handleGeneralDetailsError: (arg1: string, arg2: string) => void
 ) => {
   let flag = true;
-  if (!data.courseName) {
-    handleGeneralDetailsError('courseName', 'course name is required!');
+  if (!data?.title) {
+    handleGeneralDetailsError('title', 'course name is required!');
     flag = false;
   }
-  if (!data.overview) {
-    handleGeneralDetailsError('overview', 'overview is required!');
+  if (!data?.description) {
+    handleGeneralDetailsError('description', 'overview is required!');
     flag = false;
   }
-  if (!data.courseLanguages || data.courseLanguages.length == 0) {
+  if (!data?.language || data?.language.length == 0) {
     handleGeneralDetailsError(
       'courseLanguages',
       'course languages is required!'
     );
     flag = false;
   }
-  if (!data?.courseCredit) {
-    handleGeneralDetailsError('courseCredit', 'course credit is required!');
+  if (!data?.credits) {
+    handleGeneralDetailsError('credits', 'course credit is required!');
     flag = false;
   }
-  if (!data?.courseImage) {
-    handleGeneralDetailsError('courseImage', 'course image is required!');
+  if (!data?.imgLink) {
+    handleGeneralDetailsError('imgLink', 'course image is required!');
     flag = false;
   }
   if (!data?.courseLink) {
@@ -69,8 +72,73 @@ export const isValidPassword = (password: string) => {
     password.length >= 8 &&
     /[A-Z]/.test(password) &&
     /[a-z]/.test(password) &&
+    /\d/.test(password) &&
     /[!@#$%^&*]/.test(password)
   );
+};
+
+export const validatePassword = (
+  password: string,
+  setPasswordError: (arg: string) => void
+) => {
+  if (!password || !isValidPassword(password)) {
+    !password
+      ? setPasswordError('please enter password')
+      : setPasswordError(
+          'Password must be 8 characters or longer with at least one uppercase, one lowercase,one number, and one special character'
+        );
+    return false;
+  } else {
+    return true;
+  }
+};
+
+export const validateResetPasswordForm = (
+  data: ResetPasswordDataType,
+  handleError: (arg1: string, arg2: string) => void
+) => {
+  let flag = true;
+  if (!data?.currentPassword || !isValidPassword(data?.currentPassword)) {
+    const errorMessage = !data?.currentPassword
+      ? 'password is required!'
+      : 'Password must be 8 characters or longer with at least one uppercase, one lowercase,one number, and one special character';
+    handleError('currentPassword', errorMessage);
+    flag = false;
+  }
+  if (!data?.newPassword || !isValidPassword(data?.newPassword)) {
+    const errorMessage = !data?.newPassword
+      ? 'password is required!'
+      : 'Password must be 8 characters or longer with at least one uppercase, one lowercase,one number, and one special character';
+    handleError('newPassword', errorMessage);
+    flag = false;
+  }
+  if (!data?.confirmPassword || data.newPassword !== data.confirmPassword) {
+    const errorMessage = !data?.confirmPassword
+      ? 'confirm password is required!'
+      : 'password and confirm password must be same';
+    handleError('confirmPassword', errorMessage);
+    flag = false;
+  }
+  return flag;
+};
+
+// will check for valid email
+export const validateEmail = (
+  email: string,
+  setEmailError: (arg: string) => void
+) => {
+  const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  if (email === '') {
+    setEmailError('please enter email!');
+    return false;
+  } else {
+    if (regex.test(email)) {
+      return true;
+    } else {
+      setEmailError('email is not valid!');
+      return false;
+    }
+  }
 };
 
 // will check for general details data and set error
@@ -83,30 +151,25 @@ export const isValidGeneralDetails = (
     handleGeneralDetailsError('name', 'name is required!');
     flag = false;
   }
-  if (!data.organization) {
-    handleGeneralDetailsError('organization', 'organization is required!');
+  if (!data.orgName) {
+    handleGeneralDetailsError('orgName', 'organization is required!');
     flag = false;
   }
-  if (!data.organizationLogo) {
-    handleGeneralDetailsError(
-      'organizationLogo',
-      'organization logo is required!'
-    );
+  if (!data.orgLogo) {
+    handleGeneralDetailsError('orgLogo', 'organization logo is required!');
     flag = false;
   }
-  if (!data?.phoneNumber || data.phoneNumber.length !== 10) {
+  if (!data?.phone || data.phone.length !== 10) {
     handleGeneralDetailsError(
-      'phoneNumber',
-      !data?.phoneNumber
-        ? 'phone number is required!'
-        : 'phone number is not valid!'
+      'phone',
+      !data?.phone ? 'phone number is required!' : 'phone number is not valid!'
     );
     flag = false;
   }
   if (!data?.password || !isValidPassword(data?.password)) {
     const errorMessage = !data?.password
       ? 'password is required!'
-      : 'Password must be 8 characters or longer with at least one uppercase, one lowercase, and one special character';
+      : 'Password must be 8 characters or longer with at least one uppercase, one lowercase,one number, and one special character';
     handleGeneralDetailsError('password', errorMessage);
     flag = false;
   }
@@ -131,25 +194,63 @@ export const isValidBankDetails = (
     handleBankDetailsError('bankName', 'bank name is required!');
     flag = false;
   }
-  if (!data.branch) {
-    handleBankDetailsError('branch', 'branch name is required!');
+  if (!data.branchName) {
+    handleBankDetailsError('branchName', 'branch name is required!');
 
     flag = false;
   }
-  if (!data.accountNumber) {
-    handleBankDetailsError('accountNumber', 'account number logo is required!');
+  if (!data.accNo) {
+    handleBankDetailsError('accNo', 'account number is required!');
     flag = false;
   }
-  if (!data?.IFSCCode) {
-    handleBankDetailsError('IFSCCode', 'IFSC code is required!');
+  if (!data?.IFSC) {
+    handleBankDetailsError('IFSC', 'IFSC code is required!');
     flag = false;
   }
-  if (!data?.PANNumber) {
-    handleBankDetailsError('PANNumber', 'PAN Number is required!');
+  if (!data?.PANnumber) {
+    handleBankDetailsError('PANnumber', 'PAN Number is required!');
     flag = false;
   }
-  if (!data?.GSTNumber) {
-    handleBankDetailsError('GSTNumber', 'GST is required!');
+  if (!data?.GSTnumber) {
+    handleBankDetailsError('GSTnumber', 'GST is required!');
+    flag = false;
+  }
+  return flag;
+};
+
+// will check for bank details data and set error
+export const isValidUserProfileDetails = (
+  data: userType,
+  handleBankDetailsError: (arg1: string, arg2: string) => void
+) => {
+  let flag = true;
+  if (!data?.name) {
+    handleBankDetailsError('name', 'name is required!');
+    flag = false;
+  }
+  if (!data?.paymentInfo?.bankName) {
+    handleBankDetailsError('bankName', 'bank name is required!');
+    flag = false;
+  }
+  if (!data?.paymentInfo?.branchName) {
+    handleBankDetailsError('branchName', 'branch name is required!');
+
+    flag = false;
+  }
+  if (!data.paymentInfo?.accNo) {
+    handleBankDetailsError('accNo', 'account number is required!');
+    flag = false;
+  }
+  if (!data?.paymentInfo?.IFSC) {
+    handleBankDetailsError('IFSC', 'IFSC code is required!');
+    flag = false;
+  }
+  if (!data?.paymentInfo?.PANnumber) {
+    handleBankDetailsError('PANnumber', 'PAN Number is required!');
+    flag = false;
+  }
+  if (!data?.paymentInfo?.GSTnumber) {
+    handleBankDetailsError('GSTnumber', 'GST is required!');
     flag = false;
   }
   return flag;

@@ -5,7 +5,10 @@ import InputTag from '@/components/inputtag/InputTag';
 import PasswordInput from '@/components/inputtag/PasswordInput';
 import Label from '@/components/Label';
 
-import { GeneralDetailsErrorType, GeneralDetailsType } from '@/app/signup/page';
+import {
+  GeneralDetailsErrorType,
+  GeneralDetailsType,
+} from '@/app/sign-up/page';
 
 import { capitalizeName } from '../capitalizeName';
 
@@ -30,29 +33,29 @@ const GeneralDetails = ({ data, onChange, error }: PropType) => {
       <div>
         <Label text='Organization' />
         <InputTag
-          value={data.organization}
-          onChange={(value) => onChange('organization', value)}
+          value={data.orgName}
+          onChange={(value) => onChange('orgName', value)}
           placeholder='Enter Name (of the account moderator)'
-          errorMessage={error?.organization}
+          errorMessage={error?.orgName}
         />
       </div>
       <div>
         <Label text='Upload Logo of Organization' />
         <FileInput
-          value={data?.organizationLogo}
+          value={data?.orgLogo}
           accept='image/*'
-          onChange={(value) => onChange('organizationLogo', value)}
-          errorMessage={error?.organizationLogo}
+          onChange={(value) => onChange('orgLogo', value)}
+          errorMessage={error?.orgLogo}
         />
       </div>
       <div>
         <Label text='Phone' />
         <InputTag
-          value={data?.phoneNumber}
+          value={data?.phone}
           type='number'
-          onChange={(value) => onChange('phoneNumber', value)}
+          onChange={(value) => onChange('phone', value)}
           placeholder='Enter Phone Number (of the account moderator)'
-          errorMessage={error?.phoneNumber}
+          errorMessage={error?.phone}
         />
       </div>
       <div>

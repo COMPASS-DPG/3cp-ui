@@ -1,4 +1,5 @@
 'use client';
+// import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 import { isValidFormData } from '@/lib/helper';
@@ -73,11 +74,13 @@ const initialData = () => {
 };
 
 const AddNewCourse = () => {
+  // const pathname = usePathname()
   const [formData, setFormData] = useState<NewCourseFormType>(initialData());
   const [error, setError] = useState<NewCourseFormErrorType>(initialError());
   const [image, setImage] = useState('');
   const [preview, setPreview] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
+  // const isEdit = pathname.includes('edit-new-course');
 
   const handleFormError = (key: string, value: string) => {
     setError((pre) => {
@@ -114,7 +117,7 @@ const AddNewCourse = () => {
     setFormData((pre) => {
       return {
         ...pre,
-        competencyAndLevels: newData,
+        competency: newData,
       };
     });
   };
@@ -123,7 +126,7 @@ const AddNewCourse = () => {
     setFormData((pre) => {
       return {
         ...pre,
-        competencyAndLevels: [...pre.competency, data],
+        competency: [...pre.competency, data],
       };
     });
   };
@@ -138,7 +141,7 @@ const AddNewCourse = () => {
     setFormData((pre) => {
       return {
         ...pre,
-        competencyAndLevels: newData,
+        competency: newData,
       };
     });
   };
@@ -152,65 +155,67 @@ const AddNewCourse = () => {
 
   return (
     <div
-      className={`mt-[20px] rounded-lg bg-[#ffF] p-5 text-[14px] text-[#6F747E] ${outfit.className}`}
+      className={`mx-[30px] mt-[20px] flex  justify-center rounded-lg bg-[#ffF] p-[30px] text-[14px] text-[#6F747E] ${outfit.className}`}
     >
-      {/* modal to show course send for admin approval success */}
-      <CommonModal
-        isOpen={successPopup}
-        onClose={() => setSuccessPopup(false)}
-        isCrossShow={false}
-      >
-        <CourseAddSuccessPopup onClose={() => setSuccessPopup(false)} />
-      </CommonModal>
-
-      {/* modal to show preview of form */}
-      <CommonModal
-        isOpen={preview}
-        onClose={() => setPreview(false)}
-        isCrossShow={false}
-      >
-        <CourseCard
-          image={image}
-          data={formData}
-          onClose={() => setPreview(false)}
-          handleSuccessModal={() => setSuccessPopup(true)}
-        />
-      </CommonModal>
-      <p className='text-sm text-[#ED2B2B]  '>(All fields are mandatory)</p>
-      <NewCourseForm
-        image={image}
-        handleImage={(value) => setImage(value)}
-        error={error}
-        data={formData}
-        onChange={handleFormData}
-      />
-      <div className='mt-5 text-base font-semibold text-[#272728]'>
-        Add Competencies & Levels
-      </div>
-      <div className='w-[80%] border-b border-solid border-[#D8D8D8]'></div>
-      {formData?.competency?.map((data, ind, totalData) => {
-        return (
-          <AddCompetencyAndLevel
-            key={ind}
-            index={ind}
-            length={totalData?.length}
-            data={data}
-            onChange={(data) => handleCompetencyAndLevelsData(data, ind)}
-            handleDelete={() => handleDelete(ind)}
-            handleAdd={() => handleAddValue({ competency: '', levels: [] })}
-          />
-        );
-      })}
-      <div className='mt-[60px] flex w-[80%] justify-end gap-5'>
-        <ButtonOutline
-          classes='border-[#385B8B] text-[#385B8B] w-[180px]'
-          onClick={() => null}
+      <div className='w-[90%]'>
+        {/* modal to show course send for admin approval success */}
+        <CommonModal
+          isOpen={successPopup}
+          onClose={() => setSuccessPopup(false)}
+          isCrossShow={false}
         >
-          Cancel
-        </ButtonOutline>
-        <ButtonFill onClick={handleSubmit} classes='bg-[#385B8B] w-[180px] '>
-          Upload
-        </ButtonFill>
+          <CourseAddSuccessPopup onClose={() => setSuccessPopup(false)} />
+        </CommonModal>
+
+        {/* modal to show preview of form */}
+        <CommonModal
+          isOpen={preview}
+          onClose={() => setPreview(false)}
+          isCrossShow={false}
+        >
+          <CourseCard
+            image={image}
+            data={formData}
+            onClose={() => setPreview(false)}
+            handleSuccessModal={() => setSuccessPopup(true)}
+          />
+        </CommonModal>
+        <p className='text-sm text-[#ED2B2B]  '>(All fields are mandatory)</p>
+        <NewCourseForm
+          image={image}
+          handleImage={(value) => setImage(value)}
+          error={error}
+          data={formData}
+          onChange={handleFormData}
+        />
+        <div className='mt-5 text-base font-semibold text-[#272728]'>
+          Add Competencies & Levels
+        </div>
+        <div className=' border-b border-solid border-[#D8D8D8]'></div>
+        {formData?.competency?.map((data, ind, totalData) => {
+          return (
+            <AddCompetencyAndLevel
+              key={ind}
+              index={ind}
+              length={totalData?.length}
+              data={data}
+              onChange={(data) => handleCompetencyAndLevelsData(data, ind)}
+              handleDelete={() => handleDelete(ind)}
+              handleAdd={() => handleAddValue({ competency: '', levels: [] })}
+            />
+          );
+        })}
+        <div className='mt-[60px] flex  justify-end gap-5'>
+          <ButtonOutline
+            classes='border-[#385B8B] text-[#385B8B] w-[180px]'
+            onClick={() => null}
+          >
+            Cancel
+          </ButtonOutline>
+          <ButtonFill onClick={handleSubmit} classes='bg-[#385B8B] w-[180px] '>
+            Upload
+          </ButtonFill>
+        </div>
       </div>
     </div>
   );

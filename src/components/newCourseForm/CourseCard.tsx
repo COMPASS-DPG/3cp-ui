@@ -20,6 +20,11 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
   ];
 
   const handleSend = () => {
+    // const competency=data.competency.reduce((result, item) => {
+    //   const { competency, levels } = item;
+    //   result[competency] = levels.map(level => level); // Convert levels to uppercase if needed
+    //   return result;
+    // }, {});
     onClose();
     handleSuccessModal();
   };
@@ -36,16 +41,16 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
               className='rounded-lg'
               src={`data:image/jpeg;base64,${image}`}
               alt='img'
-              width={50}
-              height={50}
+              width={70}
+              height={70}
             />
           </div>
           <div>
             <div className='line-clamp-1 text-ellipsis text-[15px] font-bold text-[#272728] '>
-              {data.courseName}
+              {data.title}
             </div>
             <div className='line-clamp-2 text-[13px] text-[#787878]'>
-              {data?.competencyAndLevels?.map((item) => {
+              {data?.competency?.map((item) => {
                 return (
                   <div
                     key={item?.competency}
@@ -70,7 +75,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
             {data?.author}
           </span>
 
-          {data.courseLanguages.map((item, i) => {
+          {data.language.map((item, i) => {
             return (
               <span
                 key={item}
@@ -84,7 +89,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
           })}
         </div>
         <div className='text-[16px] font-semibold text-[#272728]'>
-          Cr.{data.courseCredit}
+          Cr.{data.credits}
         </div>
       </div>
       <div className='my-[30px] px-[100px] text-center text-[16px] text-[#272728]'>
@@ -98,7 +103,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
         >
           Edit
         </ButtonOutline>
-        <ButtonFill onClick={() => handleSend} classes='bg-[#26292D] '>
+        <ButtonFill onClick={handleSend} classes='bg-[#26292D] '>
           Send to Admin for verification
         </ButtonFill>
       </div>

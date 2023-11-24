@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { ToastContainer } from 'react-toastify';
 
 import '@/styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import LayoutWrapper from '@/components/LayoutWrapper';
+
 // // !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
 // // import '@/styles/colors.css';
 
@@ -58,6 +61,18 @@ export default function RootLayout({
     <html lang='en'>
       <body>
         <LayoutWrapper>{children}</LayoutWrapper>
+        <ToastContainer
+          position='top-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='colored'
+        />
       </body>
     </html>
   );

@@ -1,26 +1,21 @@
 'use client';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+
+import React from 'react';
 
 import { outfit } from '@/components/FontFamily';
 import UserSelect from '@/components/navbar/UserSelect';
 import { USER_OPTIONS } from '@/components/SelectOptions';
 
+import { useAuthContext } from '@/context/AuthContext';
+
 import { VerifiedUser } from '~/svg';
 import BellLogo from '~/svg/bellLogo.svg';
 
 const TopNavbar = ({ heading }: { heading: string }) => {
-  const [accountStatus, setAccountStatus] = useState('reject');
+  const { userProfileData } = useAuthContext();
 
-  useEffect(() => {
-    axios.get('http://127.0.0.1:3001/user1').then((response) => {
-      const userData = response.data;
-      const status = userData[0].state;
-      setAccountStatus(status);
-    });
-  }, []);
   return (
-    <nav className='flex items-center justify-between bg-white px-[30px] pb-[20px] '>
+    <nav className='flex items-center justify-between bg-white px-[30px] py-[14px] '>
       <div className={`text-2xl font-semibold ${outfit.className}`}>
         {heading}
       </div>
@@ -32,7 +27,7 @@ const TopNavbar = ({ heading }: { heading: string }) => {
           placeholder='user name'
           value=''
         />
-        {accountStatus === 'verified' && (
+        {userProfileData.status === 'VERIFIED' && (
           <div className='flex items-center'>
             <VerifiedUser width='28px' />
           </div>

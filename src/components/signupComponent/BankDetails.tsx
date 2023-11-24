@@ -3,7 +3,7 @@ import React from 'react';
 import InputTag from '@/components/inputtag/InputTag';
 import Label from '@/components/Label';
 
-import { BankDetailsType } from '@/app/signup/page';
+import { BankDetailsType } from '@/app/sign-up/page';
 
 import { capitalizeName } from '../capitalizeName';
 
@@ -32,47 +32,47 @@ const BankDetails = ({ data, onChange, error }: PropType) => {
       <div>
         <Label text='Branch' />
         <InputTag
-          value={data?.branch}
+          value={data?.branchName}
           placeholder='Enter Branch Name'
-          onChange={(value) => onChange('branch', value)}
-          errorMessage={error?.branch}
+          onChange={(value) => onChange('branchName', value)}
+          errorMessage={error?.branchName}
         />
       </div>
       <div>
         <Label text='Account Number' />
         <InputTag
-          value={data?.accountNumber}
+          value={data?.accNo}
           type='number'
           placeholder='Enter Account Number '
-          onChange={(value) => onChange('accountNumber', value)}
-          errorMessage={error?.accountNumber}
+          onChange={(value) => onChange('accNo', value)}
+          errorMessage={error?.accNo}
         />
       </div>
       <div>
         <Label text='IFSC Code' />
         <InputTag
-          value={data?.IFSCCode}
+          value={data?.IFSC}
           placeholder='Enter IFSC Name'
-          onChange={(value) => onChange('IFSCCode', value)}
-          errorMessage={error?.IFSCCode}
+          onChange={(value) => onChange('IFSC', value)}
+          errorMessage={error?.IFSC}
         />
       </div>
       <div>
         <Label text='PAN Number' />
         <InputTag
-          value={data?.PANNumber}
+          value={data?.PANnumber}
           placeholder='Enter PAN Number'
-          onChange={(value) => onChange('PANNumber', value)}
-          errorMessage={error?.PANNumber}
+          onChange={(value) => onChange('PANnumber', value)}
+          errorMessage={error?.PANnumber}
         />
       </div>
       <div>
         <Label text='GST' />
         <InputTag
-          value={data?.GSTNumber}
+          value={data?.GSTnumber}
           placeholder='Enter GST Number'
-          onChange={(value) => onChange('GSTNumber', value)}
-          errorMessage={error?.GSTNumber}
+          onChange={(value) => onChange('GSTnumber', value)}
+          errorMessage={error?.GSTnumber}
         />
       </div>
     </>
