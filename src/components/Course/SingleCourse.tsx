@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { AiFillStar, AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import { BiSolidArchiveIn } from 'react-icons/bi';
@@ -17,8 +19,8 @@ import {
   deleteCourseByProvideIdAndCourseId,
 } from '@/services/userServices';
 
+// import CourseImage from '~/images/courseProvider.png'
 import { VerifiedTick } from '~/svg';
-
 const languageColors = [
   'bg-[#DAFFDA] text-[#4ACB5F]',
   'bg-[#C7DEFF] text-[#385B8B]',
@@ -41,7 +43,9 @@ const SingleCourse = ({
   // will delete course
   const handleDeleteCourse = async () => {
     try {
-      await deleteCourseByProvideIdAndCourseId(course?.providerId, course?.id);
+      const providerId: string = course?.providerId ?? '';
+      const courseId: string = course?.id ?? '';
+      await deleteCourseByProvideIdAndCourseId(providerId, courseId);
       handleFetchData();
       toast.success('course deleted successfully');
     } catch (error) {
@@ -52,9 +56,12 @@ const SingleCourse = ({
     }
   };
 
+  // handle archive and unarchive using provider and user id
   const handleArchive = async () => {
     try {
-      let successMessage = 'course archive successfully';
+      const providerId: string = course?.providerId ?? '';
+      const courseId: string = course?.id ?? '';
+      let successMessage = 'course archived successfully';
       const request: { status: string } = {
         status: 'ARCHIVED',
       };
@@ -63,8 +70,8 @@ const SingleCourse = ({
         successMessage = 'course unarchive successfully';
       }
       await archiveAndUnarchiveCourseByProvideIdAndCourseId(
-        course?.providerId,
-        course?.id,
+        providerId,
+        courseId,
         request
       );
       toast.success(successMessage);
@@ -80,7 +87,6 @@ const SingleCourse = ({
   useEffect(() => {
     const closeDropDown = (e: MouseEvent) => {
       const targetNode = e.target as Node | null;
-
       if (
         showPopUp &&
         popupRef.current &&
@@ -100,7 +106,12 @@ const SingleCourse = ({
       <div className='flex gap-4'>
         {/* image */}
         <div className='flex-shrink-0'>
-          {/* <Image src={CourseImage} width={100} height={100} alt='course-image' /> */}
+          <Image
+            src={typeof course?.imgLink === 'string' ? course?.imgLink : ''}
+            width={100}
+            height={100}
+            alt='course-image'
+          />
         </div>
         {/* centeritem */}
         <div className='flex flex-grow flex-col justify-between'>
@@ -186,15 +197,14 @@ const SingleCourse = ({
         <div className='relative flex flex-col items-end justify-between'>
           <div className='flex w-full justify-between'>
             <p className='flex items-center gap-1 text-[14px] font-bold leading-4 text-[#787878]'>
-              {course?.avgRating ? (
+              {course?.avgRating && (
                 <>
                   {course.avgRating} <AiFillStar fill='#FFD029' width='12px' />
                 </>
-              ) : (
-                '--'
               )}
             </p>
             <BsThreeDotsVertical
+              className='cursor-pointer'
               size={24}
               onClick={() => setShowPopUp((prev) => !prev)}
             />
@@ -211,9 +221,15 @@ const SingleCourse = ({
               className='absolute right-[-20px] top-7 h-[119px] w-[155px]  rounded-lg border border-[#E3E7EF] bg-[white] text-[14px] leading-6 text-[#272728] shadow-md'
             >
               <div className='flex flex-col p-2 '>
-                <div className='flex cursor-pointer items-center gap-2 rounded-md border-b border-[#E3E7EF] py-1 pl-1 hover:bg-gray-300'>
+                <Link
+                  className='flex cursor-pointer items-center gap-2 rounded-md border-b border-[#E3E7EF] py-1 pl-1 hover:bg-gray-300'
+                  href={{
+                    pathname: '/my-courses/edit-course',
+                    query: { data: JSON.stringify(course) },
+                  }}
+                >
                   <BsFillPencilFill /> Edit Course
-                </div>
+                </Link>
                 <div
                   className='flex cursor-pointer items-center gap-2 rounded-md border-b border-[#E3E7EF] py-1 pl-1 hover:bg-gray-300'
                   onClick={handleArchive}
@@ -238,7 +254,11 @@ const SingleCourse = ({
       {/* Rejected Summary {only for rejected component} */}
       {showSummary && (
         <div className='my-4 rounded-lg border border-[#D4D4D4] bg-[#F8F8F8]'>
-          <RejectSummary rejectionReason={course?.rejectionReason} />
+          <RejectSummary
+            rejectionReason={
+              course?.rejectionReason ? course?.rejectionReason : ''
+            }
+          />
         </div>
       )}
     </div>

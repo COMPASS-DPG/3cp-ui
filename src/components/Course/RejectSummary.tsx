@@ -1,6 +1,10 @@
 import { outfit } from '@/components/FontFamily';
 
-const RejectSummary = ({ rejectionReason }: { rejectionReason: string }) => {
+const RejectSummary = ({
+  rejectionReason,
+}: {
+  rejectionReason: string | null;
+}) => {
   return (
     <div
       className={`flex rounded-lg border border-[#D4D4D4] bg-[#FFEFEF] p-2 text-[14px] ${outfit.className} `}

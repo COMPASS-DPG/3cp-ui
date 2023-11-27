@@ -8,7 +8,12 @@ const nextConfig = {
 
   // Uncoment to add domain whitelist
   images: {
-    domains: ['*'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 
   webpack(config) {

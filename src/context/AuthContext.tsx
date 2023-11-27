@@ -10,7 +10,11 @@ import {
 import { toast } from 'react-toastify';
 
 import { userType } from '@/app/my-account/page';
-import { getProviderProfileDetails } from '@/services/userServices';
+import { CourseType } from '@/app/my-courses/page';
+import {
+  getCourseByProviderId,
+  getProviderProfileDetails,
+} from '@/services/userServices';
 
 const userProfileInitData = {
   name: '',
@@ -32,9 +36,13 @@ type AuthContextType = {
   providerId: string;
   userProfileData: userType;
   handleUserProfile: () => void;
-  // handleSetProviderId: (id: string) => void
+  handleSetProviderId: (id: string) => void;
   setActiveComponent: (arg: string) => void;
   activeComponent: string;
+  fetchData: boolean;
+  setFetchData: (arg: boolean) => void;
+  courseList: CourseType[];
+  setCourseList: (arg: CourseType[]) => void;
 };
 
 const AuthProvider = createContext<AuthContextType>({
@@ -43,37 +51,63 @@ const AuthProvider = createContext<AuthContextType>({
   handleUserProfile: () => {
     return null;
   },
-  //  handleSetProviderId: () => { return null }
+  handleSetProviderId: () => {
+    return null;
+  },
   setActiveComponent: () => {
     return null;
   },
   activeComponent: '',
+  fetchData: true,
+  setFetchData: () => {
+    return null;
+  },
+  courseList: [],
+  setCourseList: () => {
+    return null;
+  },
 });
 
-// const WpcasProvider = createContext('');
-
 const AuthContext = ({ children }: { children: React.ReactElement }) => {
-  const providerId = localStorage.getItem('3cpToken') || '';
-  // const [providerId, setProviderId] = useState(id)
+  const id = localStorage.getItem('3cpToken') || '';
+  const [providerId, setProviderId] = useState(id);
   const [activeComponent, setActiveComponent] = useState<string>('ACCEPTED');
   const [userProfileData, setUserProfileDate] = useState(userProfileInitData);
+  const [fetchData, setFetchData] = useState(true);
+  const [courseList, setCourseList] = useState<CourseType[]>([]);
   const router = useRouter();
 
-  const handleUserProfile = useCallback(async () => {
+  const handleCourseData = useCallback(async () => {
     try {
-      const data = await getProviderProfileDetails(providerId);
-      setUserProfileDate(data);
+      const data = await getCourseByProviderId(providerId);
+      setCourseList(data);
+      setFetchData(false);
     } catch (error) {
       // Handle any errors that occur during the API call
       // eslint-disable-next-line no-console
       console.error('API call error:', error);
       toast.error('something went wrong');
+      router.push('error/DataNotFound');
     }
-  }, [providerId]);
+  }, [providerId, router]);
 
-  // const handleSetProviderId = (id: string) => {
-  //   setProviderId(id)
-  // }
+  const handleUserProfile = useCallback(async () => {
+    try {
+      const data = await getProviderProfileDetails(providerId);
+      setUserProfileDate(data);
+      handleCourseData();
+    } catch (error) {
+      // Handle any errors that occur during the API call
+      // eslint-disable-next-line no-console
+      console.error('API call error:', error);
+      toast.error('something went wrong');
+      router.push('error/DataNotFound');
+    }
+  }, [providerId, handleCourseData, router]);
+
+  const handleSetProviderId = (id: string) => {
+    setProviderId(id);
+  };
 
   useEffect(() => {
     if (!providerId) {
@@ -85,15 +119,27 @@ const AuthContext = ({ children }: { children: React.ReactElement }) => {
     }
   }, [router, providerId, handleUserProfile]);
 
+  useEffect(() => {
+    if (fetchData && providerId) {
+      handleCourseData();
+    }
+  }, [fetchData, handleCourseData, providerId]);
+
   return (
     <AuthProvider.Provider
       value={{
         providerId,
-        // handleSetProviderId,
+        handleSetProviderId,
         userProfileData,
         handleUserProfile,
         activeComponent,
         setActiveComponent,
+        fetchData,
+        setFetchData,
+        courseList,
+        // currentCourseList,
+        setCourseList,
+        // setCurrentCourseList,
       }}
     >
       {children}

@@ -1,35 +1,96 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { outfit } from '@/components/FontFamily';
 import Pagination from '@/components/transection/Pagination';
+import SearchTransection from '@/components/transection/SearchTransection';
 
-type UserType = {
-  courseId: number;
-  courseName: string;
-  courseStartDate: string;
-  courseEndDate: string;
-  credits: number;
-  enrolledUsers: number;
-  totalIncome: number;
+import {
+  CourseTransactionDataType,
+  searchInputType,
+} from '@/app/transections/page';
+
+// type UserType = {
+//   courseId: number;
+//   courseName: string;
+//   courseStartDate: string;
+//   courseEndDate: string;
+//   credits: number;
+//   enrolledUsers: number;
+//   totalIncome: number;
+// };
+
+type PropType = {
+  userData: CourseTransactionDataType[];
+  filterUserData: CourseTransactionDataType[];
+  setFilterUserData: (arg: CourseTransactionDataType[]) => void;
 };
-const TransectionTable = () => {
-  const [userTransectionData, setUserTransectionData] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
 
-  useEffect(() => {
-    axios.get('http://127.0.0.1:3001/user1').then((response) => {
-      const userData = response.data;
-      const transectionList = userData[0].transactions;
-      setUserTransectionData(transectionList);
-      setTotal(transectionList.length);
-    });
-  }, []);
+const getEmptySearchData = () => {
+  return {
+    text: '',
+    date: null,
+  };
+};
+
+const TransectionTable = ({
+  userData,
+  filterUserData,
+  setFilterUserData,
+}: PropType) => {
+  const [showSearch, setShowSearch] = useState<boolean>(true);
+  const [searchInput, setSearchInput] = useState<searchInputType>(
+    getEmptySearchData()
+  );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  const totalIncome: number = userData.reduce(
+    (sum, obj) => sum + obj?.income,
+    0
+  );
+
+  const totalPages = Math.ceil(filterUserData?.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentData = filterUserData?.slice(startIndex, endIndex);
+
+  const handleSearch = () => {
+    const searchedData = userData.filter(
+      (course: CourseTransactionDataType) => {
+        const startDate =
+          typeof course?.startDate === 'string'
+            ? new Date(course?.startDate)
+            : course?.startDate;
+        const courseNameMatch =
+          !searchInput?.text ||
+          course.courseName
+            .toLowerCase()
+            .includes(searchInput?.text.toLowerCase());
+        const startDateMatch =
+          !searchInput?.date || startDate == new Date(searchInput?.date);
+        return courseNameMatch && startDateMatch;
+      }
+    );
+    setFilterUserData(searchedData);
+    !searchInput.date && !searchInput.text
+      ? setShowSearch(true)
+      : setShowSearch(false);
+    setSearchInput(getEmptySearchData());
+    if (currentPage != 1) setCurrentPage(1);
+  };
 
   return (
     <>
+      <SearchTransection
+        totalIncome={totalIncome}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        handleSearch={handleSearch}
+        showSearch={showSearch}
+        setShowSearch={setShowSearch}
+      />
+
       <div className='relative mt-5 overflow-x-auto shadow-md sm:rounded-md'>
         <table className='w-full text-left text-sm text-gray-500 dark:text-gray-400'>
           <thead
@@ -39,13 +100,22 @@ const TransectionTable = () => {
               <th scope='col' className='px-6 py-3 text-sm font-normal'>
                 Course Name
               </th>
-              <th scope='col' className='px-6 py-3 text-sm font-normal'>
+              <th
+                scope='col'
+                className='px-6 py-3 text-center text-sm font-normal'
+              >
                 Course Start Date
               </th>
-              <th scope='col' className='px-6 py-3 text-sm font-normal'>
+              <th
+                scope='col'
+                className='px-6 py-3 text-center text-sm font-normal'
+              >
                 Course End Date
               </th>
-              <th scope='col' className='px-6 py-3 text-sm font-normal'>
+              <th
+                scope='col'
+                className='px-6 py-3 text-center text-sm font-normal'
+              >
                 Credits
               </th>
               <th
@@ -63,41 +133,61 @@ const TransectionTable = () => {
             </tr>
           </thead>
           <tbody>
-            {userTransectionData.map((user: UserType) => {
-              return (
-                <tr
-                  key={user?.courseId}
-                  className={`border-b bg-white hover:bg-gray-50 ${outfit.className}`}
+            {currentData.length == 0 && (
+              <tr
+                className={`border-b bg-white hover:bg-gray-50 ${outfit.className}`}
+              >
+                <td
+                  align='center'
+                  colSpan={6}
+                  className={` px-6 py-[14px] text-center 
+             text-sm  font-normal text-[#272728]`}
                 >
-                  <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
-                    {user.courseName}
-                  </td>
-                  <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
-                    {user.courseStartDate}
-                  </td>
-                  <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
-                    {user.courseEndDate}
-                  </td>
-                  <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
-                    {user.credits}
-                  </td>
-                  <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
-                    {user.enrolledUsers}
-                  </td>
-                  <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
-                    {user.totalIncome}
-                  </td>
-                </tr>
-              );
-            })}
+                  No Result Found
+                </td>
+              </tr>
+            )}
+            {currentData.length > 0 &&
+              currentData?.map((user: CourseTransactionDataType) => {
+                return (
+                  <tr
+                    key={user?.courseId}
+                    className={`border-b bg-white hover:bg-gray-50 ${outfit.className}`}
+                  >
+                    <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
+                      {user.courseName}
+                    </td>
+                    <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
+                      {user.startDate
+                        ? new Date(user.startDate).toLocaleDateString('en-GB')
+                        : '--'}
+                    </td>
+                    <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
+                      {user.endDate
+                        ? new Date(user.endDate).toLocaleDateString('en-GB')
+                        : '--'}
+                    </td>
+                    <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
+                      {user.credits}
+                    </td>
+                    <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
+                      {user.numConsumersEnrolled}
+                    </td>
+                    <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
+                      {user.income}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
         <Pagination
-          handleLimit={(value: number) => setLimit(value)}
-          limit={limit}
-          total={total}
-          page={page}
-          handlePage={(value: number) => setPage(value)}
+          currentDataLength={currentData?.length}
+          handlePageSize={(value: number) => setPageSize(value)}
+          pageSize={pageSize}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          handlePage={(value: number) => setCurrentPage(value)}
         />
       </div>
     </>

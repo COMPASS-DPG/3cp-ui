@@ -67,7 +67,7 @@ const initialBankDetailsData = (): BankDetailsType => {
 };
 
 const Signup = () => {
-  const email = localStorage?.getItem('userEmailId');
+  const email = localStorage?.getItem('userEmailId') || '';
   const [logoUrl, setLogoUrl] = useState('');
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
@@ -164,7 +164,12 @@ const Signup = () => {
     <div className={`flex ${outfit.className}`}>
       <CommonModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <UserDetailsModal
-          data={{ ...generalDetailsData, ...bankDetailsData, email, logoUrl }}
+          userData={{
+            ...generalDetailsData,
+            ...bankDetailsData,
+            email,
+            logoUrl,
+          }}
           onClose={() => setIsOpen(false)}
           handleStep={() => setStep(1)}
         />

@@ -36,14 +36,12 @@ const AddCompetencyAndLevel = ({
         <div>
           <Label text='Competency' />
           <SelectTag
-            errorMessage=''
             onChange={(value) => handleChange('competency', value)}
             options={languageOptions}
-            placeholder=''
+            placeholder='select competency'
             value={data?.competency}
             paddingY='2px'
           />
-          {/* <Image src='https://udemy.com/courses/pxUhfMd/images/cover1.jpg' alt='img' width={200} height={200}/> */}
         </div>
         <div>
           <Label text='Levels' />
@@ -54,10 +52,9 @@ const AddCompetencyAndLevel = ({
               }`}
             >
               <MultiSelectTag
-                errorMessage=''
                 onChange={(value) => handleChange('levels', value)}
                 options={languageOptions}
-                placeholder=''
+                placeholder='select levels'
                 value={data?.levels}
                 paddingY='2px'
                 isDisabled={!data?.competency}

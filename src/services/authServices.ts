@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { SignupPropType } from '@/components/signupComponent/UserDetailsModal';
+// import { SignupPropType } from '@/components/signupComponent/UserDetailsModal';
 
 type LoginPayloadType = {
   email: string;
@@ -21,7 +21,7 @@ type ResetPasswordType = {
   confirmPassword: string;
 };
 
-export const userSignup = async (payload: SignupPropType) => {
+export const userSignup = async (payload: FormData) => {
   const data = await axios.post(
     'http://localhost:3000/api/provider/signup',
     payload

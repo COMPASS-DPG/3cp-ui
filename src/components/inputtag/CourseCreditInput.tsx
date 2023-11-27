@@ -2,7 +2,7 @@ import React from 'react';
 
 type PropType = {
   errorMessage: string;
-  value: string;
+  value: string | number;
   onChange: (arg: string) => void;
 };
 

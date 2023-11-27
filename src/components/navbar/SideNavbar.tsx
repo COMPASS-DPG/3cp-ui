@@ -31,7 +31,6 @@ const SideNavbar = () => {
           </div>
         </div>
       </div>
-
       <div
         className={`inline-flex h-10 w-[200px] items-center justify-end py-2.5 pl-4 ${
           pathname === '/my-courses' ? 'bg-white bg-opacity-30' : ''

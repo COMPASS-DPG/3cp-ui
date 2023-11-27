@@ -1,11 +1,15 @@
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { FaUserEdit } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 import ButtonFill from '@/components/button/ButtonFill';
 import ButtonOutline from '@/components/button/ButtonOutline';
 
-import { NewCourseFormType } from '@/app/add-new-course/page';
+import { NewCourseFormType } from '@/app/my-courses/[add-course]/page';
+import { useAuthContext } from '@/context/AuthContext';
+import { addCourse, editCourse } from '@/services/userServices';
 type PropType = {
   image: string;
   data: NewCourseFormType;
@@ -14,19 +18,67 @@ type PropType = {
 };
 
 const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
+  const pathname = usePathname();
+  const router = useRouter();
+  const isEdit = pathname.includes('edit-course');
+  const { providerId, setFetchData } = useAuthContext();
   const languageColor = [
     { bg: '#DAFFDA', text: '#4ACB5F' },
     { bg: '#C7DEFF', text: '#385B8B' },
   ];
 
   const handleSend = () => {
-    // const competency=data.competency.reduce((result, item) => {
-    //   const { competency, levels } = item;
-    //   result[competency] = levels.map(level => level); // Convert levels to uppercase if needed
-    //   return result;
-    // }, {});
-    onClose();
-    handleSuccessModal();
+    (async () => {
+      // formatting competency data
+      const updateCompetencyData = Object.fromEntries(
+        data?.competency?.map((item) => [item.competency, item.levels])
+      );
+      const newData = { ...data, competency: updateCompetencyData };
+
+      // converting data to FormData
+      const formCourseData = new FormData();
+
+      formCourseData.append('title', newData?.title);
+      formCourseData.append('description', newData?.description);
+      newData?.language?.forEach((language) => {
+        formCourseData.append('language', language);
+      });
+
+      if (typeof newData?.imgLink !== 'string')
+        formCourseData.append('imgLink', newData?.imgLink);
+
+      formCourseData.append('credits', newData.credits.toString());
+      formCourseData.append('courseLink', newData?.courseLink);
+      formCourseData.append('author', newData?.author);
+      formCourseData.append('startDate', newData?.startDate?.toDateString());
+      if (newData.endDate)
+        formCourseData.append('endDate', newData?.endDate?.toDateString());
+
+      // will append competencies
+      Object.entries(newData?.competency).forEach(([key, values]) => {
+        values.forEach((value) => {
+          formCourseData.append(`competency[${key}][]`, value);
+        });
+      });
+
+      // api request
+      try {
+        if (isEdit && newData?.id) {
+          await editCourse(providerId, newData?.id, formCourseData);
+        } else {
+          await addCourse(providerId, newData);
+        }
+        onClose();
+        setFetchData(true);
+        handleSuccessModal();
+        router.push('/my-courses');
+      } catch (error) {
+        // Handle any errors that occur during the API call
+        // eslint-disable-next-line no-console
+        console.error('API call error:', error);
+        toast.error('something went wrong');
+      }
+    })();
   };
 
   return (

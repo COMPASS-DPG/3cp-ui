@@ -103,8 +103,16 @@ const UserEditSection = ({
   const handleUpload = () => {
     if (isValidUserProfileDetails(userDetail, handleError)) {
       (async () => {
+        const userData = {
+          email: userDetail.email,
+          name: userDetail.name,
+          orgLogo: userDetail.orgLogo,
+          orgName: userDetail.orgName,
+          paymentInfo: userDetail.paymentInfo,
+          phone: userDetail.phone,
+        };
         try {
-          await updateProviderProfileDetails(providerId, userDetail);
+          await updateProviderProfileDetails(providerId, userData);
           setShowEditSection(false);
           getUserProfile();
           toast.success('data updated successfully');

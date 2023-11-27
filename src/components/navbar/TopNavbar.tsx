@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { outfit } from '@/components/FontFamily';
@@ -13,6 +14,14 @@ import BellLogo from '~/svg/bellLogo.svg';
 
 const TopNavbar = ({ heading }: { heading: string }) => {
   const { userProfileData } = useAuthContext();
+  const router = useRouter();
+
+  const handleLogout = (value: string) => {
+    if (value == 'logout') {
+      localStorage.removeItem('3cpToken');
+      router.push('/login');
+    }
+  };
 
   return (
     <nav className='flex items-center justify-between bg-white px-[30px] py-[14px] '>
@@ -23,8 +32,9 @@ const TopNavbar = ({ heading }: { heading: string }) => {
         <BellLogo className='w-[24px]' />
         <UserSelect
           options={USER_OPTIONS}
-          onChange={() => null}
-          placeholder='user name'
+          onChange={handleLogout}
+          placeholder={userProfileData.orgName}
+          logo={userProfileData.orgLogo}
           value=''
         />
         {userProfileData.status === 'VERIFIED' && (

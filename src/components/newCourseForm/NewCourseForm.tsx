@@ -70,7 +70,7 @@ const NewCourseForm = ({
             errorMessage={error?.language}
             onChange={(value) => onChange('language', value)}
             options={languageOptions}
-            placeholder=''
+            placeholder='select language'
             value={data?.language}
             paddingY='2px'
           />
@@ -105,7 +105,7 @@ const NewCourseForm = ({
         <div>
           <Label text='Start Date' />
           <DatePickerComponent
-            data={new Date(data.startDate)}
+            data={data.startDate ? new Date(data.startDate) : null}
             onChange={(date) => onChange('startDate', date)}
             isSelectStart={true}
             startDate={new Date(data.startDate)}
@@ -116,7 +116,7 @@ const NewCourseForm = ({
         <div>
           <Label text='End Date' />
           <DatePickerComponent
-            data={data.endDate}
+            data={data.endDate ? new Date(data.endDate) : null}
             onChange={(date) => onChange('endDate', date)}
             isSelectEnd={true}
             startDate={new Date(data.startDate)}

@@ -6,7 +6,6 @@ import RejectSummary from '@/components/Course/RejectSummary';
 
 import { userType } from '../../../src/app/my-account/page';
 
-import CourseProvider from '~/images/courseProvider.png';
 import { EditIcon, VerifiedTick } from '~/svg';
 const MyAccountTopBar = ({
   user,
@@ -18,7 +17,12 @@ const MyAccountTopBar = ({
   return (
     <div>
       <div className='absolute top-5 mx-5 flex h-[160px] w-[160px] items-center justify-center rounded-full bg-[#fff]'>
-        <Image src={CourseProvider} alt='CourseProvider' />
+        <Image
+          src={user?.orgLogo}
+          alt='CourseProvider'
+          width={160}
+          height={160}
+        />
       </div>
       <div
         className={`flex h-[100px] items-center justify-between ${
@@ -30,7 +34,7 @@ const MyAccountTopBar = ({
         } pl-[200px]`}
       >
         <p className='#272728 text-[30px] font-semibold leading-10'>
-          {user.organization}
+          {user?.orgName}
         </p>
 
         {user?.status === 'VERIFIED' ? (
@@ -52,8 +56,8 @@ const MyAccountTopBar = ({
       </div>
       <div className='flex h-[100px] items-center justify-between bg-[#385B8B] pl-[200px]'>
         <div className='gap-2 text-[#fff]'>
-          <p className='text-[20px] font-medium'>{user.name}</p>
-          <p className='font-[Inter] text-[14px]'>{user.email}</p>
+          <p className='text-[20px] font-medium'>{user?.name}</p>
+          <p className='font-[Inter] text-[14px]'>{user?.email}</p>
         </div>
         {user?.status !== 'VERIFIED' ? (
           <div className='mr-8 flex gap-2 rounded-lg bg-[#fff] px-5 py-2.5 font-[#272728] text-[16px] font-semibold leading-5 opacity-40'>

@@ -6,7 +6,7 @@ import AuthContext from '@/context/AuthContext';
 
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className='bg-[#F7F9FC]'>
       <AuthContext>
         <div className='flex'>{children}</div>
       </AuthContext>

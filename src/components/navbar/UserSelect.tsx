@@ -17,16 +17,23 @@ export type PropsType = {
   errorMessage?: string;
   paddingY?: string;
   isDisabled?: boolean;
+  logo: string;
 };
 
-import CourseProvider from '~/images/courseProvider.png';
+// import CourseProvider from '~/images/courseProvider.png';
 
-const UserSelect = ({ options, onChange, placeholder, value }: PropsType) => {
+const UserSelect = ({
+  options,
+  onChange,
+  placeholder,
+  value,
+  logo,
+}: PropsType) => {
   return (
-    <div className='px-[1px] py-[6px] focus-within:border-blue-400 '>
+    <div className='px-[1px] py-[6px] focus-within:border-blue-400'>
       <div className='flex rounded-3xl border border-solid border-[#E3E7EF] p-1'>
         <div className='flex items-center justify-center overflow-hidden rounded-full border border-[#ccc]'>
-          <Image src={CourseProvider} alt='profile' width={30} height={30} />
+          <Image src={logo} alt='profile' width={30} height={30} />
         </div>
         <Select
           options={options}
@@ -44,6 +51,7 @@ const UserSelect = ({ options, onChange, placeholder, value }: PropsType) => {
                 boxShadow: 'none',
               },
               width: '150px',
+              cursor: 'pointer',
             }),
             control: (baseStyles) => ({
               ...baseStyles,

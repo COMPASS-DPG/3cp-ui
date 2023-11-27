@@ -2,29 +2,56 @@
 
 import { useEffect, useState } from 'react';
 
-import SearchTransection from '@/components/transection/SearchTransection';
 import TransectionTable from '@/components/transection/TransectionTable';
+
+import { useAuthContext } from '@/context/AuthContext';
+import { getAllCourseTransactions } from '@/services/userServices';
 
 export type searchInputType = {
   text: string;
   date: Date | null;
 };
+
+export type CourseTransactionDataType = {
+  courseId: number;
+  courseName: string;
+  startDate: Date | null | string;
+  endDate: Date | null | string;
+  credits: number;
+  numConsumersEnrolled: number;
+  income: number;
+};
+
 const Transections = () => {
-  const [searchInput, setSearchInput] = useState<searchInputType>({
-    text: '',
-    date: null,
-  });
+  const { providerId } = useAuthContext();
+  const [userData, setUserData] = useState<CourseTransactionDataType[]>([]);
+  const [filterUserData, setFilterUserData] = useState<
+    CourseTransactionDataType[]
+  >([]);
 
   useEffect(() => {
-    // console.log(searchInput);
-  }, [searchInput]);
+    (async () => {
+      try {
+        const data = await getAllCourseTransactions(providerId);
+        // setLoading(false);
+        setUserData(data);
+        setFilterUserData(data);
+      } catch (error) {
+        // Handle any errors that occur during the API call
+        // eslint-disable-next-line no-console
+        console.error('API call error:', error);
+        // setLoading(false);
+        // setError(true);
+      }
+    })();
+  }, [providerId]);
   return (
     <div className='p-5'>
-      <SearchTransection
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
+      <TransectionTable
+        userData={userData}
+        filterUserData={filterUserData}
+        setFilterUserData={(value) => setFilterUserData(value)}
       />
-      <TransectionTable />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import ButtonOutline from '@/components/button/ButtonOutline';
 import { outfit } from '@/components/FontFamily';
 import Label from '@/components/Label';
 
+import { useAuthContext } from '@/context/AuthContext';
 // import { useAuthContext } from '@/context/AuthContext';
 import { userSignup } from '@/services/authServices';
 
@@ -29,7 +30,7 @@ type DataType = {
 };
 
 type PropType = {
-  data: DataType;
+  userData: DataType;
   onClose: () => void;
   handleStep: () => void;
 };
@@ -51,34 +52,58 @@ export type SignupPropType = {
   };
 };
 
-const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
-  const router = useRouter();
-  // const { handleSetProviderId } = useAuthContext()
+// convert object into form data
+const convertToFormData = (data: DataType) => {
+  const userFormData = new FormData();
 
-  const request: SignupPropType = {
-    name: data?.name,
-    email: data?.email,
-    orgLogo:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png',
-    orgName: data.orgName,
-    password: data.password,
-    phone: `+91${data.phone}`,
-    paymentInfo: {
-      bankName: data.bankName,
-      branchName: data.branchName,
-      accNo: data.accNo,
-      IFSC: data.IFSC,
-      PANnumber: data.PANnumber,
-      GSTnumber: data.GSTnumber,
-    },
-  };
+  userFormData.append('name', data?.name);
+  userFormData.append('email', data?.email);
+  userFormData.append('orgLogo', data?.orgLogo);
+  userFormData.append('orgName', data?.orgName);
+  userFormData.append('password', data?.password);
+  userFormData.append('phone', `+91${data.phone}`);
+  userFormData.append('paymentInfo.bankName', data.bankName);
+  userFormData.append('paymentInfo.branchName', data.branchName);
+  userFormData.append('paymentInfo.accNo', data.accNo);
+  userFormData.append('paymentInfo.IFSC', data.IFSC);
+  userFormData.append('paymentInfo.PANnumber', data.PANnumber);
+  userFormData.append('paymentInfo.GSTnumber', data.GSTnumber);
+
+  return userFormData;
+};
+
+const UserDetailsModal = ({ userData, handleStep, onClose }: PropType) => {
+  const router = useRouter();
+  const { handleSetProviderId } = useAuthContext();
+
+  //   const request: SignupPropType = {
+  //   name: data?.name,
+  //   email: data?.email,
+  //   orgLogo:
+  //     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png',
+  //   orgName: data.orgName,
+  //   password: data.password,
+  //   phone: `+91${data.phone}`,
+  //   paymentInfo: {
+  //     bankName: data.bankName,
+  //     branchName: data.branchName,
+  //     accNo: data.accNo,
+  //     IFSC: data.IFSC,
+  //     PANnumber: data.PANnumber,
+  //     GSTnumber: data.GSTnumber,
+  //   },
+  // };
+
   const handleContinue = () => {
     (async () => {
+      // convert object into form data
+      const userFormData = convertToFormData(userData);
       try {
-        const data = await userSignup(request);
-        // handleSetProviderId(data.providerId)
+        const data = await userSignup(userFormData);
+        handleSetProviderId(data?.providerId);
         localStorage.setItem('3cpToken', data.providerId);
-        router.push('/login');
+        toast.success('user registered successfully');
+        router.push('/my-courses');
         onClose();
       } catch (error) {
         // Handle any errors that occur during the API call
@@ -99,7 +124,7 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
       <div className='flex items-center gap-5'>
         <div className='rounded-full border border-solid border-gray-300'>
           <Image
-            src={`data:image/jpeg;base64,${data.logoUrl}`}
+            src={`data:image/jpeg;base64,${userData.logoUrl}`}
             width={80}
             height={80}
             alt='logo'
@@ -107,7 +132,7 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
           />
         </div>
         <div className='text-[30px] font-semibold text-[#272728]'>
-          {data?.orgName}
+          {userData?.orgName}
         </div>
       </div>
       <div className='my-[30px] flex justify-between'>
@@ -117,15 +142,15 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
           </div>
           <div className='mb-[10px]'>
             <Label text='Name' />
-            <div className='text-base text-[#272728]'>{data?.name}</div>
+            <div className='text-base text-[#272728]'>{userData?.name}</div>
           </div>
           <div className='mb-[10px]'>
             <Label text='Email Id' />
-            <div className='text-base text-[#272728]'>{data?.email}</div>
+            <div className='text-base text-[#272728]'>{userData?.email}</div>
           </div>
           <div>
             <Label text='Phone' />
-            <div className='text-base text-[#272728]'>{data?.phone}</div>
+            <div className='text-base text-[#272728]'>{userData?.phone}</div>
           </div>
         </div>
         <div>
@@ -134,19 +159,21 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
           </div>
           <div className='mb-[10px]'>
             <Label text='Bank' />
-            <div className='text-base text-[#272728]'>{data.bankName}</div>
+            <div className='text-base text-[#272728]'>{userData.bankName}</div>
           </div>
           <div className='mb-[10px]'>
             <Label text='Branch' />
-            <div className='text-base text-[#272728]'>{data?.branchName}</div>
+            <div className='text-base text-[#272728]'>
+              {userData?.branchName}
+            </div>
           </div>
           <div className='mb-[10px]'>
             <Label text='Account Number' />
-            <div className='text-base text-[#272728]'>{data?.accNo}</div>
+            <div className='text-base text-[#272728]'>{userData?.accNo}</div>
           </div>
           <div className='mb-[10px]'>
             <Label text='IFSC Code' />
-            <div className='text-base text-[#272728]'>{data?.IFSC}</div>
+            <div className='text-base text-[#272728]'>{userData?.IFSC}</div>
           </div>
         </div>
         <div>
@@ -155,11 +182,15 @@ const UserDetailsModal = ({ data, handleStep, onClose }: PropType) => {
           </div>
           <div className='mb-[10px]'>
             <Label text='PAN Number' />
-            <div className='text-base text-[#272728]'>{data?.PANnumber}</div>
+            <div className='text-base text-[#272728]'>
+              {userData?.PANnumber}
+            </div>
           </div>
           <div className='mb-[10px]'>
             <Label text='GST Number' />
-            <div className='text-base text-[#272728]'>{data?.GSTnumber}</div>
+            <div className='text-base text-[#272728]'>
+              {userData?.GSTnumber}
+            </div>
           </div>
         </div>
       </div>

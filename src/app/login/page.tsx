@@ -11,9 +11,11 @@ import InputTag from '@/components/inputtag/InputTag';
 import PasswordInput from '@/components/inputtag/PasswordInput';
 import Label from '@/components/Label';
 
+import { useAuthContext } from '@/context/AuthContext';
 import { emailRegisterCheck, userLogin } from '@/services/authServices';
 
 const Login = () => {
+  const { handleSetProviderId } = useAuthContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -26,6 +28,7 @@ const Login = () => {
     try {
       const data = await userLogin({ email, password });
       localStorage.setItem('3cpToken', data?.data?.providerId);
+      handleSetProviderId(data?.data?.providerId);
       router.push('my-courses');
       toast.success(data.message);
     } catch (error) {
@@ -43,6 +46,7 @@ const Login = () => {
       if (data?.found) {
         setIsPasswordShow(true);
       } else {
+        toast.warn('user is not registered');
         localStorage.setItem('userEmailId', email);
         router.push(`/sign-up`);
       }

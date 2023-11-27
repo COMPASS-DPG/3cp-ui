@@ -47,12 +47,16 @@ const ImageUpload = ({
           className='hidden'
         />
 
-        {image ? (
+        {image || (value && typeof value === 'string') ? (
           <div className='flex'>
             <div className='rounded-lg border border-dashed border-[#D5D5D5] bg-gray-50 px-[68px] py-[10px]'>
               <Image
-                src={`data:image/jpeg;base64,${image}`}
-                alt='uploaded'
+                src={
+                  value && typeof value === 'string'
+                    ? value
+                    : `data:image/jpeg;base64,${image}`
+                }
+                alt='course img'
                 width={200}
                 height={200}
               />

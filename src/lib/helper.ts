@@ -1,7 +1,7 @@
 import { ResetPasswordDataType } from '@/components/popUps/ResetPassword';
 
-import { NewCourseFormType } from '@/app/add-new-course/page';
 import { userType } from '@/app/my-account/page';
+import { NewCourseFormType } from '@/app/my-courses/[add-course]/page';
 import { BankDetailsType, GeneralDetailsType } from '@/app/sign-up/page';
 
 export function getFromLocalStorage(key: string): string | null {
@@ -18,6 +18,14 @@ export function getFromSessionStorage(key: string): string | null {
   return null;
 }
 
+function isValidURL(url: string) {
+  // Regular expression for a basic URL validation
+  const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+
+  // Test the URL against the regex
+  return !urlRegex.test(url);
+}
+
 // will check for general details data and set error
 export const isValidFormData = (
   data: NewCourseFormType,
@@ -32,11 +40,8 @@ export const isValidFormData = (
     handleGeneralDetailsError('description', 'overview is required!');
     flag = false;
   }
-  if (!data?.language || data?.language.length == 0) {
-    handleGeneralDetailsError(
-      'courseLanguages',
-      'course languages is required!'
-    );
+  if (!data?.language || data?.language?.length == 0) {
+    handleGeneralDetailsError('language', 'course languages is required!');
     flag = false;
   }
   if (!data?.credits) {
@@ -47,8 +52,13 @@ export const isValidFormData = (
     handleGeneralDetailsError('imgLink', 'course image is required!');
     flag = false;
   }
-  if (!data?.courseLink) {
-    handleGeneralDetailsError('courseLink', 'course link is required!');
+  if (!data?.courseLink || isValidURL(data?.courseLink)) {
+    handleGeneralDetailsError(
+      'courseLink',
+      isValidURL(data?.courseLink) && data?.courseLink
+        ? 'please enter valid course URL!'
+        : 'course link is required!'
+    );
     flag = false;
   }
   if (!data?.author) {

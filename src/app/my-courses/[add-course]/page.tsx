@@ -1,6 +1,7 @@
 'use client';
-// import { usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { isValidFormData } from '@/lib/helper';
 
@@ -13,20 +14,23 @@ import CourseAddSuccessPopup from '@/components/newCourseForm/CourseAddSuccessPo
 import CourseCard from '@/components/newCourseForm/CourseCard';
 import NewCourseForm from '@/components/newCourseForm/NewCourseForm';
 
+import { CourseType } from '@/app/my-courses/page';
+
 export type CompetencyAndLevelsType = {
   competency: string;
   levels: string[];
 };
 
 export type NewCourseFormType = {
+  id?: string;
   title: string;
   imgLink: string | File;
   description: string;
   language: string[];
-  credits: string;
+  credits: number | string;
   courseLink: string;
   author: string;
-  startDate: Date;
+  startDate: Date | null;
   endDate: Date | null;
   competency: CompetencyAndLevelsType[];
 };
@@ -73,14 +77,48 @@ const initialData = () => {
   };
 };
 
+const convertEditCourseDataToFormInputData = (editCourseData: CourseType) => {
+  if (!editCourseData) {
+    return null;
+  }
+  const convertedCompetencyData = Object.entries(
+    editCourseData?.competency
+  )?.map(([competency, levels]) => ({
+    competency,
+    levels,
+  }));
+  return { ...editCourseData, competency: convertedCompetencyData };
+};
+
+// will check for all competency and levels input
+const isValidCompetency = (competency: CompetencyAndLevelsType[]) => {
+  if (competency?.length == 0) {
+    toast.error('competency and levels are required');
+    return false;
+  }
+  for (let i = 0; i < competency?.length; i++) {
+    if (!competency[i]?.competency || competency[i]?.levels?.length == 0) {
+      toast.error('competency and levels are required');
+      return false;
+    }
+  }
+  return true;
+};
+
 const AddNewCourse = () => {
-  // const pathname = usePathname()
-  const [formData, setFormData] = useState<NewCourseFormType>(initialData());
+  const searchParams = useSearchParams();
+  const courseData = searchParams.get('data') ?? null;
+  const newEditCourseData = convertEditCourseDataToFormInputData(
+    courseData ? JSON.parse(courseData) : null
+  );
+
+  const [formData, setFormData] = useState<NewCourseFormType>(
+    newEditCourseData ?? initialData()
+  );
   const [error, setError] = useState<NewCourseFormErrorType>(initialError());
   const [image, setImage] = useState('');
   const [preview, setPreview] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
-  // const isEdit = pathname.includes('edit-new-course');
 
   const handleFormError = (key: string, value: string) => {
     setError((pre) => {
@@ -149,7 +187,9 @@ const AddNewCourse = () => {
   const handleSubmit = () => {
     setError(initialError());
     if (isValidFormData(formData, handleFormError)) {
-      setPreview(true);
+      if (isValidCompetency(formData?.competency)) {
+        setPreview(true);
+      }
     }
   };
 
@@ -194,15 +234,21 @@ const AddNewCourse = () => {
         <div className=' border-b border-solid border-[#D8D8D8]'></div>
         {formData?.competency?.map((data, ind, totalData) => {
           return (
-            <AddCompetencyAndLevel
+            <div
               key={ind}
-              index={ind}
-              length={totalData?.length}
-              data={data}
-              onChange={(data) => handleCompetencyAndLevelsData(data, ind)}
-              handleDelete={() => handleDelete(ind)}
-              handleAdd={() => handleAddValue({ competency: '', levels: [] })}
-            />
+              className={
+                formData?.competency.length - 1 !== ind ? 'w-[95%]' : 'w-[100%]'
+              }
+            >
+              <AddCompetencyAndLevel
+                index={ind}
+                length={totalData?.length}
+                data={data}
+                onChange={(data) => handleCompetencyAndLevelsData(data, ind)}
+                handleDelete={() => handleDelete(ind)}
+                handleAdd={() => handleAddValue({ competency: '', levels: [] })}
+              />
+            </div>
           );
         })}
         <div className='mt-[60px] flex  justify-end gap-5'>
