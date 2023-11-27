@@ -76,14 +76,11 @@ const MyCourses = () => {
   };
 
   const handleSearch = () => {
-    if (
-      !searchInput.competency &&
-      !searchInput.language &&
-      !searchInput.title
-    ) {
+    if (!showSearch) {
+      setSearchInput(getEmptyValue());
       filterCourse(activeComponent);
-      setShowSearch(true);
       setIsSearch(false);
+      setShowSearch(true);
       return;
     }
 
@@ -116,7 +113,6 @@ const MyCourses = () => {
       );
     });
     setCurrentCourseList(searchedData);
-    setSearchInput(getEmptyValue());
     setShowSearch(false);
     setIsSearch(true);
   };
