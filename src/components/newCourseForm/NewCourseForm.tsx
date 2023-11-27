@@ -12,7 +12,12 @@ import { languageOptions } from '@/components/Options';
 import {
   NewCourseFormErrorType,
   NewCourseFormType,
-} from '@/app/add-new-course/page';
+} from '@/app/my-courses/[add-course]/page';
+
+// import {
+//   NewCourseFormErrorType,
+//   NewCourseFormType,
+// } from '@/app/add-new-course/page';
 
 type PropType = {
   error: NewCourseFormErrorType;
@@ -108,7 +113,9 @@ const NewCourseForm = ({
             data={data.startDate ? new Date(data.startDate) : null}
             onChange={(date) => onChange('startDate', date)}
             isSelectStart={true}
-            startDate={new Date(data.startDate)}
+            startDate={
+              data?.startDate !== null ? new Date(data?.startDate) : null
+            }
             endDate={data.endDate}
             errorMessage={error?.startDate}
           />
@@ -119,9 +126,13 @@ const NewCourseForm = ({
             data={data.endDate ? new Date(data.endDate) : null}
             onChange={(date) => onChange('endDate', date)}
             isSelectEnd={true}
-            startDate={new Date(data.startDate)}
+            startDate={
+              data?.startDate !== null ? new Date(data?.startDate) : null
+            }
             endDate={data.endDate}
-            minDate={new Date(data.startDate)}
+            minDate={
+              data?.startDate !== null ? new Date(data?.startDate) : null
+            }
             errorMessage={error.endDate}
           />
         </div>

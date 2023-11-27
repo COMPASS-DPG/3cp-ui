@@ -7,7 +7,7 @@ import SelectTag from '@/components/inputtag/SelectTag';
 import Label from '@/components/Label';
 import { languageOptions } from '@/components/Options';
 
-import { CompetencyAndLevelsType } from '@/app/add-new-course/page';
+import { CompetencyAndLevelsType } from '@/app/my-courses/[add-course]/page';
 
 type PropType = {
   handleDelete: () => void;
