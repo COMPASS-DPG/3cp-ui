@@ -6,6 +6,7 @@ import { BiSolidArchiveIn } from 'react-icons/bi';
 import { BsFillPencilFill, BsThreeDotsVertical } from 'react-icons/bs';
 import { FaUserEdit } from 'react-icons/fa';
 import { GiSandsOfTime } from 'react-icons/gi';
+import { MdVerified } from 'react-icons/md';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
 import { RxCrossCircled } from 'react-icons/rx';
 import { toast } from 'react-toastify';
@@ -20,7 +21,6 @@ import {
 } from '@/services/userServices';
 
 // import CourseImage from '~/images/courseProvider.png'
-import { VerifiedTick } from '~/svg';
 const languageColors = [
   'bg-[#DAFFDA] text-[#4ACB5F]',
   'bg-[#C7DEFF] text-[#385B8B]',
@@ -132,7 +132,7 @@ const SingleCourse = ({
             </div>
           </div>
           <div className='flex justify-between '>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-end gap-2'>
               <FaUserEdit />
               <p className='text-[14px] font-medium text-[#272728]'>
                 {course?.author}
@@ -151,27 +151,60 @@ const SingleCourse = ({
             </div>
             {/* icon for approved course */}
             {course?.verificationStatus == 'ACCEPTED' && (
-              <div className='flex items-end'>
-                <VerifiedTick width='20px' />
-                <p className='text-[14px] font-medium leading-5 text-[#4ACB5F]'>
+              <div className='flex items-end gap-1'>
+                <MdVerified
+                  width='20px'
+                  color={`${
+                    activeComponenet === 'ARCHIVED' ? '#999' : '#4ACB5F'
+                  }`}
+                />
+                <p
+                  className={`text-[14px] font-medium leading-5 ${
+                    activeComponenet === 'ARCHIVED'
+                      ? 'text-[#999]'
+                      : 'text-[#4ACB5F]'
+                  } `}
+                >
                   Verified
                 </p>
               </div>
             )}
             {/* icon for pending course */}
             {course.verificationStatus == 'PENDING' && (
-              <div className='flex items-end'>
-                <GiSandsOfTime width='20px' color='#FF5824' />
-                <p className='text-[14px] font-medium leading-5 text-[#FF5824]'>
+              <div className='flex items-end gap-1'>
+                <GiSandsOfTime
+                  width='20px'
+                  color={`${
+                    activeComponenet === 'ARCHIVED' ? '#999' : '#FF5824'
+                  }`}
+                />
+                <p
+                  className={`text-[14px] font-medium leading-5  ${
+                    activeComponenet === 'ARCHIVED'
+                      ? 'text-[#999]'
+                      : 'text-[#FF5824]'
+                  }`}
+                >
                   Approval Pending
                 </p>
               </div>
             )}
             {/* for reject course */}
             {course.verificationStatus == 'REJECTED' && (
-              <div className='flex  items-end gap-1'>
-                <RxCrossCircled width='20px' color='#FF5674' />
-                <p className='text-[14px] font-medium leading-5 text-[#FF5674]'>
+              <div className='flex  items-center gap-1'>
+                <RxCrossCircled
+                  width='20px'
+                  color={`${
+                    activeComponenet === 'ARCHIVED' ? '#999' : '#FF5674'
+                  }`}
+                />
+                <p
+                  className={`text-[14px] font-medium leading-5  ${
+                    activeComponenet === 'ARCHIVED'
+                      ? 'text-[#999]'
+                      : 'text-[#FF5674]'
+                  }`}
+                >
                   Rejected
                 </p>
                 <div className='cursor-pointer'>

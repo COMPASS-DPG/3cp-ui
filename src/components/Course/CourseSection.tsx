@@ -35,7 +35,7 @@ const CourseSection = ({
           />
         </div>
       ) : isSearch ? (
-        <div className='mt-[100px] text-center'>No Result found</div>
+        <NoCoursesAdded text='No Result found' />
       ) : (
         <NoCoursesAdded />
       )}
