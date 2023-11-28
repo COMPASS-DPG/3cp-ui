@@ -5,7 +5,7 @@ import { RiDeleteBin5Fill } from 'react-icons/ri';
 import MultiSelectTag from '@/components/inputtag/MultiSelectTag';
 import SelectTag from '@/components/inputtag/SelectTag';
 import Label from '@/components/Label';
-import { languageOptions } from '@/components/Options';
+import { Competency_Options } from '@/components/Options';
 
 import { CompetencyAndLevelsType } from '@/app/my-courses/[add-course]/page';
 
@@ -37,7 +37,9 @@ const AddCompetencyAndLevel = ({
           <Label text='Competency' />
           <SelectTag
             onChange={(value) => handleChange('competency', value)}
-            options={languageOptions}
+            options={Competency_Options?.map((item) => {
+              return { label: item?.competency, value: item?.competency };
+            })}
             placeholder='select competency'
             value={data?.competency}
             paddingY='2px'
@@ -53,7 +55,13 @@ const AddCompetencyAndLevel = ({
             >
               <MultiSelectTag
                 onChange={(value) => handleChange('levels', value)}
-                options={languageOptions}
+                options={
+                  Competency_Options.find(
+                    (item) => item?.competency === data?.competency
+                  )?.levels.map((item) => {
+                    return { label: item, value: item };
+                  }) ?? [{ label: '', value: '' }]
+                }
                 placeholder='select levels'
                 value={data?.levels}
                 paddingY='2px'

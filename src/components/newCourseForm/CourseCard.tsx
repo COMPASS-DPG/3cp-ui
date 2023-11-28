@@ -100,7 +100,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
           </div>
           <div>
             <div className='line-clamp-1 text-ellipsis text-[15px] font-bold text-[#272728] '>
-              {data.title}
+              {data?.title}
             </div>
             <div className='line-clamp-2 text-[13px] text-[#787878]'>
               {data?.competency?.map((item) => {
@@ -109,7 +109,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
                     key={item?.competency}
                     className='line-clamp-1 text-ellipsis'
                   >
-                    {item.competency}(
+                    {item?.competency}(
                     {item?.levels?.map((level) => {
                       return <span key={level}>{level}, </span>;
                     })}
@@ -128,7 +128,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
             {data?.author}
           </span>
 
-          {data.language.map((item, i) => {
+          {data?.language?.map((item, i) => {
             return (
               <span
                 key={item}
@@ -142,7 +142,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
           })}
         </div>
         <div className='text-[16px] font-semibold text-[#272728]'>
-          Cr.{data.credits}
+          Cr.{data?.credits}
         </div>
       </div>
       <div className='my-[30px] px-[100px] text-center text-[16px] text-[#272728]'>
