@@ -4,7 +4,7 @@ import CourseCreditInput from '@/components/inputtag/CourseCreditInput';
 import DatePickerComponent from '@/components/inputtag/DatePickerComponent';
 import ImageUpload from '@/components/inputtag/ImageUpload';
 import InputTag from '@/components/inputtag/InputTag';
-import MultiSelectTag from '@/components/inputtag/MultiSelectTag';
+import MultiSelectCreatable from '@/components/inputtag/MultiSelectCreatable';
 import TextAreaTag from '@/components/inputtag/TextAreaTag';
 import Label from '@/components/Label';
 import { languageOptions } from '@/components/Options';
@@ -71,7 +71,7 @@ const NewCourseForm = ({
       <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
         <div>
           <Label text='Course Language' />
-          <MultiSelectTag
+          <MultiSelectCreatable
             errorMessage={error?.language}
             onChange={(value) => onChange('language', value)}
             options={languageOptions}
