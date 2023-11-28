@@ -211,13 +211,13 @@ const SingleCourse = ({
                   {showSummary ? (
                     <AiOutlineUp
                       width='20px'
-                      color='#FF5674'
+                      color={activeComponenet ? '#999' : '#FF5674'}
                       onClick={() => setShowSummary(false)}
                     />
                   ) : (
                     <AiOutlineDown
                       width='20px'
-                      color='#FF5674'
+                      color={activeComponenet ? '#999' : '#FF5674'}
                       onClick={() => setShowSummary(true)}
                     />
                   )}
