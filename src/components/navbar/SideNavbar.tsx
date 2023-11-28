@@ -81,22 +81,25 @@ const SideNavbar = () => {
         </Link>
       </div>
 
-      {userProfileData?.status === 'PENDING' && (
-        <div className='mt-4 flex w-full justify-center overflow-hidden'>
-          <div className='relative flex h-[110px] w-[164px] flex-col items-center justify-center rounded-md  bg-white'>
-            <div className='absolute bottom-0 left-0 overflow-hidden rounded-md'>
-              <HalfRectangle width='164px' />
-            </div>
-            <div className='z-10 text-[##FF5824]'>
-              <SandClock width='20px' />
-            </div>
+      {userProfileData?.status === 'PENDING' ||
+        (userProfileData?.status === 'REJECTED' && (
+          <div className='mt-4 flex w-full justify-center overflow-hidden'>
+            <div className='relative flex h-[110px] w-[164px] flex-col items-center justify-center rounded-md  bg-white'>
+              <div className='absolute bottom-0 left-0 overflow-hidden rounded-md'>
+                <HalfRectangle width='164px' />
+              </div>
+              <div className='z-10 text-[##FF5824]'>
+                <SandClock width='20px' />
+              </div>
 
-            <p className='z-10 px-2 py-2 text-center text-[16px] font-medium text-[#272728]'>
-              You account is under verification
-            </p>
+              <p className='z-10 px-2 py-2 text-center text-[16px] font-medium text-[#272728]'>
+                {userProfileData?.status === 'REJECTED'
+                  ? 'Your account is rejected'
+                  : 'Your account is under verification'}
+              </p>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
     </nav>
   );
 };
