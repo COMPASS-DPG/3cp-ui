@@ -143,6 +143,7 @@ const MyCourses = () => {
               value={searchInput}
               onChange={handleSearchInputChange}
               handleSearch={handleSearch}
+              courseList={courseList}
               showSearch={showSearch}
             />
           </div>

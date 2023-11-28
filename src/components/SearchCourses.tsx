@@ -1,10 +1,7 @@
 'use client';
 import React from 'react';
 
-import {
-  COMPETENCY_OPTIONS,
-  LANGUAGE_OPTIONS,
-} from '@/components/SelectOptions';
+import { CourseType } from '@/app/my-courses/page';
 
 import ButtonFill from './button/ButtonFill';
 import { SearchInputType } from './Course/CourseSection';
@@ -17,6 +14,45 @@ type PropType = {
   onChange: (arg: SearchInputType) => void;
   handleSearch: () => void;
   showSearch: boolean;
+  courseList: CourseType[];
+};
+
+const getLanguageOptions = (courseList: CourseType[]) => {
+  // Use Set to store unique values
+  const uniqueLanguages = new Set<string>();
+
+  // Iterate over each object and its language array, and add languages to the Set
+  courseList?.forEach((obj) => {
+    if (obj?.language && Array.isArray(obj?.language)) {
+      obj?.language?.forEach((language: string) => {
+        uniqueLanguages.add(language);
+      });
+    }
+  });
+
+  // Convert Set back to an array
+  const LANGUAGE_OPTIONS = Array.from(uniqueLanguages)?.map((item) => {
+    return { label: item, value: item };
+  });
+  return LANGUAGE_OPTIONS;
+};
+
+const getCompetenciesList = (courseList: CourseType[]) => {
+  const uniqueCompetencies = new Set<string>();
+
+  courseList?.forEach((obj) => {
+    if (obj?.competency) {
+      Object.keys(obj?.competency)?.forEach((competency) => {
+        uniqueCompetencies.add(competency);
+      });
+    }
+  });
+
+  const COMPETENCY_OPTIONS = Array.from(uniqueCompetencies)?.map((item) => {
+    return { label: item, value: item };
+  });
+
+  return COMPETENCY_OPTIONS;
 };
 
 const SearchCourse = ({
@@ -24,6 +60,7 @@ const SearchCourse = ({
   onChange,
   handleSearch,
   showSearch,
+  courseList,
 }: PropType) => {
   return (
     <div className='my-7 flex flex-wrap gap-3'>
@@ -33,7 +70,7 @@ const SearchCourse = ({
         placeholder='Search Course by title'
       />
       <SelectTag
-        options={COMPETENCY_OPTIONS}
+        options={getCompetenciesList(courseList)}
         value={value?.competency}
         onChange={(updatedValue) =>
           onChange({ ...value, competency: updatedValue })
@@ -43,7 +80,7 @@ const SearchCourse = ({
         paddingY='2px'
       />
       <SelectTag
-        options={LANGUAGE_OPTIONS}
+        options={getLanguageOptions(courseList)}
         value={value?.language}
         onChange={(updatedValue) =>
           onChange({ ...value, language: updatedValue })
