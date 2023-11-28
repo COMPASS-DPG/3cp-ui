@@ -60,13 +60,16 @@ const TransectionTable = ({
           typeof course?.startDate === 'string'
             ? new Date(course?.startDate)
             : course?.startDate;
+
         const courseNameMatch =
           !searchInput?.text ||
           course.courseName
             .toLowerCase()
             .includes(searchInput?.text.toLowerCase());
         const startDateMatch =
-          !searchInput?.date || startDate == new Date(searchInput?.date);
+          !searchInput?.date ||
+          startDate?.toLocaleDateString('en-GB') ===
+            new Date(searchInput?.date).toLocaleDateString('en-GB');
         return courseNameMatch && startDateMatch;
       }
     );
