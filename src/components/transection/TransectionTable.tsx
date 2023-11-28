@@ -9,16 +9,6 @@ import {
   searchInputType,
 } from '@/app/transections/page';
 
-// type UserType = {
-//   courseId: number;
-//   courseName: string;
-//   courseStartDate: string;
-//   courseEndDate: string;
-//   credits: number;
-//   enrolledUsers: number;
-//   totalIncome: number;
-// };
-
 type PropType = {
   userData: CourseTransactionDataType[];
   filterUserData: CourseTransactionDataType[];
@@ -56,6 +46,14 @@ const TransectionTable = ({
   const currentData = filterUserData?.slice(startIndex, endIndex);
 
   const handleSearch = () => {
+    // if user want to reset search
+    if (!showSearch) {
+      setSearchInput(getEmptySearchData());
+      setFilterUserData(userData);
+      setShowSearch(true);
+      return;
+    }
+
     const searchedData = userData.filter(
       (course: CourseTransactionDataType) => {
         const startDate =
@@ -72,11 +70,9 @@ const TransectionTable = ({
         return courseNameMatch && startDateMatch;
       }
     );
+    setShowSearch(false);
     setFilterUserData(searchedData);
-    !searchInput.date && !searchInput.text
-      ? setShowSearch(true)
-      : setShowSearch(false);
-    setSearchInput(getEmptySearchData());
+
     if (currentPage != 1) setCurrentPage(1);
   };
 
@@ -155,26 +151,26 @@ const TransectionTable = ({
                     className={`border-b bg-white hover:bg-gray-50 ${outfit.className}`}
                   >
                     <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
-                      {user.courseName}
+                      {user?.courseName}
                     </td>
                     <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
-                      {user.startDate
+                      {user?.startDate
                         ? new Date(user.startDate).toLocaleDateString('en-GB')
                         : '--'}
                     </td>
                     <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
-                      {user.endDate
+                      {user?.endDate
                         ? new Date(user.endDate).toLocaleDateString('en-GB')
                         : '--'}
                     </td>
                     <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
-                      {user.credits}
+                      {user?.credits}
                     </td>
                     <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
-                      {user.numConsumersEnrolled}
+                      {user?.numConsumersEnrolled}
                     </td>
                     <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
-                      {user.income}
+                      {user?.income}
                     </td>
                   </tr>
                 );

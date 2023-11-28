@@ -109,9 +109,9 @@ const Login = () => {
                 width='450px'
                 errorMessage={passwordError}
               />
-              <div className='pt-2 text-right text-base text-[#385B8B]'>
+              {/* <div className='pt-2 text-right text-base text-[#385B8B]'>
                 <a href=''>Forget password?</a>
-              </div>
+              </div> */}
             </div>
           ) : (
             <div className='mb-[30px] w-[450px]'>

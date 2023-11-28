@@ -10,9 +10,11 @@ import { EditIcon, VerifiedTick } from '~/svg';
 const MyAccountTopBar = ({
   user,
   setShowEditSection,
+  showEditSection,
 }: {
   user: userType;
   setShowEditSection: (val: boolean) => void;
+  showEditSection: boolean;
 }) => {
   return (
     <div>
@@ -59,7 +61,7 @@ const MyAccountTopBar = ({
           <p className='text-[20px] font-medium'>{user?.name}</p>
           <p className='font-[Inter] text-[14px]'>{user?.email}</p>
         </div>
-        {user?.status !== 'VERIFIED' ? (
+        {user?.status !== 'VERIFIED' || showEditSection ? (
           <div className='mr-8 flex gap-2 rounded-lg bg-[#fff] px-5 py-2.5 font-[#272728] text-[16px] font-semibold leading-5 opacity-40'>
             <EditIcon width='24px' /> Edit Profile
           </div>

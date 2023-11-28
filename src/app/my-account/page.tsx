@@ -47,6 +47,7 @@ const MyAccount = () => {
       </CommonModal>
       <MyAccountTopBar
         user={userProfileData}
+        showEditSection={showEditSection}
         setShowEditSection={setShowEditSection}
       />
 
