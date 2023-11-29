@@ -110,14 +110,14 @@ export const validateResetPasswordForm = (
   let flag = true;
   if (!data?.currentPassword || !isValidPassword(data?.currentPassword)) {
     const errorMessage = !data?.currentPassword
-      ? 'password is required!'
+      ? 'current password is required!'
       : 'Password must be 8 characters or longer with at least one uppercase, one lowercase,one number, and one special character';
     handleError('currentPassword', errorMessage);
     flag = false;
   }
   if (!data?.newPassword || !isValidPassword(data?.newPassword)) {
     const errorMessage = !data?.newPassword
-      ? 'password is required!'
+      ? 'new password is required!'
       : 'Password must be 8 characters or longer with at least one uppercase, one lowercase,one number, and one special character';
     handleError('newPassword', errorMessage);
     flag = false;
@@ -125,7 +125,7 @@ export const validateResetPasswordForm = (
   if (!data?.confirmPassword || data.newPassword !== data.confirmPassword) {
     const errorMessage = !data?.confirmPassword
       ? 'confirm password is required!'
-      : 'password and confirm password must be same';
+      : 'new password and confirm password must be same';
     handleError('confirmPassword', errorMessage);
     flag = false;
   }
