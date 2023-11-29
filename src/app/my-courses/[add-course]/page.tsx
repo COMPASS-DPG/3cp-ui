@@ -15,6 +15,7 @@ import CourseCard from '@/components/newCourseForm/CourseCard';
 import NewCourseForm from '@/components/newCourseForm/NewCourseForm';
 
 import { CourseType } from '@/app/my-courses/page';
+import { useAuthContext } from '@/context/AuthContext';
 
 export type CompetencyAndLevelsType = {
   competency: string;
@@ -77,10 +78,18 @@ const initialData = () => {
   };
 };
 
-const convertEditCourseDataToFormInputData = (editCourseData: CourseType) => {
-  if (!editCourseData) {
+const convertEditCourseDataToFormInputData = (
+  data: CourseType[],
+  courseId: string
+) => {
+  if (!courseId) {
     return null;
   }
+
+  const editCourseData = data.find((item) => item.id == courseId) ?? null;
+
+  if (!editCourseData) return null;
+
   const convertedCompetencyData = Object.entries(
     editCourseData?.competency
   )?.map(([competency, levels]) => ({
@@ -107,9 +116,11 @@ const isValidCompetency = (competency: CompetencyAndLevelsType[]) => {
 
 const AddNewCourse = () => {
   const searchParams = useSearchParams();
-  const courseData = searchParams.get('data') ?? null;
+  const { courseList } = useAuthContext();
+  const courseId = searchParams.get('courseId') ?? '';
   const newEditCourseData = convertEditCourseDataToFormInputData(
-    courseData ? JSON.parse(courseData) : null
+    courseList,
+    courseId
   );
 
   const [formData, setFormData] = useState<NewCourseFormType>(

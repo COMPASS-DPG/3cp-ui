@@ -51,9 +51,15 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
       formCourseData.append('courseLink', newData?.courseLink);
       formCourseData.append('author', newData?.author);
       if (newData.startDate)
-        formCourseData.append('startDate', newData?.startDate?.toDateString());
+        formCourseData.append(
+          'startDate',
+          new Date(newData?.startDate)?.toDateString()
+        );
       if (newData.endDate)
-        formCourseData.append('endDate', newData?.endDate?.toDateString());
+        formCourseData.append(
+          'endDate',
+          new Date(newData?.endDate)?.toDateString()
+        );
 
       // will append competencies
       Object.entries(newData?.competency).forEach(([key, values]) => {

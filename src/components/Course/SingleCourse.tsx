@@ -258,7 +258,7 @@ const SingleCourse = ({
                   className='flex cursor-pointer items-center gap-2 rounded-md border-b border-[#E3E7EF] py-1 pl-1 hover:bg-gray-300'
                   href={{
                     pathname: '/my-courses/edit-course',
-                    query: { data: JSON.stringify(course) },
+                    query: { courseId: course?.id },
                   }}
                 >
                   <BsFillPencilFill /> Edit Course
