@@ -43,7 +43,10 @@ const MyAccount = () => {
         isCrossShow={false}
         width='max-w-xl'
       >
-        <ResetPassword onClose={() => setIsOpen(false)} />
+        <ResetPassword
+          providerId={providerId}
+          onClose={() => setIsOpen(false)}
+        />
       </CommonModal>
       <MyAccountTopBar
         user={userProfileData}

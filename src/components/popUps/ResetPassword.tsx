@@ -26,7 +26,13 @@ export type ResetPasswordDataType = {
   confirmPassword: string;
 };
 
-const ResetPassword = ({ onClose }: { onClose: () => void }) => {
+const ResetPassword = ({
+  onClose,
+  providerId,
+}: {
+  onClose: () => void;
+  providerId: string;
+}) => {
   const [formInput, setFormInput] = useState(getEmptyValue());
   const [error, setError] = useState<ResetPasswordDataType>(getEmptyValue());
 
@@ -63,8 +69,14 @@ const ResetPassword = ({ onClose }: { onClose: () => void }) => {
     e.preventDefault();
     if (validateResetPasswordForm(formInput, handleError)) {
       (async () => {
+        // request data for reset password
+        const payload = {
+          oldPassword: formInput.currentPassword,
+          newPassword: formInput.newPassword,
+        };
         try {
-          await userResetPassword(formInput);
+          await userResetPassword(providerId, payload);
+          toast.success('password reset successfully');
           onClose();
         } catch (error) {
           // Handle any errors that occur during the API call
