@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import Spinner from '@/components/Spinner';
 import TransectionTable from '@/components/transection/TransectionTable';
 
 import { useAuthContext } from '@/context/AuthContext';
@@ -25,6 +26,8 @@ export type CourseTransactionDataType = {
 const Transections = () => {
   const { providerId } = useAuthContext();
   const [userData, setUserData] = useState<CourseTransactionDataType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [filterUserData, setFilterUserData] = useState<
     CourseTransactionDataType[]
   >([]);
@@ -33,25 +36,34 @@ const Transections = () => {
     (async () => {
       try {
         const data = await getAllCourseTransactions(providerId);
-        // setLoading(false);
+        setLoading(false);
         setUserData(data);
         setFilterUserData(data);
       } catch (error) {
         // Handle any errors that occur during the API call
         // eslint-disable-next-line no-console
         console.error('API call error:', error);
-        // setLoading(false);
-        // setError(true);
+        setLoading(false);
+        setError(true);
       }
     })();
   }, [providerId]);
   return (
     <div className='p-5'>
-      <TransectionTable
-        userData={userData}
-        filterUserData={filterUserData}
-        setFilterUserData={(value) => setFilterUserData(value)}
-      />
+      {loading && (
+        <div className='mt-[100px]'>
+          <Spinner />
+        </div>
+      )}
+      {error && <div className='mt-[100px]'>error...</div>}
+
+      {!loading && !error && (
+        <TransectionTable
+          userData={userData}
+          filterUserData={filterUserData}
+          setFilterUserData={(value) => setFilterUserData(value)}
+        />
+      )}
     </div>
   );
 };
