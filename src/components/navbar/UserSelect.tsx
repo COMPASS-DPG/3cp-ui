@@ -39,6 +39,7 @@ const UserSelect = ({
           options={options}
           value={options.find((item: OptionType) => item.value === value)}
           placeholder={placeholder}
+          isSearchable={false}
           onChange={(e: SingleValue<OptionType>) => {
             if (e) {
               onChange(e?.value);
@@ -50,7 +51,7 @@ const UserSelect = ({
               'input:focus': {
                 boxShadow: 'none',
               },
-              width: '150px',
+              width: '200px',
               cursor: 'pointer',
             }),
             control: (baseStyles) => ({
@@ -58,6 +59,13 @@ const UserSelect = ({
               border: 'none',
               outline: 'none',
               boxShadow: 'none',
+            }),
+            option: (provided) => ({
+              ...provided,
+              '&:hover': {
+                background: 'lightgray',
+                cursor: 'pointer',
+              },
             }),
           }}
         />
