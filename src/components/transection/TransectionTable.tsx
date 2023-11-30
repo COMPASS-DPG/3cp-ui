@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import NoCoursesAdded from '@/components/Course/NoCoursesAdded';
 import { outfit } from '@/components/FontFamily';
 import Pagination from '@/components/transection/Pagination';
 import SearchTransection from '@/components/transection/SearchTransection';
@@ -81,114 +82,122 @@ const TransectionTable = ({
 
   return (
     <>
-      <SearchTransection
-        totalIncome={totalIncome}
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        handleSearch={handleSearch}
-        showSearch={showSearch}
-        setShowSearch={setShowSearch}
-      />
+      {userData?.length > 0 ? (
+        <>
+          <SearchTransection
+            totalIncome={totalIncome}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            handleSearch={handleSearch}
+            showSearch={showSearch}
+            setShowSearch={setShowSearch}
+          />
 
-      <div className='relative mt-5 overflow-x-auto shadow-md sm:rounded-md'>
-        <table className='w-full text-left text-sm text-gray-500 dark:text-gray-400'>
-          <thead
-            className={`bg-[#385B8B] text-sm font-normal text-white ${outfit.className}`}
-          >
-            <tr>
-              <th scope='col' className='px-6 py-3 text-sm font-normal'>
-                Course Name
-              </th>
-              <th
-                scope='col'
-                className='px-6 py-3 text-center text-sm font-normal'
+          <div className='relative mt-5 overflow-x-auto shadow-md sm:rounded-md'>
+            <table className='w-full text-left text-sm text-gray-500 dark:text-gray-400'>
+              <thead
+                className={`bg-[#385B8B] text-sm font-normal text-white ${outfit.className}`}
               >
-                Course Start Date
-              </th>
-              <th
-                scope='col'
-                className='px-6 py-3 text-center text-sm font-normal'
-              >
-                Course End Date
-              </th>
-              <th
-                scope='col'
-                className='px-6 py-3 text-center text-sm font-normal'
-              >
-                Credits
-              </th>
-              <th
-                scope='col'
-                className='px-6 py-3 text-center text-sm font-normal'
-              >
-                Enrolled Users
-              </th>
-              <th
-                scope='col'
-                className='px-6 py-3 text-center text-sm font-normal'
-              >
-                Total Income
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentData.length == 0 && (
-              <tr
-                className={`border-b bg-white hover:bg-gray-50 ${outfit.className}`}
-              >
-                <td
-                  align='center'
-                  colSpan={6}
-                  className={` px-6 py-[14px] text-center 
-             text-sm  font-normal text-[#272728]`}
-                >
-                  No Result Found
-                </td>
-              </tr>
-            )}
-            {currentData.length > 0 &&
-              currentData?.map((user: CourseTransactionDataType) => {
-                return (
+                <tr>
+                  <th scope='col' className='px-6 py-3 text-sm font-normal'>
+                    Course Name
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-center text-sm font-normal'
+                  >
+                    Course Start Date
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-center text-sm font-normal'
+                  >
+                    Course End Date
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-center text-sm font-normal'
+                  >
+                    Credits
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-center text-sm font-normal'
+                  >
+                    Enrolled Users
+                  </th>
+                  <th
+                    scope='col'
+                    className='px-6 py-3 text-center text-sm font-normal'
+                  >
+                    Total Income
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentData.length == 0 && (
                   <tr
-                    key={user?.courseId}
                     className={`border-b bg-white hover:bg-gray-50 ${outfit.className}`}
                   >
-                    <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
-                      {user?.courseName}
-                    </td>
-                    <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
-                      {user?.startDate
-                        ? new Date(user.startDate).toLocaleDateString('en-GB')
-                        : '--'}
-                    </td>
-                    <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
-                      {user?.endDate
-                        ? new Date(user.endDate).toLocaleDateString('en-GB')
-                        : '--'}
-                    </td>
-                    <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
-                      {user?.credits}
-                    </td>
-                    <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
-                      {user?.numConsumersEnrolled}
-                    </td>
-                    <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
-                      {user?.income}
+                    <td
+                      align='center'
+                      colSpan={6}
+                      className={` px-6 py-[14px] text-center 
+             text-sm  font-normal text-[#272728]`}
+                    >
+                      No Result Found
                     </td>
                   </tr>
-                );
-              })}
-          </tbody>
-        </table>
-        <Pagination
-          currentDataLength={currentData?.length}
-          handlePageSize={(value: number) => setPageSize(value)}
-          pageSize={pageSize}
-          totalPages={totalPages}
-          currentPage={currentPage}
-          handlePage={(value: number) => setCurrentPage(value)}
-        />
-      </div>
+                )}
+                {currentData.length > 0 &&
+                  currentData?.map((user: CourseTransactionDataType) => {
+                    return (
+                      <tr
+                        key={user?.courseId}
+                        className={`border-b bg-white hover:bg-gray-50 ${outfit.className}`}
+                      >
+                        <td className='px-6 py-[14px] text-sm font-normal text-[#272728]'>
+                          {user?.courseName}
+                        </td>
+                        <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
+                          {user?.startDate
+                            ? new Date(user.startDate).toLocaleDateString(
+                                'en-GB'
+                              )
+                            : '--'}
+                        </td>
+                        <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
+                          {user?.endDate
+                            ? new Date(user.endDate).toLocaleDateString('en-GB')
+                            : '--'}
+                        </td>
+                        <td className='px-6 py-[14px] text-center text-sm font-normal text-[#272728]'>
+                          {user?.credits}
+                        </td>
+                        <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
+                          {user?.numConsumersEnrolled}
+                        </td>
+                        <td className='px-6 py-[14px] text-center text-sm font-normal  text-[#272728]'>
+                          {user?.income}
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+            <Pagination
+              currentDataLength={currentData?.length}
+              handlePageSize={(value: number) => setPageSize(value)}
+              pageSize={pageSize}
+              totalPages={totalPages}
+              currentPage={currentPage}
+              handlePage={(value: number) => setCurrentPage(value)}
+            />
+          </div>
+        </>
+      ) : (
+        <NoCoursesAdded text='No Transactions' />
+      )}
     </>
   );
 };
