@@ -59,6 +59,7 @@ const UserSelect = ({
               border: 'none',
               outline: 'none',
               boxShadow: 'none',
+              cursor: 'pointer',
             }),
             option: (provided) => ({
               ...provided,
