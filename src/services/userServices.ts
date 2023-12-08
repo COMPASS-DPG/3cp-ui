@@ -1,29 +1,36 @@
 import axios from 'axios';
 
-import { userType } from '@/app/my-account/page';
-import { CourseType } from '@/app/my-courses/page';
+// import { PaymentInfoType } from '@/app/my-account/page';
+
+// type UpdateProfileType = {
+//   email: string;
+//   name: string;
+//   orgName: string;
+//   paymentInfo: PaymentInfoType;
+//   phone: string;
+// };
 
 export const getProviderProfileDetails = async (providerId: string) => {
   const data = await axios.get(
-    `http://localhost:3000/api/provider/${providerId}/profile`
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/profile`
   );
   return data.data.data;
 };
 
 export const updateProviderProfileDetails = async (
   providerId: string,
-  payload: userType
+  payload: FormData
 ) => {
   const data = await axios.put(
-    `http://localhost:3000/api/provider/${providerId}/profile`,
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/profile`,
     payload
   );
   return data.data.data;
 };
 
-export const addCourse = async (providerId: string, payload: CourseType) => {
+export const addCourse = async (providerId: string, payload: FormData) => {
   const data = await axios.post(
-    `http://localhost:3000/api/provider/${providerId}/course`,
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/course`,
     payload
   );
   return data.data.data;
@@ -35,7 +42,7 @@ export const editCourse = async (
   payload: FormData
 ) => {
   const data = await axios.patch(
-    `http://localhost:3000/api/provider/${providerId}/course/${courseId}`,
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/course/${courseId}`,
     payload
   );
   return data.data.data;
@@ -43,7 +50,7 @@ export const editCourse = async (
 
 export const getCourseByProviderId = async (providerId: string) => {
   const data = await axios.get(
-    `http://localhost:3000/api/provider/${providerId}/course`
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/course`
   );
   return data.data.data;
 };
@@ -53,7 +60,7 @@ export const deleteCourseByProvideIdAndCourseId = async (
   courseId: string
 ) => {
   const data = await axios.delete(
-    `http://localhost:3000/api/provider/${providerId}/course/${courseId}`
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/course/${courseId}`
   );
   return data.data.data;
 };
@@ -64,7 +71,7 @@ export const archiveAndUnarchiveCourseByProvideIdAndCourseId = async (
   payload: { status: string }
 ) => {
   const data = await axios.patch(
-    `http://localhost:3000/api/provider/${providerId}/course/${courseId}/status`,
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/course/${courseId}/status`,
     payload
   );
   return data.data.data;
@@ -72,7 +79,7 @@ export const archiveAndUnarchiveCourseByProvideIdAndCourseId = async (
 
 export const getAllCourseTransactions = async (providerId: string) => {
   const data = await axios.get(
-    `http://localhost:3000/api/provider/${providerId}/course/transactions`
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/course/transactions`
   );
   return data.data.data;
 };

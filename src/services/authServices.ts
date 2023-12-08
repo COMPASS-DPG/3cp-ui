@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// import { SignupPropType } from '@/components/signupComponent/UserDetailsModal';
-
 type LoginPayloadType = {
   email: string;
   password: string;
@@ -14,7 +12,7 @@ type ResetPasswordType = {
 
 export const userLogin = async (payload: LoginPayloadType) => {
   const data = await axios.post(
-    'http://localhost:3000/api/provider/login',
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/login`,
     payload
   );
   return data.data;
@@ -22,14 +20,17 @@ export const userLogin = async (payload: LoginPayloadType) => {
 
 export const userSignup = async (payload: FormData) => {
   const data = await axios.post(
-    'http://localhost:3000/api/provider/signup',
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/signup`,
     payload
   );
   return data.data.data;
 };
 
 export const emailRegisterCheck = async (payload: { email: string }) => {
-  const data = await axios.post(`http://localhost:3000/api/provider`, payload);
+  const data = await axios.post(
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider`,
+    payload
+  );
   return data.data.data;
 };
 
@@ -38,7 +39,7 @@ export const userResetPassword = async (
   payload: ResetPasswordType
 ) => {
   const data = await axios.patch(
-    `http://localhost:3000/api/provider/${providerId}/reset-password`,
+    `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/reset-password`,
     payload
   );
   return data.data.data;

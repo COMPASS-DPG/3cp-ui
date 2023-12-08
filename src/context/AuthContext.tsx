@@ -84,10 +84,12 @@ const AuthContext = ({ children }: { children: React.ReactElement }) => {
       setFetchData(false);
     } catch (error) {
       // Handle any errors that occur during the API call
-      // eslint-disable-next-line no-console
-      console.error('API call error:', error);
-      toast.error('something went wrong');
-      router.push('error/DataNotFound');
+      setTimeout(() => {
+        // eslint-disable-next-line no-console
+        console.error('API call error:', error);
+        toast.error('something went wrong');
+        router.push('/error/DataNotFound');
+      }, 5000);
     }
   }, [providerId, router]);
 
@@ -98,10 +100,12 @@ const AuthContext = ({ children }: { children: React.ReactElement }) => {
       handleCourseData();
     } catch (error) {
       // Handle any errors that occur during the API call
-      // eslint-disable-next-line no-console
-      console.error('API call error:', error);
-      toast.error('something went wrong');
-      router.push('error/DataNotFound');
+      setTimeout(() => {
+        // eslint-disable-next-line no-console
+        console.error('API call error:', error);
+        toast.error('something went wrong');
+        router.push('/error/DataNotFound');
+      }, 5000);
     }
   }, [providerId, handleCourseData, router]);
 
@@ -137,9 +141,7 @@ const AuthContext = ({ children }: { children: React.ReactElement }) => {
         fetchData,
         setFetchData,
         courseList,
-        // currentCourseList,
         setCourseList,
-        // setCurrentCourseList,
       }}
     >
       {children}

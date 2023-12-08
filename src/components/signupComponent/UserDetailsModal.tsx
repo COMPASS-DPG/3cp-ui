@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 import ButtonFill from '@/components/button/ButtonFill';
@@ -58,44 +58,33 @@ const convertToFormData = (data: DataType) => {
 
   userFormData.append('name', data?.name);
   userFormData.append('email', data?.email);
-  userFormData.append('orgLogo', data?.orgLogo);
+  userFormData.append('logo', data?.orgLogo);
   userFormData.append('orgName', data?.orgName);
   userFormData.append('password', data?.password);
   userFormData.append('phone', `+91${data.phone}`);
-  userFormData.append('paymentInfo.bankName', data.bankName);
-  userFormData.append('paymentInfo.branchName', data.branchName);
-  userFormData.append('paymentInfo.accNo', data.accNo);
-  userFormData.append('paymentInfo.IFSC', data.IFSC);
-  userFormData.append('paymentInfo.PANnumber', data.PANnumber);
-  userFormData.append('paymentInfo.GSTnumber', data.GSTnumber);
+  userFormData.append(
+    'paymentInfo',
+    JSON.stringify({
+      bankName: data.bankName,
+      branchName: data.branchName,
+      accNo: data.accNo,
+      IFSC: data.IFSC,
+      PANnumber: data.PANnumber,
+      GSTnumber: data.GSTnumber,
+    })
+  );
 
   return userFormData;
 };
 
 const UserDetailsModal = ({ userData, handleStep, onClose }: PropType) => {
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const router = useRouter();
   const { handleSetProviderId } = useAuthContext();
 
-  //   const request: SignupPropType = {
-  //   name: data?.name,
-  //   email: data?.email,
-  //   orgLogo:
-  //     'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png',
-  //   orgName: data.orgName,
-  //   password: data.password,
-  //   phone: `+91${data.phone}`,
-  //   paymentInfo: {
-  //     bankName: data.bankName,
-  //     branchName: data.branchName,
-  //     accNo: data.accNo,
-  //     IFSC: data.IFSC,
-  //     PANnumber: data.PANnumber,
-  //     GSTnumber: data.GSTnumber,
-  //   },
-  // };
-
   const handleContinue = () => {
     (async () => {
+      setIsDisabled(true);
       // convert object into form data
       const userFormData = convertToFormData(userData);
       try {
@@ -103,7 +92,8 @@ const UserDetailsModal = ({ userData, handleStep, onClose }: PropType) => {
         handleSetProviderId(data?.providerId);
         localStorage.setItem('3cpToken', data.providerId);
         toast.success('user registered successfully');
-        router.push('/my-courses');
+        setIsDisabled(false);
+        router.push('/');
         onClose();
       } catch (error) {
         // Handle any errors that occur during the API call
@@ -205,7 +195,11 @@ const UserDetailsModal = ({ userData, handleStep, onClose }: PropType) => {
         >
           Edit
         </ButtonOutline>
-        <ButtonFill onClick={handleContinue} classes='bg-[#26292D] w-[120px] '>
+        <ButtonFill
+          disabled={isDisabled}
+          onClick={handleContinue}
+          classes='bg-[#26292D] w-[120px] '
+        >
           Continue
         </ButtonFill>
       </div>

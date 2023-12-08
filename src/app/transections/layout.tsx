@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <SideNavbar />
       <div className={`w-screen bg-[#F7F9FC] ${outfit.className}`}>
-        <TopNavbar heading='Transections' />
+        <TopNavbar heading='Transactions' />
         {children}
       </div>
     </>

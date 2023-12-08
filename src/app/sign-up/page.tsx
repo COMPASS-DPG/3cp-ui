@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 import {
@@ -188,7 +189,9 @@ const Signup = () => {
           </div>
           <div className='text-lg font-normal text-[#5C5C5C] '>
             Hi, looks like you are new here! Let's Sign-Up to Compass.{' '}
-            <span className='text-[#385B8B]'>Already have an account</span>
+            <Link href='/login' className='text-[#385B8B]'>
+              Already have an account
+            </Link>
           </div>
           <div className='my-5 text-base text-[#65758C]'>Step {step}/2</div>
           <div className='mb-2 text-lg font-semibold text-[#272728]'>

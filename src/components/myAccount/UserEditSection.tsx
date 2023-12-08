@@ -24,6 +24,29 @@ const getEmptyError = () => {
   };
 };
 
+// convert object into form data
+const convertToFormData = (data: userType) => {
+  const userFormData = new FormData();
+
+  userFormData.append('name', data?.name);
+  userFormData.append('email', data?.email);
+  userFormData.append('orgName', data?.orgName);
+  userFormData.append('phone', data.phone);
+  userFormData.append(
+    'paymentInfo',
+    JSON.stringify({
+      bankName: data.paymentInfo.bankName,
+      branchName: data.paymentInfo.branchName,
+      accNo: data.paymentInfo.accNo,
+      IFSC: data.paymentInfo.IFSC,
+      PANnumber: data.paymentInfo.PANnumber,
+      GSTnumber: data.paymentInfo.GSTnumber,
+    })
+  );
+
+  return userFormData;
+};
+
 type UserDetailsErrorType = {
   [key: string]: string;
   name: string;
@@ -34,21 +57,6 @@ type UserDetailsErrorType = {
   GSTnumber: string;
   IFSC: string;
 };
-
-// "name": "Vijay Salgaonkar",
-//         "email": "ankit@gmail.com",
-//         "password": "$2b$10$dcHhYpYwl0RRhGX0Pet3mO5ZTpI126u2h8d9l04RNq3a8NHLICysS",
-//         "orgName": "edX",
-//         "orgLogo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/2491px-Logo_of_Twitter.svg.png",
-//         "phone": "+919082528791",
-//         "paymentInfo": {
-//             "IFSC": "HDFC0000009",
-//             "accNo": "8483654687",
-//             "bankName": "HDFC",
-//             "GSTnumber": "123",
-//             "PANnumber": "123",
-//             "branchName": "HSR Layout"
-//         }
 
 type PropType = {
   providerId: string;
@@ -103,16 +111,9 @@ const UserEditSection = ({
   const handleUpload = () => {
     if (isValidUserProfileDetails(userDetail, handleError)) {
       (async () => {
-        const userData = {
-          email: userDetail.email,
-          name: userDetail.name,
-          orgLogo: userDetail.orgLogo,
-          orgName: userDetail.orgName,
-          paymentInfo: userDetail.paymentInfo,
-          phone: userDetail.phone,
-        };
+        const formData = convertToFormData(userDetail);
         try {
-          await updateProviderProfileDetails(providerId, userData);
+          await updateProviderProfileDetails(providerId, formData);
           setShowEditSection(false);
           getUserProfile();
           toast.success('data updated successfully');
@@ -246,7 +247,7 @@ const UserEditSection = ({
                   PANnumber: value,
                 })
               }
-              errorMessage={error?.PANNumber}
+              errorMessage={error?.PANnumber}
             />
           </div>
           <div className='flex flex-1 flex-col'>
@@ -260,7 +261,7 @@ const UserEditSection = ({
                   GSTnumber: value,
                 })
               }
-              errorMessage={error?.GSTNumber}
+              errorMessage={error?.GSTnumber}
             />
           </div>
         </div>

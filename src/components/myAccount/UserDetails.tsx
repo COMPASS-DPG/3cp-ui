@@ -54,10 +54,8 @@ const UserDetails = ({ user }: { user: userType }) => {
         <p className='pb-2 text-[18px]  font-semibold leading-6'>Others</p>
         <div className='h-[1px] bg-[#B3B3B3]'></div>{' '}
         <div className=' my-4 flex flex-col gap-1'>
-          <p className='text-[14px] font-medium text-[#6F747E]'>
-            {user.paymentInfo.PANnumber}
-          </p>
-          <p className='text-[16px] '>AVDG5161121P</p>
+          <p className='text-[14px] font-medium text-[#6F747E]'>PAN Number</p>
+          <p className='text-[16px] '>{user.paymentInfo.PANnumber}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>GST Number</p>

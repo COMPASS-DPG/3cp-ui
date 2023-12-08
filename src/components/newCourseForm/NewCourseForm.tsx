@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { capitalizeName } from '@/components/capitalizeName';
 import CourseCreditInput from '@/components/inputtag/CourseCreditInput';
 import DatePickerComponent from '@/components/inputtag/DatePickerComponent';
 import ImageUpload from '@/components/inputtag/ImageUpload';
@@ -41,7 +42,7 @@ const NewCourseForm = ({
           <div className=' my-[15px]'>
             <Label text='Course Name' />
             <InputTag
-              onChange={(value) => onChange('title', value)}
+              onChange={(value) => onChange('title', capitalizeName(value))}
               value={data.title}
               placeholder='Enter Course Name'
               errorMessage={error?.title}
@@ -102,7 +103,7 @@ const NewCourseForm = ({
           <Label text='Author' />
           <InputTag
             value={data?.author}
-            onChange={(value) => onChange('author', value)}
+            onChange={(value) => onChange('author', capitalizeName(value))}
             placeholder='Enter Author Name'
             errorMessage={error.author}
           />

@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
+import { usePathname } from 'next/navigation';
+import React, { useState } from 'react';
 import { FaUserEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
@@ -10,6 +10,7 @@ import ButtonOutline from '@/components/button/ButtonOutline';
 import { NewCourseFormType } from '@/app/my-courses/[add-course]/page';
 import { useAuthContext } from '@/context/AuthContext';
 import { addCourse, editCourse } from '@/services/userServices';
+
 type PropType = {
   image: string;
   data: NewCourseFormType;
@@ -18,8 +19,8 @@ type PropType = {
 };
 
 const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const pathname = usePathname();
-  const router = useRouter();
   const isEdit = pathname.includes('edit-course');
   const { providerId, setFetchData } = useAuthContext();
   const languageColor = [
@@ -29,6 +30,7 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
 
   const handleSend = () => {
     (async () => {
+      setIsDisabled(true);
       // formatting competency data
       const updateCompetencyData = Object.fromEntries(
         data?.competency?.map((item) => [item.competency, item.levels])
@@ -40,12 +42,12 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
 
       formCourseData.append('title', newData?.title);
       formCourseData.append('description', newData?.description);
-      newData?.language?.forEach((language) => {
-        formCourseData.append('language', language);
+      newData?.language?.forEach((language, index) => {
+        formCourseData.append(`language[${index}]`, language);
       });
 
       if (typeof newData?.imgLink !== 'string')
-        formCourseData.append('imgLink', newData?.imgLink);
+        formCourseData.append('image', newData?.imgLink);
 
       formCourseData.append('credits', newData.credits.toString());
       formCourseData.append('courseLink', newData?.courseLink);
@@ -61,24 +63,19 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
           new Date(newData?.endDate)?.toDateString()
         );
 
-      // will append competencies
-      Object.entries(newData?.competency).forEach(([key, values]) => {
-        values.forEach((value) => {
-          formCourseData.append(`competency[${key}][]`, value);
-        });
-      });
+      formCourseData.append('competency', JSON.stringify(newData?.competency));
 
       // api request
       try {
-        if (isEdit && newData?.id) {
-          await editCourse(providerId, newData?.id, formCourseData);
+        if (isEdit && data?.id) {
+          await editCourse(providerId, data?.id, formCourseData);
         } else {
-          await addCourse(providerId, newData);
+          await addCourse(providerId, formCourseData);
         }
         onClose();
         setFetchData(true);
+        setIsDisabled(false);
         handleSuccessModal();
-        router.push('/my-courses');
       } catch (error) {
         // Handle any errors that occur during the API call
         // eslint-disable-next-line no-console
@@ -98,7 +95,13 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
           <div>
             <Image
               className='rounded-lg'
-              src={`data:image/jpeg;base64,${image}`}
+              src={
+                image
+                  ? `data:image/jpeg;base64,${image}`
+                  : typeof data?.imgLink === 'string'
+                  ? data?.imgLink
+                  : ''
+              }
               alt='img'
               width={70}
               height={70}
@@ -162,7 +165,11 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
         >
           Edit
         </ButtonOutline>
-        <ButtonFill onClick={handleSend} classes='bg-[#26292D] '>
+        <ButtonFill
+          disabled={isDisabled}
+          onClick={handleSend}
+          classes='bg-[#26292D]'
+        >
           Send to Admin for verification
         </ButtonFill>
       </div>
