@@ -1,15 +1,5 @@
 import axios from 'axios';
 
-// import { PaymentInfoType } from '@/app/my-account/page';
-
-// type UpdateProfileType = {
-//   email: string;
-//   name: string;
-//   orgName: string;
-//   paymentInfo: PaymentInfoType;
-//   phone: string;
-// };
-
 export const getProviderProfileDetails = async (providerId: string) => {
   const data = await axios.get(
     `${process.env.NEXT_PUBLIC_COURSE_MANAGER_BACKEND_URL}/api/provider/${providerId}/profile`
