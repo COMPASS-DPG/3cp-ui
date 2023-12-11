@@ -67,8 +67,8 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
 
       // api request
       try {
-        if (isEdit && data?.id) {
-          await editCourse(providerId, data?.id, formCourseData);
+        if (isEdit && data?.courseId) {
+          await editCourse(providerId, data?.courseId, formCourseData);
         } else {
           await addCourse(providerId, formCourseData);
         }

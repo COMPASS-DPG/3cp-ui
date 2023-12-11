@@ -23,7 +23,7 @@ export type CompetencyAndLevelsType = {
 };
 
 export type NewCourseFormType = {
-  id?: string;
+  courseId?: string;
   title: string;
   imgLink: string | File;
   description: string;
@@ -86,7 +86,8 @@ const convertEditCourseDataToFormInputData = (
     return null;
   }
 
-  const editCourseData = data.find((item) => item.id == courseId) ?? null;
+  const editCourseData =
+    data?.find((item) => item?.courseId == courseId) ?? null;
 
   if (!editCourseData) return null;
 

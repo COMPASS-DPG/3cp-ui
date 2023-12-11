@@ -42,7 +42,7 @@ const NewCourseForm = ({
           <div className=' my-[15px]'>
             <Label text='Course Name' />
             <InputTag
-              onChange={(value) => onChange('title', capitalizeName(value))}
+              onChange={(value) => onChange('title', value)}
               value={data.title}
               placeholder='Enter Course Name'
               errorMessage={error?.title}

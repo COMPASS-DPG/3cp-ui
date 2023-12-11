@@ -23,7 +23,7 @@ const CourseSection = ({
 }) => {
   return (
     <div className={`mx-7 ${outfit.className}`}>
-      {courseList.length !== 0 ? (
+      {courseList?.length !== 0 ? (
         <div>
           <p className='my-2 text-[18px] font-medium leading-5 text-[#65758C]'>
             {courseList?.length} Courses

@@ -24,6 +24,7 @@ const MyAccountTopBar = ({
           alt='CourseProvider'
           width={160}
           height={160}
+          className='rounded-full'
         />
       </div>
       <div

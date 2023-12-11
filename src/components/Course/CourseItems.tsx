@@ -16,7 +16,7 @@ const CourseItems = ({
       {courseList?.map((course) => {
         return (
           <SingleCourse
-            key={course?.id}
+            key={course?.courseId}
             activeComponenet={activeComponenet}
             course={course}
             handleFetchData={handleFetchData}

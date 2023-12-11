@@ -44,7 +44,7 @@ const SingleCourse = ({
   const handleDeleteCourse = async () => {
     try {
       const providerId: string = course?.providerId ?? '';
-      const courseId: string = course?.id ?? '';
+      const courseId: string = course?.courseId ?? '';
       await deleteCourseByProvideIdAndCourseId(providerId, courseId);
       handleFetchData();
       toast.success('course deleted successfully');
@@ -60,7 +60,7 @@ const SingleCourse = ({
   const handleArchive = async () => {
     try {
       const providerId: string = course?.providerId ?? '';
-      const courseId: string = course?.id ?? '';
+      const courseId: string = course?.courseId ?? '';
       let successMessage = 'course archived successfully';
       const request: { status: string } = {
         status: 'ARCHIVED',
@@ -111,6 +111,7 @@ const SingleCourse = ({
             width={100}
             height={100}
             alt='course-image'
+            className='rounded-xl'
           />
         </div>
         {/* centeritem */}
@@ -258,7 +259,7 @@ const SingleCourse = ({
                   className='flex cursor-pointer items-center gap-2 rounded-md border-b border-[#E3E7EF] py-1 pl-1 hover:bg-gray-300'
                   href={{
                     pathname: '/my-courses/edit-course',
-                    query: { courseId: course?.id },
+                    query: { courseId: course?.courseId },
                   }}
                 >
                   <BsFillPencilFill /> Edit Course
