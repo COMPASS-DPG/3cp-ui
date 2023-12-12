@@ -1,5 +1,6 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -122,6 +123,8 @@ const isValidCompetency = (competency: CompetencyAndLevelsType[]) => {
 const AddNewCourse = () => {
   const searchParams = useSearchParams();
   const { courseList } = useAuthContext();
+  const router = useRouter();
+  const [disabledUpload, setDisabledUpload] = useState(true);
   const courseId = searchParams.get('courseId') ?? '';
   const newEditCourseData = convertEditCourseDataToFormInputData(
     courseList,
@@ -157,6 +160,9 @@ const AddNewCourse = () => {
         };
       });
     }
+    if (disabledUpload) {
+      setDisabledUpload(false);
+    }
     setFormData((pre) => {
       return {
         ...pre,
@@ -191,7 +197,9 @@ const AddNewCourse = () => {
   ) => {
     const newData = [...formData.competency];
     newData.splice(index, 1, data);
-
+    if (disabledUpload) {
+      setDisabledUpload(false);
+    }
     setFormData((pre) => {
       return {
         ...pre,
@@ -270,11 +278,15 @@ const AddNewCourse = () => {
         <div className='mt-[60px] flex  justify-end gap-5'>
           <ButtonOutline
             classes='border-[#385B8B] text-[#385B8B] w-[180px]'
-            onClick={() => null}
+            onClick={() => router.push('/my-courses')}
           >
             Cancel
           </ButtonOutline>
-          <ButtonFill onClick={handleSubmit} classes='bg-[#385B8B] w-[180px] '>
+          <ButtonFill
+            disabled={disabledUpload}
+            onClick={handleSubmit}
+            classes='bg-[#385B8B] w-[180px] '
+          >
             Upload
           </ButtonFill>
         </div>

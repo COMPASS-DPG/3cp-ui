@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { GiSandsOfTime } from 'react-icons/gi';
+import { TiDelete } from 'react-icons/ti';
 
 import ButtonFill from '@/components/button/ButtonFill';
 import RejectSummary from '@/components/Course/RejectSummary';
@@ -52,7 +53,7 @@ const MyAccountTopBar = ({
           </p>
         ) : (
           <p className='flex items-center gap-1 pr-8 text-[18px] font-semibold leading-5 text-[#FF5674]'>
-            <GiSandsOfTime width='20px' />
+            <TiDelete size={24} style={{ color: 'red' }} />
             Rejected
           </p>
         )}

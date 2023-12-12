@@ -36,7 +36,7 @@ const SearchInput = ({
       <input
         type='search'
         className='block w-[320px] rounded-lg 
-        border border-[#E3E7EF] bg-white py-2.5 pl-10 pr-[70px] text-sm  text-gray-900 placeholder:font-medium placeholder:text-[#909090]
+        border border-[#E3E7EF] bg-white py-2.5 pl-10  text-sm  text-gray-900 placeholder:text-[16px] placeholder:font-normal placeholder:text-[#787777]
          focus:ring-blue-400 md:w-[450px]'
         placeholder={placeholder}
         required={required}

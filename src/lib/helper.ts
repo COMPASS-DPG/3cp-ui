@@ -242,6 +242,13 @@ export const isValidUserProfileDetails = (
     handleBankDetailsError('bankName', 'bank name is required!');
     flag = false;
   }
+  if (!data?.phone || data?.phone?.length !== 10) {
+    const errorMessage = !data?.phone
+      ? 'phone number is required!'
+      : 'phone number is not valid!';
+    handleBankDetailsError('phone', errorMessage);
+    flag = false;
+  }
   if (!data?.paymentInfo?.branchName) {
     handleBankDetailsError('branchName', 'branch name is required!');
 

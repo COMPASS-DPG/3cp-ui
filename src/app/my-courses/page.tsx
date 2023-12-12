@@ -76,6 +76,15 @@ const MyCourses = () => {
   };
 
   const handleSearch = () => {
+    if (
+      !searchInput.title &&
+      !searchInput.competency &&
+      !searchInput.language &&
+      showSearch
+    ) {
+      return;
+    }
+
     if (!showSearch) {
       setSearchInput(getEmptyValue());
       filterCourse(activeComponent);

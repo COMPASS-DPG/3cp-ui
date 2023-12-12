@@ -50,7 +50,7 @@ const Login = () => {
       if (data?.found) {
         setIsPasswordShow(true);
       } else {
-        toast.warn('user is not registered', {
+        toast.warn('user is not registered. navigating you to sign up page', {
           draggable: false,
         });
         localStorage.setItem('userEmailId', email);

@@ -15,6 +15,7 @@ import { updateProviderProfileDetails } from '@/services/userServices';
 const getEmptyError = () => {
   return {
     name: '',
+    phone: '',
     bankName: '',
     branchName: '',
     accNo: '',
@@ -31,16 +32,16 @@ const convertToFormData = (data: userType) => {
   userFormData.append('name', data?.name);
   userFormData.append('email', data?.email);
   userFormData.append('orgName', data?.orgName);
-  userFormData.append('phone', data.phone);
+  userFormData.append('phone', `+91${data?.phone}`);
   userFormData.append(
     'paymentInfo',
     JSON.stringify({
-      bankName: data.paymentInfo.bankName,
-      branchName: data.paymentInfo.branchName,
-      accNo: data.paymentInfo.accNo,
-      IFSC: data.paymentInfo.IFSC,
-      PANnumber: data.paymentInfo.PANnumber,
-      GSTnumber: data.paymentInfo.GSTnumber,
+      bankName: data?.paymentInfo?.bankName,
+      branchName: data?.paymentInfo?.branchName,
+      accNo: data?.paymentInfo?.accNo,
+      IFSC: data?.paymentInfo?.IFSC,
+      PANnumber: data?.paymentInfo?.PANnumber,
+      GSTnumber: data?.paymentInfo?.GSTnumber,
     })
   );
 
@@ -50,6 +51,7 @@ const convertToFormData = (data: userType) => {
 type UserDetailsErrorType = {
   [key: string]: string;
   name: string;
+  phone: string;
   bankName: string;
   branchName: string;
   accNo: string;
@@ -71,11 +73,14 @@ const UserEditSection = ({
   user,
   setShowEditSection,
 }: PropType) => {
+  const EditData = { ...user, phone: user?.phone.replace(/^\+91/, '') };
   //user details
-  const [userDetail, setUserDetail] = useState(user);
+  const [userDetail, setUserDetail] = useState(EditData);
 
   // errors
   const [error, setError] = useState<UserDetailsErrorType>(getEmptyError());
+
+  const [disableUpload, setDisableUpload] = useState(true);
 
   // will set error
   const handleError = (key: string, value: string) => {
@@ -100,6 +105,9 @@ const UserEditSection = ({
           [errorKey]: '',
         };
       });
+    }
+    if (disableUpload) {
+      setDisableUpload(false);
     }
     setUserDetail((prevState) => ({
       ...prevState,
@@ -141,7 +149,7 @@ const UserEditSection = ({
 
         <div className='mt-5 flex w-full gap-12'>
           <div className='flex flex-1 flex-col'>
-            <Label text='Name' />
+            <Label text='Name of Moderator' />
             <InputTag
               value={userDetail?.name}
               onChange={(value) =>
@@ -152,7 +160,7 @@ const UserEditSection = ({
             />
           </div>
           <div className='flex flex-1 flex-col'>
-            <Label text='Organization' />
+            <Label text='Organization Name' />
             <InputTag
               value={userDetail?.orgName}
               onChange={(value) =>
@@ -163,7 +171,7 @@ const UserEditSection = ({
             />
           </div>
           <div className='flex flex-1 flex-col'>
-            <Label text='Email' />
+            <Label text='Email Id' />
             <InputTag
               value={userDetail?.email}
               onChange={(value) => handleInputChange('email', 'email', value)}
@@ -171,6 +179,20 @@ const UserEditSection = ({
               disabled={true}
             />
           </div>
+        </div>
+        <div className='mt-5 flex w-full gap-12'>
+          <div className='flex flex-1 flex-col'>
+            <Label text='Phone Number' />
+            <InputTag
+              value={userDetail?.phone}
+              type='number'
+              onChange={(value) => handleInputChange('phone', 'phone', value)}
+              placeholder='Enter Phone Number (of the account moderator)'
+              errorMessage={error?.phone}
+            />
+          </div>
+          <div className='flex flex-1 flex-col'></div>
+          <div className='flex flex-1 flex-col'></div>
         </div>
       </div>
       {/* Banking Details */}
@@ -195,7 +217,7 @@ const UserEditSection = ({
             />
           </div>
           <div className='flex flex-1 flex-col'>
-            <Label text='Branch' />
+            <Label text='Branch Name' />
             <InputTag
               value={userDetail?.paymentInfo?.branchName}
               placeholder='Enter Branch Name'
@@ -255,7 +277,7 @@ const UserEditSection = ({
             />
           </div>
           <div className='flex flex-1 flex-col'>
-            <Label text='GST' />
+            <Label text='GST Number' />
             <InputTag
               value={userDetail?.paymentInfo?.GSTnumber}
               placeholder='Enter GST Number'
@@ -278,7 +300,11 @@ const UserEditSection = ({
         >
           Cancel
         </ButtonOutline>
-        <ButtonFill onClick={handleUpload} classes='w-[180px] bg-[#385B8B]'>
+        <ButtonFill
+          disabled={disableUpload}
+          onClick={handleUpload}
+          classes='w-[180px] bg-[#385B8B]'
+        >
           Update
         </ButtonFill>
       </div>

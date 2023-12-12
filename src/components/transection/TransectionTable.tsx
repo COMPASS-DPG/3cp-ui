@@ -47,6 +47,10 @@ const TransectionTable = ({
   const currentData = filterUserData?.slice(startIndex, endIndex);
 
   const handleSearch = () => {
+    // if input fields are empty search button will be disabled
+    if (!searchInput.date && !searchInput.text && showSearch) {
+      return;
+    }
     // if user want to reset search
     if (!showSearch) {
       setSearchInput(getEmptySearchData());

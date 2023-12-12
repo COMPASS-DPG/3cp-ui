@@ -11,7 +11,7 @@ const UserDetails = ({ user }: { user: userType }) => {
         <div className='h-[1px] bg-[#B3B3B3]'></div>
         <div className=' my-4 flex flex-col gap-1'>
           <p className='text-[14px] font-medium text-[#6F747E]'>
-            Name of moderator
+            Name of Moderator
           </p>
           <p className='text-[16px] '>{user?.name}</p>
         </div>
@@ -20,7 +20,7 @@ const UserDetails = ({ user }: { user: userType }) => {
           <p className='text-[16px] '>{user?.email}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
-          <p className='text-[14px] font-medium text-[#6F747E]'>Phone</p>
+          <p className='text-[14px] font-medium text-[#6F747E]'>Phone Number</p>
           <p className='text-[16px] '>{user?.phone}</p>
         </div>
       </div>
@@ -31,11 +31,11 @@ const UserDetails = ({ user }: { user: userType }) => {
         </p>
         <div className='h-[1px] bg-[#B3B3B3]'></div>{' '}
         <div className=' my-4 flex flex-col gap-1'>
-          <p className='text-[14px] font-medium text-[#6F747E]'>Bank</p>
+          <p className='text-[14px] font-medium text-[#6F747E]'>Bank Name</p>
           <p className='text-[16px] '>{user?.paymentInfo?.bankName}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>
-          <p className='text-[14px] font-medium text-[#6F747E]'>Branch</p>
+          <p className='text-[14px] font-medium text-[#6F747E]'>Branch Name</p>
           <p className='text-[16px] '>{user?.paymentInfo?.branchName}</p>
         </div>
         <div className=' my-4 flex flex-col gap-1'>

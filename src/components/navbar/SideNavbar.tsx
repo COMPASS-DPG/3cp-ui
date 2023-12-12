@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { TiDelete } from 'react-icons/ti';
 
 import { useAuthContext } from '@/context/AuthContext';
 
@@ -89,7 +90,11 @@ const SideNavbar = () => {
               <HalfRectangle width='164px' />
             </div>
             <div className='z-10 text-[##FF5824]'>
-              <SandClock width='20px' />
+              {userProfileData?.status === 'REJECTED' ? (
+                <TiDelete size={40} style={{ color: 'red' }} />
+              ) : (
+                <SandClock width='20px' />
+              )}
             </div>
 
             <p className='z-10 px-2 py-2 text-center text-[16px] font-medium text-[#272728]'>
