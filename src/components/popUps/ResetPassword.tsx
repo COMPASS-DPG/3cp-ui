@@ -76,13 +76,17 @@ const ResetPassword = ({
         };
         try {
           await userResetPassword(providerId, payload);
-          toast.success('password reset successfully');
+          toast.success('password reset successfully', {
+            draggable: false,
+          });
           onClose();
         } catch (error) {
           // Handle any errors that occur during the API call
           // eslint-disable-next-line no-console
           console.error('API call error:', error);
-          toast.error('something went wrong please try again');
+          toast.error('something went wrong please try again', {
+            draggable: false,
+          });
         }
       })();
     }

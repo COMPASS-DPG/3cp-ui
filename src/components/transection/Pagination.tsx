@@ -30,7 +30,9 @@ const Pagination = ({
         handlePage(parseInt(pageNumber));
         setPageNumber('');
       } else {
-        toast.error(`page ${pageNumber} not found`);
+        toast.error(`page ${pageNumber} not found`, {
+          draggable: false,
+        });
       }
     }
   };

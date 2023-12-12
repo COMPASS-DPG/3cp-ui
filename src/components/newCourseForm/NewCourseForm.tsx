@@ -15,11 +15,6 @@ import {
   NewCourseFormType,
 } from '@/app/my-courses/[add-course]/page';
 
-// import {
-//   NewCourseFormErrorType,
-//   NewCourseFormType,
-// } from '@/app/add-new-course/page';
-
 type PropType = {
   error: NewCourseFormErrorType;
   data: NewCourseFormType;
@@ -61,9 +56,9 @@ const NewCourseForm = ({
         <div className=' my-[15px] w-[100%] lg:w-[49%]'>
           <Label text='Course Image' />
           <ImageUpload
-            errorMessage={error?.imgLink}
-            onChange={(value) => onChange('imgLink', value)}
-            value={data?.imgLink}
+            errorMessage={error?.imageLink}
+            onChange={(value) => onChange('imageLink', value)}
+            value={data?.imageLink}
             image={image}
             handleImage={handleImage}
           />

@@ -30,12 +30,16 @@ const Login = () => {
       localStorage.setItem('3cpToken', data?.data?.providerId);
       handleSetProviderId(data?.data?.providerId);
       router.push('my-courses');
-      toast.success(data.message);
+      toast.success(data.message, {
+        draggable: false,
+      });
     } catch (error) {
       // Handle any errors that occur during the API call
       // eslint-disable-next-line no-console
       console.error('API call error:', error);
-      toast.error('please enter valid password');
+      toast.error('please enter valid password', {
+        draggable: false,
+      });
     }
   };
 
@@ -46,7 +50,9 @@ const Login = () => {
       if (data?.found) {
         setIsPasswordShow(true);
       } else {
-        toast.warn('user is not registered');
+        toast.warn('user is not registered', {
+          draggable: false,
+        });
         localStorage.setItem('userEmailId', email);
         router.push(`/sign-up`);
       }
@@ -54,7 +60,9 @@ const Login = () => {
       // Handle any errors that occur during the API call
       // eslint-disable-next-line no-console
       console.error('API call error:', error);
-      toast.error('something went wrong');
+      toast.error('something went wrong', {
+        draggable: false,
+      });
     }
   };
 

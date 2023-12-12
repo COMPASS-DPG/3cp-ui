@@ -25,7 +25,7 @@ export type CompetencyAndLevelsType = {
 export type NewCourseFormType = {
   courseId?: string;
   title: string;
-  imgLink: string | File;
+  imageLink: string | File;
   description: string;
   language: string[];
   credits: number | string;
@@ -39,7 +39,7 @@ export type NewCourseFormType = {
 export type NewCourseFormErrorType = {
   [key: string]: string;
   title: string;
-  imgLink: string;
+  imageLink: string;
   description: string;
   language: string;
   credits: string;
@@ -52,7 +52,7 @@ export type NewCourseFormErrorType = {
 const initialError = () => {
   return {
     title: '',
-    imgLink: '',
+    imageLink: '',
     description: '',
     language: '',
     credits: '',
@@ -66,7 +66,7 @@ const initialError = () => {
 const initialData = () => {
   return {
     title: '',
-    imgLink: '',
+    imageLink: '',
     description: '',
     language: [],
     credits: '',
@@ -103,12 +103,16 @@ const convertEditCourseDataToFormInputData = (
 // will check for all competency and levels input
 const isValidCompetency = (competency: CompetencyAndLevelsType[]) => {
   if (competency?.length == 0) {
-    toast.error('competency and levels are required');
+    toast.error('competency and levels are required', {
+      draggable: false,
+    });
     return false;
   }
   for (let i = 0; i < competency?.length; i++) {
     if (!competency[i]?.competency || competency[i]?.levels?.length == 0) {
-      toast.error('competency and levels are required');
+      toast.error('competency and levels are required', {
+        draggable: false,
+      });
       return false;
     }
   }

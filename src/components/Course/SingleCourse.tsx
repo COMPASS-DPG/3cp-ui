@@ -47,12 +47,16 @@ const SingleCourse = ({
       const courseId: string = course?.courseId ?? '';
       await deleteCourseByProvideIdAndCourseId(providerId, courseId);
       handleFetchData();
-      toast.success('course deleted successfully');
+      toast.success('course deleted successfully', {
+        draggable: false,
+      });
     } catch (error) {
       // Handle any errors that occur during the API call
       // eslint-disable-next-line no-console
       console.error('API call error:', error);
-      toast.error('something went wrong');
+      toast.error('something went wrong', {
+        draggable: false,
+      });
     }
   };
 
@@ -74,13 +78,17 @@ const SingleCourse = ({
         courseId,
         request
       );
-      toast.success(successMessage);
+      toast.success(successMessage, {
+        draggable: false,
+      });
       handleFetchData();
     } catch (error) {
       // Handle any errors that occur during the API call
       // eslint-disable-next-line no-console
       console.error('API call error:', error);
-      toast.error('something went wrong');
+      toast.error('something went wrong', {
+        draggable: false,
+      });
     }
   };
 
@@ -107,7 +115,7 @@ const SingleCourse = ({
         {/* image */}
         <div className='flex-shrink-0'>
           <Image
-            src={typeof course?.imgLink === 'string' ? course?.imgLink : ''}
+            src={typeof course?.imageLink === 'string' ? course?.imageLink : ''}
             width={100}
             height={100}
             alt='course-image'

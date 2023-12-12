@@ -87,7 +87,9 @@ const AuthContext = ({ children }: { children: React.ReactElement }) => {
       setTimeout(() => {
         // eslint-disable-next-line no-console
         console.error('API call error:', error);
-        toast.error('something went wrong');
+        toast.error('something went wrong', {
+          draggable: false,
+        });
         router.push('/error/DataNotFound');
       }, 5000);
     }
@@ -103,7 +105,9 @@ const AuthContext = ({ children }: { children: React.ReactElement }) => {
       setTimeout(() => {
         // eslint-disable-next-line no-console
         console.error('API call error:', error);
-        toast.error('something went wrong');
+        toast.error('something went wrong', {
+          draggable: false,
+        });
         router.push('/error/DataNotFound');
       }, 5000);
     }

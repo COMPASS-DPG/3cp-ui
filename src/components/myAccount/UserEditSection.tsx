@@ -116,12 +116,16 @@ const UserEditSection = ({
           await updateProviderProfileDetails(providerId, formData);
           setShowEditSection(false);
           getUserProfile();
-          toast.success('data updated successfully');
+          toast.success('data updated successfully', {
+            draggable: false,
+          });
         } catch (error) {
           // Handle any errors that occur during the API call
           // eslint-disable-next-line no-console
           console.error('API call error:', error);
-          toast.error('something went wrong try again');
+          toast.error('something went wrong try again', {
+            draggable: false,
+          });
         }
       })();
     }

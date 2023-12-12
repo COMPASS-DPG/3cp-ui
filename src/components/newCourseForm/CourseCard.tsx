@@ -46,8 +46,8 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
         formCourseData.append(`language[${index}]`, language);
       });
 
-      if (typeof newData?.imgLink !== 'string')
-        formCourseData.append('image', newData?.imgLink);
+      if (typeof newData?.imageLink !== 'string')
+        formCourseData.append('image', newData?.imageLink);
 
       formCourseData.append('credits', newData.credits.toString());
       formCourseData.append('courseLink', newData?.courseLink);
@@ -80,7 +80,9 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
         // Handle any errors that occur during the API call
         // eslint-disable-next-line no-console
         console.error('API call error:', error);
-        toast.error('something went wrong');
+        toast.error('something went wrong', {
+          draggable: false,
+        });
       }
     })();
   };
@@ -98,8 +100,8 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
               src={
                 image
                   ? `data:image/jpeg;base64,${image}`
-                  : typeof data?.imgLink === 'string'
-                  ? data?.imgLink
+                  : typeof data?.imageLink === 'string'
+                  ? data?.imageLink
                   : ''
               }
               alt='img'

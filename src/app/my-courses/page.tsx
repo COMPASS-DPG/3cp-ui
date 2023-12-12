@@ -21,7 +21,7 @@ export type CourseType = {
   title: string;
   description: string;
   courseLink: string;
-  imgLink: string | File;
+  imageLink: string | File;
   credits: number | string;
   startDate: Date | null;
   endDate: Date | null;

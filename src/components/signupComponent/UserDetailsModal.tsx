@@ -91,7 +91,9 @@ const UserDetailsModal = ({ userData, handleStep, onClose }: PropType) => {
         const data = await userSignup(userFormData);
         handleSetProviderId(data?.providerId);
         localStorage.setItem('3cpToken', data.providerId);
-        toast.success('user registered successfully');
+        toast.success('user registered successfully', {
+          draggable: false,
+        });
         setIsDisabled(false);
         router.push('/');
         onClose();
@@ -99,7 +101,9 @@ const UserDetailsModal = ({ userData, handleStep, onClose }: PropType) => {
         // Handle any errors that occur during the API call
         // eslint-disable-next-line no-console
         console.error('API call error:', error);
-        toast.error('something went wrong try after some time');
+        toast.error('something went wrong try after some time', {
+          draggable: false,
+        });
       }
     })();
   };

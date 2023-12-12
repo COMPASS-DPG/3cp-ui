@@ -48,8 +48,8 @@ export const isValidFormData = (
     handleGeneralDetailsError('credits', 'course credit is required!');
     flag = false;
   }
-  if (!data?.imgLink) {
-    handleGeneralDetailsError('imgLink', 'course image is required!');
+  if (!data?.imageLink) {
+    handleGeneralDetailsError('imageLink', 'course image is required!');
     flag = false;
   }
   if (!data?.courseLink || isValidURL(data?.courseLink)) {
