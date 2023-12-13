@@ -1,14 +1,24 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { TiDelete } from 'react-icons/ti';
+
+import { useAuthContext } from '@/context/AuthContext';
 
 import { outfit, oxanium } from '../../components/FontFamily';
-import { MyAccount, MyCourses, Transections } from '../../../public/svg';
-// import NavLink from './NavLink'
+
+import {
+  HalfRectangle,
+  MyAccount,
+  MyCourses,
+  SandClock,
+  Transections,
+} from '~/svg';
 
 const SideNavbar = () => {
-  const pathname = usePathname();
+  const { userProfileData } = useAuthContext();
 
+  const pathname = usePathname();
   return (
     <nav className='sticky top-0 flex h-screen w-[200px] flex-shrink-0 flex-col  items-start gap-[15px]  bg-[#2D496F]'>
       <div className='inline-flex  h-[100px] w-[200px] items-center justify-end pb-4 pt-[30px]'>
@@ -22,7 +32,6 @@ const SideNavbar = () => {
           </div>
         </div>
       </div>
-
       <div
         className={`inline-flex h-10 w-[200px] items-center justify-end py-2.5 pl-4 ${
           pathname === '/my-courses' ? 'bg-white bg-opacity-30' : ''
@@ -72,6 +81,30 @@ const SideNavbar = () => {
           </div>
         </Link>
       </div>
+
+      {(userProfileData?.status === 'PENDING' ||
+        userProfileData?.status === 'REJECTED') && (
+        <div className='mt-4 flex w-full justify-center overflow-hidden'>
+          <div className='relative flex h-[110px] w-[164px] flex-col items-center justify-center rounded-md  bg-white'>
+            <div className='absolute bottom-0 left-0 overflow-hidden rounded-md'>
+              <HalfRectangle width='164px' />
+            </div>
+            <div className='z-10 text-[##FF5824]'>
+              {userProfileData?.status === 'REJECTED' ? (
+                <TiDelete size={40} style={{ color: 'red' }} />
+              ) : (
+                <SandClock width='20px' />
+              )}
+            </div>
+
+            <p className='z-10 px-2 py-2 text-center text-[16px] font-medium text-[#272728]'>
+              {userProfileData?.status === 'REJECTED'
+                ? 'Your account is rejected'
+                : 'Your account is under verification'}
+            </p>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

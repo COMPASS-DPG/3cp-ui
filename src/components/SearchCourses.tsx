@@ -1,58 +1,111 @@
 'use client';
 import React from 'react';
 
-import { USER_OPTIONS } from '@/components/SelectOptions';
+import { CourseType } from '@/app/my-courses/page';
 
-import { SearchInputType } from '../components/Course/ApprovedCourses';
+import ButtonFill from './button/ButtonFill';
+import { SearchInputType } from './Course/CourseSection';
+import SearchInput from './inputtag/SearchInput';
+import SelectTag from './inputtag/SelectTag';
+import { SearchIcon } from '../../public/svg';
 
 type PropType = {
   value: SearchInputType;
   onChange: (arg: SearchInputType) => void;
   handleSearch: () => void;
+  showSearch: boolean;
+  courseList: CourseType[];
 };
 
-import ButtonFill from './button/ButtonFill';
-import SearchInput from './inputtag/SearchInput';
-import SelectTag from './inputtag/SelectTag';
-import { SearchIcon } from '../../public/svg';
+const getLanguageOptions = (courseList: CourseType[]) => {
+  // Use Set to store unique values
+  const uniqueLanguages = new Set<string>();
 
-const SearchUser = ({ value, onChange, handleSearch }: PropType) => {
+  // Iterate over each object and its language array, and add languages to the Set
+  courseList?.forEach((obj) => {
+    if (obj?.language && Array.isArray(obj?.language)) {
+      obj?.language?.forEach((language: string) => {
+        uniqueLanguages.add(language);
+      });
+    }
+  });
+
+  // Convert Set back to an array
+  const LANGUAGE_OPTIONS = Array.from(uniqueLanguages)?.map((item) => {
+    return { label: item, value: item };
+  });
+  return LANGUAGE_OPTIONS;
+};
+
+const getCompetenciesList = (courseList: CourseType[]) => {
+  const uniqueCompetencies = new Set<string>();
+
+  courseList?.forEach((obj) => {
+    if (obj?.competency) {
+      Object.keys(obj?.competency)?.forEach((competency) => {
+        uniqueCompetencies.add(competency);
+      });
+    }
+  });
+
+  const COMPETENCY_OPTIONS = Array.from(uniqueCompetencies)?.map((item) => {
+    return { label: item, value: item };
+  });
+
+  return COMPETENCY_OPTIONS;
+};
+
+const SearchCourse = ({
+  value,
+  onChange,
+  handleSearch,
+  showSearch,
+  courseList,
+}: PropType) => {
   return (
     <div className='my-7 flex flex-wrap gap-3'>
       <SearchInput
-        value={value.user}
-        onChange={(updatedValue) => onChange({ ...value, user: updatedValue })}
+        value={value.title}
+        onChange={(updatedValue) => onChange({ ...value, title: updatedValue })}
         placeholder='Search Course by title'
-        width='480px'
       />
       <SelectTag
-        options={USER_OPTIONS}
-        value={value?.department}
+        options={getCompetenciesList(courseList)}
+        value={value?.competency}
         onChange={(updatedValue) =>
-          onChange({ ...value, department: updatedValue })
+          onChange({ ...value, competency: updatedValue })
         }
         width='350px'
-        placeholder='Department'
+        placeholder='Competency'
         paddingY='2px'
       />
       <SelectTag
-        options={USER_OPTIONS}
-        value={value?.department}
+        options={getLanguageOptions(courseList)}
+        value={value?.language}
         onChange={(updatedValue) =>
-          onChange({ ...value, department: updatedValue })
+          onChange({ ...value, language: updatedValue })
         }
         width='150px'
-        placeholder='Department'
+        placeholder='Language'
         paddingY='2px'
       />
-      <ButtonFill onClick={handleSearch} classes='bg-[#385B8B] w-[120px]'>
+      <ButtonFill
+        onClick={handleSearch}
+        classes={`bg-[#385B8B] ${showSearch && 'w-[120px]'}`}
+      >
         <div className='flex justify-between'>
-          <SearchIcon className='w-[18px]' />
-          <span>Search</span>
+          {showSearch ? (
+            <>
+              <SearchIcon className='w-[18px]' />
+              <span>Search</span>
+            </>
+          ) : (
+            'Reset'
+          )}
         </div>
       </ButtonFill>
     </div>
   );
 };
 
-export default SearchUser;
+export default SearchCourse;
