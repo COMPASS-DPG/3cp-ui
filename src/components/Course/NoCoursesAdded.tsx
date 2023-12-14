@@ -2,11 +2,7 @@ import React from 'react';
 
 import { EmptyBox } from '~/svg';
 
-const NoCoursesAdded = ({
-  text = 'No courses added yet!',
-}: {
-  text?: string;
-}) => {
+const NoCoursesAdded = ({ text = 'No courses' }: { text?: string }) => {
   return (
     <div className='mx-7 flex flex-col items-center justify-center gap-2 pt-[170px]'>
       <EmptyBox width='160px' />
