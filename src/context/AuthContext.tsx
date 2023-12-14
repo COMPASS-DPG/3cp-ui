@@ -35,7 +35,7 @@ const userProfileInitData = {
 type AuthContextType = {
   providerId: string;
   userProfileData: userType;
-  handleUserProfile: () => void;
+  handleUserProfile: (id: string) => void;
   handleSetProviderId: (id: string) => void;
   setActiveComponent: (arg: string) => void;
   activeComponent: string;
@@ -69,67 +69,74 @@ const AuthProvider = createContext<AuthContextType>({
 });
 
 const AuthContext = ({ children }: { children: React.ReactElement }) => {
-  const id = localStorage.getItem('3cpToken') || '';
-  const [providerId, setProviderId] = useState(id);
+  const [providerId, setProviderId] = useState('');
   const [activeComponent, setActiveComponent] = useState<string>('ACCEPTED');
   const [userProfileData, setUserProfileDate] = useState(userProfileInitData);
   const [fetchData, setFetchData] = useState(true);
   const [courseList, setCourseList] = useState<CourseType[]>([]);
   const router = useRouter();
 
-  const handleCourseData = useCallback(async () => {
-    try {
-      const data = await getCourseByProviderId(providerId);
-      setCourseList(data);
-      setFetchData(false);
-    } catch (error) {
-      // Handle any errors that occur during the API call
-      setTimeout(() => {
-        // eslint-disable-next-line no-console
-        console.error('API call error:', error);
-        toast.error('something went wrong', {
-          draggable: false,
-        });
-        router.push('/error/DataNotFound');
-      }, 5000);
-    }
-  }, [providerId, router]);
+  const handleCourseData = useCallback(
+    async (id: string) => {
+      try {
+        const data = await getCourseByProviderId(id);
+        setCourseList(data);
+        setFetchData(false);
+      } catch (error) {
+        // Handle any errors that occur during the API call
+        setTimeout(() => {
+          // eslint-disable-next-line no-console
+          console.error('API call error:', error);
+          toast.error('something went wrong', {
+            draggable: false,
+          });
+          router.push('/error/DataNotFound');
+        }, 5000);
+      }
+    },
+    [router]
+  );
 
-  const handleUserProfile = useCallback(async () => {
-    try {
-      const data = await getProviderProfileDetails(providerId);
-      setUserProfileDate(data);
-      handleCourseData();
-    } catch (error) {
-      // Handle any errors that occur during the API call
-      setTimeout(() => {
-        // eslint-disable-next-line no-console
-        console.error('API call error:', error);
-        toast.error('something went wrong', {
-          draggable: false,
-        });
-        router.push('/error/DataNotFound');
-      }, 5000);
-    }
-  }, [providerId, handleCourseData, router]);
+  const handleUserProfile = useCallback(
+    async (id: string) => {
+      try {
+        const data = await getProviderProfileDetails(id);
+        setUserProfileDate(data);
+        handleCourseData(id);
+      } catch (error) {
+        // Handle any errors that occur during the API call
+        setTimeout(() => {
+          // eslint-disable-next-line no-console
+          console.error('API call error:', error);
+          toast.error('something went wrong', {
+            draggable: false,
+          });
+          router.push('/error/DataNotFound');
+        }, 5000);
+      }
+    },
+    [handleCourseData, router]
+  );
 
   const handleSetProviderId = (id: string) => {
     setProviderId(id);
   };
 
   useEffect(() => {
-    if (!providerId) {
+    const id = localStorage.getItem('3cpToken') || '';
+    if (!id) {
       router.push('/login');
       return;
     } else {
-      handleUserProfile();
+      setProviderId(id);
+      handleUserProfile(id);
       router.push('my-courses');
     }
   }, [router, providerId, handleUserProfile]);
 
   useEffect(() => {
     if (fetchData && providerId) {
-      handleCourseData();
+      handleCourseData(providerId);
     }
   }, [fetchData, handleCourseData, providerId]);
 

@@ -23,7 +23,7 @@ type DataType = {
   branchName: string;
   accNo: string;
   IFSC: string;
-  email: string;
+  email?: string;
   GSTnumber: string;
   PANnumber: string;
   logoUrl: string;
@@ -57,7 +57,7 @@ const convertToFormData = (data: DataType) => {
   const userFormData = new FormData();
 
   userFormData.append('name', data?.name);
-  userFormData.append('email', data?.email);
+  if (data?.email) userFormData.append('email', data?.email);
   userFormData.append('logo', data?.orgLogo);
   userFormData.append('orgName', data?.orgName);
   userFormData.append('password', data?.password);
@@ -83,10 +83,11 @@ const UserDetailsModal = ({ userData, handleStep, onClose }: PropType) => {
   const { handleSetProviderId } = useAuthContext();
 
   const handleContinue = () => {
+    const email = localStorage?.getItem('userEmailId') || '';
     (async () => {
       setIsDisabled(true);
       // convert object into form data
-      const userFormData = convertToFormData(userData);
+      const userFormData = convertToFormData({ ...userData, email });
       try {
         const data = await userSignup(userFormData);
         handleSetProviderId(data?.providerId);

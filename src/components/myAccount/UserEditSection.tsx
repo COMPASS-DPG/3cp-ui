@@ -64,7 +64,7 @@ type PropType = {
   providerId: string;
   user: userType;
   setShowEditSection: (val: boolean) => void;
-  getUserProfile: () => void;
+  getUserProfile: (arg: string) => void;
 };
 
 const UserEditSection = ({
@@ -123,7 +123,7 @@ const UserEditSection = ({
         try {
           await updateProviderProfileDetails(providerId, formData);
           setShowEditSection(false);
-          getUserProfile();
+          getUserProfile(providerId);
           toast.success('data updated successfully', {
             draggable: false,
           });

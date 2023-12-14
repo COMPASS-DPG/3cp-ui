@@ -68,7 +68,6 @@ const initialBankDetailsData = (): BankDetailsType => {
 };
 
 const Signup = () => {
-  const email = localStorage?.getItem('userEmailId') || '';
   const [logoUrl, setLogoUrl] = useState('');
   const [step, setStep] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
@@ -168,7 +167,6 @@ const Signup = () => {
           userData={{
             ...generalDetailsData,
             ...bankDetailsData,
-            email,
             logoUrl,
           }}
           onClose={() => setIsOpen(false)}
