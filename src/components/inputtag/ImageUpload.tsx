@@ -53,7 +53,7 @@ const ImageUpload = ({
               <Image
                 src={
                   value && typeof value === 'string'
-                    ? value
+                    ? `${value}?date=${new Date().getTime()}`
                     : `data:image/jpeg;base64,${image}`
                 }
                 alt='course img'

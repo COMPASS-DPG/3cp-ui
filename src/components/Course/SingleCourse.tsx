@@ -104,7 +104,6 @@ const SingleCourse = ({
         setShowPopUp(false);
       }
     };
-
     document.body.addEventListener('click', closeDropDown);
     return () => document.body.removeEventListener('click', closeDropDown);
   }, [showPopUp]);
@@ -115,7 +114,11 @@ const SingleCourse = ({
         {/* image */}
         <div className='flex-shrink-0'>
           <Image
-            src={typeof course?.imageLink === 'string' ? course?.imageLink : ''}
+            src={
+              typeof course?.imageLink === 'string'
+                ? `${course?.imageLink}?date=${new Date().getTime()}`
+                : ''
+            }
             width={100}
             height={100}
             alt='course-image'
