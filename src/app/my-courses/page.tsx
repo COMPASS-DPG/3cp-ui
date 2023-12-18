@@ -11,8 +11,16 @@ import SearchCourse from '@/components/SearchCourses';
 
 import { useAuthContext } from '@/context/AuthContext';
 
-type CompetencyType = {
-  [key: number | string]: string[];
+export type LevelsType = {
+  id: number | string;
+  levelNumber: number | string;
+  name: string;
+};
+
+export type CompetencyType = {
+  id: number | string;
+  name: string;
+  levels: LevelsType[];
 };
 
 export type CourseType = {
@@ -31,7 +39,7 @@ export type CourseType = {
   rating?: number;
   verificationStatus?: 'REJECTED' | 'ACCEPTED' | 'PENDING';
   rejectionReason?: string;
-  competency: CompetencyType;
+  competency: CompetencyType[];
   avgRating?: number | string | null;
 };
 
