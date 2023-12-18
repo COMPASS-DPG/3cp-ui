@@ -108,17 +108,18 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
               {data?.title}
             </div>
             <div className='line-clamp-2 text-[13px] text-[#787878]'>
-              {data?.competency?.map((item) => {
-                return (
-                  <div key={item?.id} className='line-clamp-1 text-ellipsis'>
-                    {item?.name}(
-                    {item?.levels?.map((level) => {
-                      return <span key={level.id}>{level.name}, </span>;
-                    })}
-                    ),
-                  </div>
-                );
-              })}
+              {data?.competency?.length > 0 &&
+                data?.competency?.map((item) => {
+                  return (
+                    <div key={item?.id} className='line-clamp-1 text-ellipsis'>
+                      {item?.name}(
+                      {item?.levels?.map((level) => {
+                        return <span key={level?.id}>{level?.name}, </span>;
+                      })}
+                      ),
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
