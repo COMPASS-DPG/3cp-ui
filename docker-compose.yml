@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  course-manager-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3500:3000"
+    networks:
+      - samagra_compass
+
+networks:
+  samagra_compass:
+    external: true
