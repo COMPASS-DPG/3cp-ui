@@ -1,132 +1,79 @@
-# Next.js + Tailwind CSS + TypeScript Starter and Boilerplate
+# 3cp-ui
 
-<div align="center">
-  <h2>🔋 ts-nextjs-tailwind-starter</h2>
-  <p>Next.js + Tailwind CSS + TypeScript starter packed with useful development features.</p>
-  <p>Made by <a href="https://theodorusclarence.com">Theodorus Clarence</a></p>
+Welcome to the 3cp-UI project! This is a third party course provider interface with the following features:
 
-[![GitHub Repo stars](https://img.shields.io/github/stars/theodorusclarence/ts-nextjs-tailwind-starter)](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter/stargazers)
-[![Depfu](https://badges.depfu.com/badges/fc6e730632ab9dacaf7df478a08684a7/overview.svg)](https://depfu.com/github/theodorusclarence/ts-nextjs-tailwind-starter?project_id=30160)
-[![Last Update](https://img.shields.io/badge/deps%20update-every%20sunday-blue.svg)](https://shields.io/)
+1. **3cp Sign Up and Login:**
 
-</div>
+   - Allows 3cp to create accounts and log in securely.
 
-## Features
+2. **My Courses:**
 
-This repository is 🔋 battery packed with:
+   - 3cp can add and edit courses that will be approved or rejected by the admin.
 
-- ⚡️ Next.js 13 with App Router
-- ⚛️ React 18
-- ✨ TypeScript
-- 💨 Tailwind CSS 3 — Configured with CSS Variables to extend the **primary** color
-- 💎 Pre-built Components — Components that will **automatically adapt** with your brand color, [check here for the demo](https://tsnext-tw.thcl.dev/components)
-- 🃏 Jest — Configured for unit testing
-- 📈 Absolute Import and Path Alias — Import components using `@/` prefix
-- 📏 ESLint — Find and fix problems in your code, also will **auto sort** your imports
-- 💖 Prettier — Format your code consistently
-- 🐶 Husky & Lint Staged — Run scripts on your staged files before they are committed
-- 🤖 Conventional Commit Lint — Make sure you & your teammates follow conventional commit
-- ⏰ Release Please — Generate your changelog by activating the `release-please` workflow
-- 👷 Github Actions — Lint your code on PR
-- 🚘 Automatic Branch and Issue Autolink — Branch will be automatically created on issue **assign**, and auto linked on PR
-- 🔥 Snippets — A collection of useful snippets
-- 👀 Open Graph Helper Function — Awesome open graph generated using [og](https://github.com/theodorusclarence/og), fork it and deploy!
-- 🗺 Site Map — Automatically generate sitemap.xml
-- 📦 Expansion Pack — Easily install common libraries, additional components, and configs.
+3. **Transactions:**
 
-See the 👉 [feature details and changelog](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter/blob/main/CHANGELOG.md) 👈 for more.
+   - 3cp can view transaction details.
 
-You can also check all of the **details and demos** on my blog post:
+4. **My Account:**
 
-- [One-stop Starter to Maximize Efficiency on Next.js & Tailwind CSS Projects](https://theodorusclarence.com/blog/one-stop-starter)
+   - 3cp can view and edit profile details.
+   - 3cp can reset passwords.
+
+5. **Backend Service Connections:**
+   - Connects to the following backend services:
+     - `course-manager-service`: Fetches courses, profile details, transactions, and can add or edit courses and profile details.
 
 ## Getting Started
 
-### 1. Clone this template using one of the three ways:
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-1. Use this repository as template
+### Prerequisites
 
-   **Disclosure:** by using this repository as a template, there will be an attribution on your repository.
+Make sure you have the following installed on your machine:
 
-   I'll appreciate if you do, so this template can be known by others too 😄
+Node.js: Download and install Node.js
 
-   ![Use as template](https://user-images.githubusercontent.com/55318172/129183039-1a61e68d-dd90-4548-9489-7b3ccbb35810.png)
+### Installation
 
-2. Using `create-next-app`
+Clone the repository:
 
-   ```bash
-   npx create-next-app -e https://github.com/theodorusclarence/ts-nextjs-tailwind-starter project-name
-   ```
-
-   If you still want to use **pages directory** (_is not actively maintained_) you can use this command
-
-   ```bash
-   npx create-next-app -e https://github.com/theodorusclarence/ts-nextjs-tailwind-starter/tree/pages-directory project-name
-   ```
-
-3. Using `degit`
-
-   ```bash
-   npx degit theodorusclarence/ts-nextjs-tailwind-starter YOUR_APP_NAME
-   ```
-
-4. Deploy to Vercel
-
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftheodorusclarence%2Fts-nextjs-tailwind-starter)
-
-### 2. Install dependencies
-
-It is encouraged to use **yarn** so the husky hooks can work properly.
-
-```bash
-yarn install
+```
+git clone https://github.com/COMPASS-DPG/3cp-ui.git
+cd 3cp-ui
 ```
 
-### 3. Run the development server
+Install dependencies:
 
-You can start the server using this command:
-
-```bash
-yarn dev
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. You can start editing the page by modifying `src/pages/index.tsx`.
+Configuration
 
-### 4. Change defaults
+Configure the connection to the backend service by updating the config.js file with the appropriate API endpoint.
 
-There are some things you need to change including title, urls, favicons, etc.
+### Development
 
-Find all comments with !STARTERCONF, then follow the guide.
+To start the development server, run the following command:
 
-Don't forget to change the package name in package.json
+```
+npm run dev
+```
 
-### 5. Commit Message Convention
+Visit http://localhost:3000 in your browser to view the application.
 
-This starter is using [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/), it is mandatory to use it to commit changes.
+### Deployment
 
-## Projects using ts-nextjs-tailwind-starter
+Follow these steps to deploy the project:
 
-<!--
-TEMPLATE
-- [sitename](https://sitelink.com) ([Source](https://github.com/githublink))
-- [sitename](https://sitelink.com)
--->
+Build the project:
 
-- [theodorusclarence.com](https://theodorusclarence.com) ([Source](https://github.com/theodorusclarence/theodorusclarence.com))
-- [Notiolink](https://notiolink.thcl.dev/) ([Source](https://github.com/theodorusclarence/notiolink))
+```
+npm run build
+```
 
-Are you using this starter? Please add your page (and repo) to the end of the list via a [Pull Request](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter/edit/main/README.md). 😃
+Start the production server:
 
-## Expansion Pack 📦
-
-This starter is now equipped with an [expansion pack](https://github.com/theodorusclarence/expansion-pack).
-
-You can easily add expansion such as React Hook Form + Components, Storybook, and more just using a single command line.
-
-https://user-images.githubusercontent.com/55318172/146631994-e1cac137-1664-4cfe-950b-a96decc1eaa6.mp4
-
-Check out the [expansion pack repository](https://github.com/theodorusclarence/expansion-pack) for the commands
-
-### App Router Update
-
-Due to App Router update, the expansion pack is currently **outdated**. It will be updated in the future. You can still use them by copy and pasting the files.
+```
+npm start
+```
