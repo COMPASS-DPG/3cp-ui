@@ -6,27 +6,66 @@ export const languageOptions = [
 
 export const Competency_Options = [
   {
-    competency: 'competency1',
-    levels: ['level1', 'level2', 'level3', 'level3'],
+    id: 1,
+    name: 'API Development',
+    levels: [
+      {
+        id: 1,
+        levelNumber: 1,
+        name: 'Basic',
+      },
+      {
+        id: 2,
+        levelNumber: 2,
+        name: 'Intermediate',
+      },
+      {
+        id: 3,
+        levelNumber: 3,
+        name: 'Advanced',
+      },
+    ],
   },
   {
-    competency: 'competency2',
-    levels: ['level4', 'level5', 'level6', 'level7'],
+    id: 2,
+    name: 'Typescript',
+    levels: [
+      {
+        id: 4,
+        levelNumber: 1,
+        name: 'Basic',
+      },
+      {
+        id: 5,
+        levelNumber: 2,
+        name: 'Intermediate',
+      },
+      {
+        id: 6,
+        levelNumber: 3,
+        name: 'Advanced',
+      },
+    ],
   },
   {
-    competency: 'competency3',
-    levels: ['level8', 'level9', 'level10', 'level11'],
-  },
-  {
-    competency: 'competency4',
-    levels: ['level12', 'level3', 'level14', 'level15'],
-  },
-  {
-    competency: 'competency5',
-    levels: ['level16', 'level17', 'level18', 'level19'],
-  },
-  {
-    competency: 'competency6',
-    levels: ['level20', 'level21', 'level22', 'level23'],
+    id: 3,
+    name: 'Backend engineering',
+    levels: [
+      {
+        id: 7,
+        levelNumber: 1,
+        name: 'Basic',
+      },
+      {
+        id: 8,
+        levelNumber: 2,
+        name: 'Intermediate',
+      },
+      {
+        id: 9,
+        levelNumber: 3,
+        name: 'Advanced',
+      },
+    ],
   },
 ];

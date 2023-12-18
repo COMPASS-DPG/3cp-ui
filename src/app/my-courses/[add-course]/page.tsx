@@ -15,13 +15,10 @@ import CourseAddSuccessPopup from '@/components/newCourseForm/CourseAddSuccessPo
 import CourseCard from '@/components/newCourseForm/CourseCard';
 import NewCourseForm from '@/components/newCourseForm/NewCourseForm';
 
-import { CourseType } from '@/app/my-courses/page';
+import { CompetencyType } from '@/app/my-courses/page';
 import { useAuthContext } from '@/context/AuthContext';
 
-export type CompetencyAndLevelsType = {
-  competency: string;
-  levels: string[];
-};
+export type CompetencyAndLevelsType = CompetencyType;
 
 export type NewCourseFormType = {
   courseId?: string;
@@ -75,30 +72,8 @@ const initialData = () => {
     author: '',
     startDate: new Date(),
     endDate: null,
-    competency: [{ competency: '', levels: [] }],
+    competency: [{ name: '', id: '', levels: [] }],
   };
-};
-
-const convertEditCourseDataToFormInputData = (
-  data: CourseType[],
-  courseId: string
-) => {
-  if (!courseId) {
-    return null;
-  }
-
-  const editCourseData =
-    data?.find((item) => item?.courseId == courseId) ?? null;
-
-  if (!editCourseData) return null;
-
-  const convertedCompetencyData = Object.entries(
-    editCourseData?.competency
-  )?.map(([competency, levels]) => ({
-    competency,
-    levels,
-  }));
-  return { ...editCourseData, competency: convertedCompetencyData };
 };
 
 // will check for all competency and levels input
@@ -110,7 +85,7 @@ const isValidCompetency = (competency: CompetencyAndLevelsType[]) => {
     return false;
   }
   for (let i = 0; i < competency?.length; i++) {
-    if (!competency[i]?.competency || competency[i]?.levels?.length == 0) {
+    if (!competency[i]?.name || competency[i]?.levels?.length == 0) {
       toast.error('competency and levels are required', {
         draggable: false,
       });
@@ -126,13 +101,12 @@ const AddNewCourse = () => {
   const router = useRouter();
   const [disabledUpload, setDisabledUpload] = useState(true);
   const courseId = searchParams.get('courseId') ?? '';
-  const newEditCourseData = convertEditCourseDataToFormInputData(
-    courseList,
-    courseId
-  );
+
+  const editCourseData =
+    courseList?.find((item) => item?.courseId == courseId) ?? null;
 
   const [formData, setFormData] = useState<NewCourseFormType>(
-    newEditCourseData ?? initialData()
+    editCourseData ?? initialData()
   );
   const [error, setError] = useState<NewCourseFormErrorType>(initialError());
   const [image, setImage] = useState('');
@@ -160,6 +134,7 @@ const AddNewCourse = () => {
         };
       });
     }
+    // will disable upload button
     if (disabledUpload) {
       setDisabledUpload(false);
     }
@@ -172,6 +147,10 @@ const AddNewCourse = () => {
   };
 
   const handleDelete = (ind: number) => {
+    // will disable upload button
+    if (disabledUpload) {
+      setDisabledUpload(false);
+    }
     const newData = [...formData.competency];
     newData.splice(ind, 1);
     setFormData((pre) => {
@@ -183,6 +162,10 @@ const AddNewCourse = () => {
   };
 
   const handleAddValue = (data: CompetencyAndLevelsType) => {
+    // will disable upload button
+    if (disabledUpload) {
+      setDisabledUpload(false);
+    }
     setFormData((pre) => {
       return {
         ...pre,
@@ -270,7 +253,9 @@ const AddNewCourse = () => {
                 data={data}
                 onChange={(data) => handleCompetencyAndLevelsData(data, ind)}
                 handleDelete={() => handleDelete(ind)}
-                handleAdd={() => handleAddValue({ competency: '', levels: [] })}
+                handleAdd={() =>
+                  handleAddValue({ name: '', id: '', levels: [] })
+                }
               />
             </div>
           );

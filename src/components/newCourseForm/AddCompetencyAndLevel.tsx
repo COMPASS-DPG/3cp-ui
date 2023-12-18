@@ -8,6 +8,7 @@ import Label from '@/components/Label';
 import { Competency_Options } from '@/components/Options';
 
 import { CompetencyAndLevelsType } from '@/app/my-courses/[add-course]/page';
+import { CompetencyType, LevelsType } from '@/app/my-courses/page';
 
 type PropType = {
   handleDelete: () => void;
@@ -26,8 +27,30 @@ const AddCompetencyAndLevel = ({
   data,
   onChange,
 }: PropType) => {
-  const handleChange = (key: string, value: string | string[]) => {
-    onChange({ ...data, [key]: value });
+  // will filter levels by competency
+  const levels: LevelsType[] = Competency_Options.find(
+    (item) => item.name === data.name
+  )?.levels ?? [{ id: '', name: '', levelNumber: '' }];
+
+  // will handle competency data
+  const handleChangeCompetency = (value: CompetencyType) => {
+    const updatedValue = {
+      name: value?.name,
+      id: value?.id,
+      levels: [],
+    };
+    if (updatedValue) {
+      onChange(updatedValue);
+    }
+  };
+
+  // will handle levels data
+  const handleChangeLevel = (value: string[]) => {
+    let updatedValue: LevelsType[] | null = null;
+    updatedValue = levels?.filter((option) => value?.includes(option?.name));
+    if (updatedValue) {
+      onChange({ ...data, levels: updatedValue });
+    }
   };
 
   return (
@@ -36,12 +59,20 @@ const AddCompetencyAndLevel = ({
         <div>
           <Label text='Competency' />
           <SelectTag
-            onChange={(value) => handleChange('competency', value)}
+            onChange={(value) =>
+              handleChangeCompetency(
+                Competency_Options?.find((item) => item?.name === value) ?? {
+                  name: '',
+                  id: '',
+                  levels: [],
+                }
+              )
+            }
             options={Competency_Options?.map((item) => {
-              return { label: item?.competency, value: item?.competency };
+              return { label: item?.name, value: item?.name };
             })}
             placeholder='select competency'
-            value={data?.competency}
+            value={data?.name}
             paddingY='2px'
           />
         </div>
@@ -54,18 +85,16 @@ const AddCompetencyAndLevel = ({
               }`}
             >
               <MultiSelectTag
-                onChange={(value) => handleChange('levels', value)}
+                onChange={(value) => handleChangeLevel(value)}
                 options={
-                  Competency_Options.find(
-                    (item) => item?.competency === data?.competency
-                  )?.levels.map((item) => {
-                    return { label: item, value: item };
+                  levels?.map((item) => {
+                    return { label: item.name, value: item.name };
                   }) ?? [{ label: '', value: '' }]
                 }
                 placeholder='select levels'
-                value={data?.levels}
+                value={data?.levels.map((level) => level?.name)}
                 paddingY='2px'
-                isDisabled={!data?.competency}
+                isDisabled={!data?.name}
               />
             </div>
             {length >= 2 && (

@@ -31,39 +31,33 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
   const handleSend = () => {
     (async () => {
       setIsDisabled(true);
-      // formatting competency data
-      const updateCompetencyData = Object.fromEntries(
-        data?.competency?.map((item) => [item.competency, item.levels])
-      );
-      const newData = { ...data, competency: updateCompetencyData };
-
       // converting data to FormData
       const formCourseData = new FormData();
 
-      formCourseData.append('title', newData?.title);
-      formCourseData.append('description', newData?.description);
-      newData?.language?.forEach((language, index) => {
+      formCourseData.append('title', data?.title);
+      formCourseData.append('description', data?.description);
+      data?.language?.forEach((language, index) => {
         formCourseData.append(`language[${index}]`, language);
       });
 
-      if (typeof newData?.imageLink !== 'string')
-        formCourseData.append('image', newData?.imageLink);
+      if (typeof data?.imageLink !== 'string')
+        formCourseData.append('image', data?.imageLink);
 
-      formCourseData.append('credits', newData.credits.toString());
-      formCourseData.append('courseLink', newData?.courseLink);
-      formCourseData.append('author', newData?.author);
-      if (newData.startDate)
+      formCourseData.append('credits', data.credits.toString());
+      formCourseData.append('courseLink', data?.courseLink);
+      formCourseData.append('author', data?.author);
+      if (data.startDate)
         formCourseData.append(
           'startDate',
-          new Date(newData?.startDate)?.toDateString()
+          new Date(data?.startDate)?.toDateString()
         );
-      if (newData.endDate)
+      if (data.endDate)
         formCourseData.append(
           'endDate',
-          new Date(newData?.endDate)?.toDateString()
+          new Date(data?.endDate)?.toDateString()
         );
 
-      formCourseData.append('competency', JSON.stringify(newData?.competency));
+      formCourseData.append('competency', JSON.stringify(data?.competency));
 
       // api request
       try {
@@ -116,13 +110,10 @@ const CourseCard = ({ image, data, onClose, handleSuccessModal }: PropType) => {
             <div className='line-clamp-2 text-[13px] text-[#787878]'>
               {data?.competency?.map((item) => {
                 return (
-                  <div
-                    key={item?.competency}
-                    className='line-clamp-1 text-ellipsis'
-                  >
-                    {item?.competency}(
+                  <div key={item?.id} className='line-clamp-1 text-ellipsis'>
+                    {item?.name}(
                     {item?.levels?.map((level) => {
-                      return <span key={level}>{level}, </span>;
+                      return <span key={level.id}>{level.name}, </span>;
                     })}
                     ),
                   </div>
